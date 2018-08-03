@@ -4,11 +4,14 @@
 </h3>
 <div class="page-bar">
     <ul class="page-breadcrumb">
-        <li>
-            <i class="icon-home"></i>
-            <a href="<?php echo e(route('dashboard')); ?>">الرئيسية</a>
-            <i class="fa fa-angle-left"></i>
-        </li>
+        <?php if(!Request::is('/')): ?>
+            <li>
+                <i class="icon-home"></i>
+                <a href="<?php echo e(route('dashboard')); ?>">الرئيسية</a>
+                <i class="fa fa-angle-left"></i>
+            </li>
+        <?php endif; ?>
+
             <?php if(Request::is('projects-and-services' , 'projects/*' , 'services/*')): ?>
                 <li>
                     <a href="#">المشاريع و الخدمات</a>
