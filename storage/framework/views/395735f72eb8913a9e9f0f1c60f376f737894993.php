@@ -49,9 +49,41 @@
     <!-- END THEME LAYOUT SCRIPTS -->
     
     <script>
-
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
             $(document).on('ready', function() {
 
+                $('#addTask').click(function (e){
+                    e.preventDefault();
+                    $.ajax ({
+                        url: "<?php echo e(route('addTask')); ?>",
+                        method: 'post',
+                        data: { 'taskName': $('input[name=taskName]').val()} ,
+                        dataType: 'JSON' , 
+                        success: function (data){
+                            $('#taskName').val('');
+                            $('#tasks-wrapper').load(window.location + ' #tasks');
+                        }
+                    });
+                });
+
+                $('#addTransferMethod').click(function (e){
+                    e.preventDefault();
+                    $.ajax ({
+                        url: "<?php echo e(route('addTransferMethod')); ?>",
+                        method: 'post',
+                        data: { 'transferMethodName': $('input[name=transferMethodName]').val()} ,
+                        dataType: 'JSON' , 
+                        success: function (data){
+                            $('#transferMethodName').val('');
+                            $('#transferMethods-wrapper').load(window.location + ' #transferMethods');
+                        }
+                    });
+                });
 
                 $('#payment-type').on('change', function() {
 				
@@ -116,9 +148,9 @@
 			});
 			
 			
-			$('#transfer-type').on('change', function() {
+			$('#transferMethodSelect').on('change', function() {
 				
-				var vl = $("#transfer-type :selected").val();
+				var vl = $("#transferMethodSelect :selected").val();
 				//alert(vl);
 				switch(vl) {
 					case '1':
@@ -131,7 +163,7 @@
 						$("#paypal").hide();
 						$("#other").hide();
 						break;
-					case '3':
+					case '0':
 						$("#other").slideDown();
 						$("#bank").hide();
 						$("#paypal").hide();

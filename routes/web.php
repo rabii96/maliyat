@@ -21,8 +21,31 @@ Route::get('/services/add', 'PagesController@addService')->name('addService');
 Route::get('/projects-and-services', 'PagesController@allProjectsAndServices')->name('allProjectsAndServices');
 Route::get('/project/{id}', 'PagesController@projectDetails')->name('projectDetails');
 Route::get('/service/{id}', 'PagesController@serviceDetails')->name('serviceDetails');
-Route::get('/settings', 'PagesController@settings')->name('settings');
-Route::get('/clients/add', 'PagesController@addClient')->name('addClient');
-Route::get('/employees/add', 'PagesController@addEmployee')->name('addEmployee');
-Route::get('/users/add', 'PagesController@addUser')->name('addUser');
-Route::get('/users', 'PagesController@allUsers')->name('allUsers');
+
+
+// Employee routes
+Route::get('/employees/add', 'EmployeeController@create')->name('addEmployee');
+Route::post('/employees/add', 'EmployeeController@store')->name('addEmployee');
+
+// Task routes
+Route::post('/addTask', 'TaskController@store')->name('addTask');
+
+// Transfer methods routes
+Route::post('/addTransferMethod', 'TransferMethodController@store')->name('addTransferMethod');
+
+// Settings routes
+Route::get('/settings', 'SettingsController@index')->name('settings');
+
+
+// User routes
+Route::get('/users', 'UsersController@index')->name('allUsers');
+Route::get('/users/add', 'UsersController@create')->name('addUser');
+Route::post('/users/add', 'UsersController@store')->name('addUser');
+
+// Client routes
+Route::get('/clients/add', 'ClientController@create')->name('addClient');
+Route::post('/clients/add', 'ClientController@store')->name('addClient');
+
+// Authentication routes
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');

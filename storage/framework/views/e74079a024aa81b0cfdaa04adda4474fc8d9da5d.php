@@ -20,6 +20,8 @@
 
 						<div class="tools"> </div>
 					</div>
+
+
 					<div class="portlet-body">
 
 
@@ -112,456 +114,76 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>1</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>6</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>7</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>8</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>9</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>10</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>11</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>12</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>13</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>14</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>15</td>
-										<td>اسم المستخدم</td>
-										<td>مستخدم</td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-													<i class="fa fa-angle-down"></i>
-												</a>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="#" class="font-purple">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-													</li>
-													<li>
-														<a href="#" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-													</li>
-													<li>
-														<a href="#basic" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-													</li>
-													<li>
-														<a href="#" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
+									<?php
+										$i = 1;
+									?>
+									<?php if($users): ?>
+										<?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+											<tr>
+												<td><?php echo e($i++); ?></td>
+												<td><?php echo e($user->username); ?></td>
+												<td>مستخدم</td>
+												<td class="text-center">
+													<div class="btn-group">
+														<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
+															<i class="fa fa-angle-down"></i>
+														</a>
+														<ul class="dropdown-menu pull-right">
+															<li>
+																<a href="#" class="font-purple">
+																	<i class="icon-eye font-purple"></i> عـرض</a>
+															</li>
+															<li>
+																<a href="#" class="font-blue">
+																	<i class="icon-note font-blue"></i> تعديل</a>
+															</li>
+															<li>
+																<a href="#basic" class="font-red" data-toggle="modal">
+																	<i class="icon-trash font-red"></i> حـذف</a>
+															</li>
+															<li>
+																<a href="#" class="font-green">
+																	<i class="icon-cloud-download font-green"></i> تحميل</a>
+															</li>
+														</ul>
+													</div>
+												</td>
+											</tr>
+										<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+										<?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+											<tr>
+												<td><?php echo e($i++); ?></td>
+												<td><?php echo e($client->name); ?></td>
+												<td>عميل</td>
+												<td class="text-center">
+													<div class="btn-group">
+														<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
+															<i class="fa fa-angle-down"></i>
+														</a>
+														<ul class="dropdown-menu pull-right">
+															<li>
+																<a href="#" class="font-purple">
+																	<i class="icon-eye font-purple"></i> عـرض</a>
+															</li>
+															<li>
+																<a href="#" class="font-blue">
+																	<i class="icon-note font-blue"></i> تعديل</a>
+															</li>
+															<li>
+																<a href="#basic" class="font-red" data-toggle="modal">
+																	<i class="icon-trash font-red"></i> حـذف</a>
+															</li>
+															<li>
+																<a href="#" class="font-green">
+																	<i class="icon-cloud-download font-green"></i> تحميل</a>
+															</li>
+														</ul>
+													</div>
+												</td>
+											</tr>
+										<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									<?php endif; ?>
 								</tbody>
 							</table>
 

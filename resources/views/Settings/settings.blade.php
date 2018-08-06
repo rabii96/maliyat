@@ -84,65 +84,9 @@
 													</div>
 												</div>
 												
-												<div class="col-md-6 col-xs-12">
-												<div class="form-group">
-													<label class="control-label col-md-4">المنطقة الزمنية</label>
-													<div class="col-md-8">
-														<select class="form-control select2 ">
-															<option></option>
-															<option value="1">1</option>
-															<option value="2">2</option>
-															<option value="3">3</option>
-															<option value="4">4</option>
-														</select>
-													</div>
-												</div>
-												</div>
 												
-												<div class="col-md-6 col-xs-12">
-												<div class="form-group">
-													<label class="control-label col-md-4">صيغة التاريخ</label>
-													<div class="col-md-8">
-														<select class="form-control select2 select-hide">
-															<option>-- إختر --</option>
-															<option value="1">1</option>
-															<option value="2">2</option>
-															<option value="3">3</option>
-															<option value="4">4</option>
-														</select>
-													</div>
-												</div>
-												</div>
 												
-												<div class="col-md-6 col-xs-12">
-												<div class="form-group">
-													<label class="control-label col-md-4">تنسيق الوقت</label>
-													<div class="col-md-8">
-														<select class="form-control select2 select-hide">
-															<option>-- إختر --</option>
-															<option value="1">1</option>
-															<option value="2">2</option>
-															<option value="3">3</option>
-															<option value="4">4</option>
-														</select>
-													</div>
-												</div>
-												</div>
-												
-												<div class="col-md-6 col-xs-12">
-												<div class="form-group">
-													<label class="control-label col-md-4">العملة</label>
-													<div class="col-md-8">
-														<select class="form-control select2 select-hide">
-															<option>-- إختر --</option>
-															<option value="1">1</option>
-															<option value="2">2</option>
-															<option value="3">3</option>
-															<option value="4">4</option>
-														</select>
-													</div>
-												</div>
-												</div>
+
 												
 												
 												</div>
@@ -153,47 +97,49 @@
 											<div class="col-md-4 col-sm-12">
 												<fieldset>
 												<legend class="font-purple">مهام مقدمين الخدمة</legend>
+													<form action="{{ route('addTask')}}" method="post">
+														@csrf
+														<div class="form-group">
+															<label>اسم المهمة </label>
+															<div class="input-icon">
+																<i class="fa fa-tasks font-green "></i>
+																<input type="text" id="taskName" name="taskName" class="form-control" placeholder=""> 
+															</div>
+														</div>
 
-													<div class="form-group">
-													<label>اسم المهمة </label>
-													<div class="input-icon">
-														<i class="fa fa-tasks font-green "></i>
-														<input type="text" class="form-control" placeholder=""> 
-													</div>
-													</div>
 
+														<div class="col-md-12">
+															<div class="form-group text-center">
 
-													<div class="col-md-12">
-													<div class="form-group text-center">
+																<button type="submit" id="addTask" class="btn green margin-right-10">إضافة</button>
 
-													<button type="button" class="btn green margin-right-10">إضافة</button>
-
-													</div>
-													</div>
+															</div>
+														</div>
+													</form>
 
 
 													<div class="col-md-12">
 												
 													<div class="form-group">
-													<div class="table-responsive">
-													<table class="table">
-														<thead>
-															<tr>
-																<th> # </th>
-																<th> اسم المهمة </th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td> 1 </td>
-																<td> مبرمج </td>
-															</tr>
-															<tr>
-																<td> 2 </td>
-																<td> محلل </td>
-															</tr>
-														</tbody>
-													</table>
+													<div id="tasks-wrapper" class="table-responsive">
+														<div id="tasks">
+															<table class="table">
+																<thead>
+																	<tr>
+																		<th> # </th>
+																		<th> اسم المهمة </th>
+																	</tr>
+																</thead>
+																<tbody>
+																	@foreach($tasks as $task)
+																		<tr>
+																			<td>{{ $loop->iteration }}</td>
+																			<td>{{ $task->name }}</td>
+																		</tr>
+																	@endforeach
+																</tbody>
+															</table>
+														</div>
 													</div>
 													</div>
 
@@ -265,48 +211,47 @@
 												<div class="col-md-4 col-sm-12">
 												<fieldset>
 												<legend class="font-purple">طرق التحويل</legend>
+													<form action="{{ route('addTransferMethod')}}" method="post">
+														@csrf
+														<div class="form-group">
+															<label>طريقة تحويل </label>
+															<div class="input-icon">
+																<i class="fa fa-random font-green "></i>
+																<input name="transferMethodName" id="transferMethodName" type="text" class="form-control" placeholder=""> 
+															</div>
+														</div>
 
-													<div class="form-group">
-													<label>طريقة تحويل </label>
-													<div class="input-icon">
-														<i class="fa fa-random font-green "></i>
-														<input type="text" class="form-control" placeholder=""> 
-													</div>
-													</div>
 
+														<div class="col-md-12">
+														<div class="form-group text-center">
 
-													<div class="col-md-12">
-													<div class="form-group text-center">
+															<button type="submit" id="addTransferMethod" class="btn green margin-right-10">إضافة</button>
 
-													<button type="button" class="btn green margin-right-10">إضافة</button>
-
-													</div>
-													</div>
-
+															</div>
+														</div>
+													</form>
 
 													<div class="col-md-12">
 												
-													<div class="form-group">
-													<div class="table-responsive">
-													<table class="table">
-														<thead>
-															<tr>
-																<th> # </th>
-																<th> طريقة التحويل </th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td> 1 </td>
-																<td> باى بال </td>
-															</tr>
-															<tr>
-																<td> 2 </td>
-																<td> شيك </td>
-															</tr>
-														</tbody>
-													</table>
-													</div>
+													<div id="transferMethods-wrapper" class="form-group">
+														<div id="transferMethods" class="table-responsive">
+														<table class="table">
+															<thead>
+																<tr>
+																	<th> # </th>
+																	<th> طريقة التحويل </th>
+																</tr>
+															</thead>
+															<tbody>
+																@foreach($transferMethods as $transferMethod)
+																	<tr>
+																		<td>{{ $loop->iteration }}</td>
+																		<td>{{ $transferMethod->name }}</td>
+																	</tr>
+																@endforeach
+															</tbody>
+														</table>
+														</div>
 													</div>
 
 													</div>
@@ -1787,4 +1732,6 @@
 		<!-- END CONTENT BODY -->
 	</div>
 	<!-- END CONTENT -->
+
 @endsection
+

@@ -36,19 +36,4 @@ class PagesController extends Controller
     public function serviceDetails(){
         return view('ProjectsAndServices.serviceDetails');
     }
-    public function settings(){
-        return view('Settings.settings');
-    }
-    public function addClient(){
-        return view('Users.addClient');
-    }
-    public function addEmployee(){
-        return view('Users.addEmployee');
-    }
-    public function addUser(){
-        return view('Users.addUser');
-    }
-    public function allUsers(){
-        return view('Users.allUsers');
-    }
 }
