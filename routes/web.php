@@ -52,4 +52,7 @@ Route::post('/clients/add', 'ClientController@store')->name('addClient');
 
 // Authentication routes
 Auth::routes();
+Route::get('/register', function(){
+    return redirect()->route('login');
+});
 Route::get('/home', 'HomeController@index')->name('home');

@@ -46,8 +46,8 @@
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" class="img-circle" src="<?php echo e(asset('assets/layouts/layout/img/avatar3_small.jpg')); ?>" />
-                            <span class="username username-hide-on-mobile"> اسم المستخدم </span>
+                            <img alt="" class="img-circle" src="<?php echo e(asset('storage/photos')); ?>/<?php echo e(Auth::user()->photo); ?>" />
+                            <span class="username username-hide-on-mobile"><?php echo e(Auth::user()->username); ?></span>
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
@@ -71,8 +71,12 @@
                                     <i class="icon-lock"></i> شاشة الغلق </a>
                             </li>
                             <li>
-                                <a href="#">
-                                    <i class="icon-key"></i> تسجيل خروج </a>
+                                <a href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="icon-key"></i> تسجيل خروج 
+                                </a>
+                                <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" style="display: none;">
+                                    <?php echo csrf_field(); ?>
+                                </form>
                             </li>
                         </ul>
                     </li>

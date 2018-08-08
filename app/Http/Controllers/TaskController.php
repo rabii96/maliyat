@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Task;
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Store a newly created resource in storage.
