@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5bca48e56bbf3a25645858fcab9c285",
+    "content-hash": "681ff3d916c2bde9124617dd4d6c9429",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -965,6 +965,48 @@
                 "random"
             ],
             "time": "2018-07-02T15:55:56+00:00"
+        },
+        {
+            "name": "pdfanonymous/phpanonymous",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arabnewscms/PDFanony.git",
+                "reference": "a99553be76c2c3669c13046266833031b1f359e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arabnewscms/PDFanony/zipball/a99553be76c2c3669c13046266833031b1f359e2",
+                "reference": "a99553be76c2c3669c13046266833031b1f359e2",
+                "shasum": ""
+            },
+            "require": {
+                "tecnickcom/tcpdf": "6.2.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PDFAnony\\TCPDF\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "phpanonymous",
+                    "email": "gm@phpanonymous.com"
+                }
+            ],
+            "description": "PDF Package Arabic based on tcpdf library support for laravel 5 version 1.0",
+            "keywords": [
+                "TCPDF",
+                "laravel",
+                "pdf",
+                "phpanonymous"
+            ],
+            "time": "2016-09-25T04:44:39+00:00"
         },
         {
             "name": "psr/container",
@@ -2191,6 +2233,69 @@
                 "dump"
             ],
             "time": "2018-07-26T11:24:31+00:00"
+        },
+        {
+            "name": "tecnickcom/tcpdf",
+            "version": "6.2.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tecnickcom/TCPDF.git",
+                "reference": "fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4",
+                "reference": "fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "fonts",
+                    "config",
+                    "include",
+                    "tcpdf.php",
+                    "tcpdf_parser.php",
+                    "tcpdf_import.php",
+                    "tcpdf_barcodes_1d.php",
+                    "tcpdf_barcodes_2d.php",
+                    "include/tcpdf_colors.php",
+                    "include/tcpdf_filters.php",
+                    "include/tcpdf_font_data.php",
+                    "include/tcpdf_fonts.php",
+                    "include/tcpdf_images.php",
+                    "include/tcpdf_static.php",
+                    "include/barcodes/datamatrix.php",
+                    "include/barcodes/pdf417.php",
+                    "include/barcodes/qrcode.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Nicola Asuni",
+                    "email": "info@tecnick.com",
+                    "homepage": "http://nicolaasuni.tecnick.com"
+                }
+            ],
+            "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
+            "homepage": "http://www.tcpdf.org/",
+            "keywords": [
+                "PDFD32000-2008",
+                "TCPDF",
+                "barcodes",
+                "datamatrix",
+                "pdf",
+                "pdf417",
+                "qrcode"
+            ],
+            "time": "2015-06-18T09:12:38+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -3987,7 +4092,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "pdfanonymous/phpanonymous": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

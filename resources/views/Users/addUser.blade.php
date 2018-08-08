@@ -23,6 +23,7 @@
 
                                 <div class="tools"> </div>
                             </div>
+                            @include('includes.messages')
 
 
                             <div class="portlet-body">
@@ -208,7 +209,7 @@
                                                                     
                                 <div class="col-md-6 col-md-offset-3 col-sm-12 text-center">
                                 
-                                    <button type="submit" class="btn btn-lg green margin-right-10">إضافة/تعديل</button>
+                                    <button type="submit" class="btn btn-lg green margin-right-10">إضافة</button>
                 
                                 </div>
                                 

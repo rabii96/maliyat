@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Client;
+use App\Employee;
+use PDF;
 
 class UsersController extends Controller
 {
@@ -17,9 +20,11 @@ class UsersController extends Controller
     {
         $users = User::all();
         $clients = Client::all();
+        $employees = Employee::all();
         return view('Users.allUsers')->with([
             'users' => $users ,
-             'clients' => $clients
+            'clients' => $clients,
+            'employees' => $employees, 
         ]);
     }
 
@@ -76,16 +81,6 @@ class UsersController extends Controller
         return redirect()->route('allUsers')->with('success', 'تمت إضافة المستخدم بنجاح');        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -95,7 +90,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        // Todo add permission validation
+        $user = User::find($id);
+        return view('Users.editUser')->with('user',$user);
     }
 
     /**
@@ -107,7 +104,40 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'username' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'password' => 'required',
+            'photo' => 'image|nullable|max:1999'
+        ]);
+        $permissions = serialize($request->input('permissions'));
+        $user = User::find($id);
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->password = bcrypt($request->input('password'));
+        $user->permissions = $permissions;
+        $user->description = $request->input('description');
+        if($request->hasFile('photo')){
+            // Get filename withe the extension
+            $filenameWithExt = $request->file('photo')->getClientOriginalName();
+            // Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Get just extension
+            $extenstion = $request->file('photo')->getClientOriginalExtension();
+            // Filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
+            // Upload image
+            $path = $request->file('photo')->storeAs('public/photos' , $fileNameToStore);
+            if($user->photo!== 'noimage.jpg'){
+                Storage::delete('public/photos/'.$user->photo);
+            }
+            $user->photo = $fileNameToStore;
+        }
+        $user->save();
+        
+        return redirect()->route('allUsers')->with('success', 'تم تعديل المستخدم بنجاح');        
     }
 
     /**
@@ -118,6 +148,37 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Todo add permission validation
+        $user = User::find($id);
+        if($user->photo!== 'noimage.jpg'){
+            Storage::delete('public/photos/'.$user->photo);
+        }
+        $user->delete();
+
+        return redirect()->route('allUsers')->with('success', 'تم حذف المستخدم بنجاح');        
+    }
+
+    public function download($id){
+        $user = User::find($id);
+     /*   $pdf = PDF::loadView('users.userPDF', compact('user'));
+        return $pdf->stream('user.pdf');
+    */
+
+        $html = view('users.userPDF',['user'=>$user])->render(); // file render
+
+        $pdfarr = [
+            'title'=> $user->username,
+            'data'=>$html, // render file blade with content html
+            'header'=>['show'=>false], // header content
+            'footer'=>['show'=>false], // Footer content
+            'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
+            'font-size'=>12, // font-size 
+            'text'=>'', //Write
+            'rtl'=>true, //true or false 
+            'filename'=>$user->username.'.pdf', // filename example - invoice.pdf
+            'display'=>'download', // stream , download , print
+        ];
+
+   	    PDF::HTML($pdfarr);
     }
 }

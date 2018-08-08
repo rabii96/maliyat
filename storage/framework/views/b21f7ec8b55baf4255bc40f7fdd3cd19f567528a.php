@@ -1,7 +1,22 @@
 <!-- BEGIN PAGE HEADER-->
-<h3 class="page-title"> المشاريع والخدمات
-    <small></small>
-</h3>
+<?php if(Request::is('/')): ?>
+    <h3 class="page-title">الرئيسية</h3>
+<?php endif; ?>
+<?php if(Request::is('projects-and-services' , 'projects/*' , 'services/*')): ?>
+    <h3 class="page-title">المشاريع والخدمات</h3>
+<?php endif; ?>
+<?php if(Request::is('payments*')): ?>
+    <h3 class="page-title">المدفوعات</h3>
+<?php endif; ?>
+<?php if(Request::is('expenses*')): ?>
+    <h3 class="page-title">المصروفات</h3>
+<?php endif; ?>
+<?php if(Request::is('settings*')): ?>
+    <h3 class="page-title">الإعدادات</h3>
+<?php endif; ?>
+<?php if(Request::is('users*', 'employees*' , 'clients*')): ?>
+    <h3 class="page-title">المستخدمين</h3>
+<?php endif; ?>
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <?php if(!Request::is('/')): ?>

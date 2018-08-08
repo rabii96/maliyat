@@ -21,6 +21,7 @@
 
                                 <div class="tools"> </div>
                             </div>
+                            <?php echo $__env->make('includes.messages', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
 
                             <div class="portlet-body">
@@ -206,7 +207,7 @@
                                                                     
                                 <div class="col-md-6 col-md-offset-3 col-sm-12 text-center">
                                 
-                                    <button type="submit" class="btn btn-lg green margin-right-10">إضافة/تعديل</button>
+                                    <button type="submit" class="btn btn-lg green margin-right-10">إضافة</button>
                 
                                 </div>
                                 

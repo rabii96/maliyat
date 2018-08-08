@@ -130,6 +130,124 @@
 														</a>
 														<ul class="dropdown-menu pull-right">
 															<li>
+																<a class="font-purple" data-toggle="modal" data-target="#showUser{{ $user->id }}">
+																	<i class="icon-eye font-purple"></i> عـرض</a>
+															</li>
+															<li>
+																<a href="{{ route('editUser', ['id' => $user->id]) }}" class="font-blue">
+																	<i class="icon-note font-blue"></i> تعديل</a>
+															</li>
+															<li>
+																<a href="#deleteUser{{ $user->id }}" class="font-red" data-toggle="modal">
+																	<i class="icon-trash font-red"></i> حـذف</a>
+															</li>
+															<li>
+																<a href="{{ route('downloadUser', ['id' => $user->id]) }}" class="font-green">
+																	<i class="icon-cloud-download font-green"></i> تحميل</a>
+															</li>
+														</ul>
+													</div>
+												</td>
+											</tr>
+											<div class="modal fade" id="showUser{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title pull-left" id="exampleModalLabel">بيانات المستخدم</h5>
+																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+															</div>
+															<div class="modal-body">
+												
+																<div class="form-group">
+																	<label class="font-purple">اسم المستخدم </label>
+																	<h4>{{ $user->username}}</h4>
+																</div>
+																<div class="form-group">
+																		<label class="font-purple">الصورة</label><br><br>
+																		<img src="{{ asset('storage/photos') }}/{{ $user->photo }}" width="150px" alt="photo">
+																</div>
+																<div class="form-group">
+																	<label class="font-purple">الايميل </label>
+																	<h4>{{ $user->email }}</h4>
+																</div>
+																<div class="form-group">
+																	<label class="font-purple">الجوال </label>
+																	<h4 dir="ltr" style="text-align: right">{{ $user->phone }}</h4>
+																</div>
+																@if( $user->description)
+																	<div class="form-group">
+																		<label class="font-purple">نبذة</label>
+																		<h4>{{ $user->description }}</h4>
+																	</div>
+																@endif
+																<?php
+																	$permissions = unserialize($user->permissions);
+																?>
+																	<div class="form-group">
+																		<label class="font-purple">الصلاحيات</label>
+																		@if($permissions)
+																			@foreach($permissions as $permission)
+																				<ul>
+																					<li>
+																						<h4>{{ __('permissions.'.$permission) }}</h4>
+																					</li>
+																				</ul>
+																			@endforeach
+																		@else
+																			<h4>لا توجد</h4>
+																		@endif
+
+																	</div>
+																
+												
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-dismiss="modal">إغـلاق</button>
+															</div>
+														</div>
+													</div>
+											</div>
+										
+											<div class="modal fade" id="deleteUser{{ $user->id }}" tabindex="-1" role="basic" aria-hidden="true">
+													<div class="modal-dialog">
+														<div class="modal-content del-modal font-white">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+																<h4 class="modal-title"></h4>
+															</div>
+															<div class="modal-body text-center">
+																<h3>
+																	<i class="fa fa-3x fa-trash"></i>
+																</h3>
+																متأكد أنك تريد حـذف المستخدم {{ $user->username }} ؟
+												
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn dark btn-default" data-dismiss="modal">إغلاق</button>
+																<a href="{{ route('deleteUser', ['id' => $user->id]) }}" class="btn btn-danger">حـذف</a>
+															</div>
+														</div>
+														<!-- /.modal-content -->
+													</div>
+													<!-- /.modal-dialog -->
+											</div>
+										@endforeach
+									@endif
+									@if($clients)
+										@foreach($clients as $client)
+											<tr>
+												<td>{{ $i++ }}</td>
+												<td>{{ $client->name }}</td>
+												<td>عميل</td>
+												<td class="text-center">
+													<div class="btn-group">
+														<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
+															<i class="fa fa-angle-down"></i>
+														</a>
+														<ul class="dropdown-menu pull-right">
+															<li>
 																<a href="#" class="font-purple">
 																	<i class="icon-eye font-purple"></i> عـرض</a>
 															</li>
@@ -150,12 +268,13 @@
 												</td>
 											</tr>
 										@endforeach
-
-										@foreach($clients as $client)
+									@endif
+									@if($employees)
+										@foreach($employees as $employee)
 											<tr>
 												<td>{{ $i++ }}</td>
-												<td>{{ $client->name }}</td>
-												<td>عميل</td>
+												<td>{{ $employee->name }}</td>
+												<td>مقدم خدمة</td>
 												<td class="text-center">
 													<div class="btn-group">
 														<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر

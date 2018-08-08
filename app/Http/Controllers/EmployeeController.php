@@ -71,14 +71,14 @@ class EmployeeController extends Controller
 
         $transferMethod = $request->input('transferMethodSelect');
 
-        if($transferMethod != '0'){
             $tm = TransferMethod::find($transferMethod);
             $employee->save();
-         //   dd($tm->name);
+        //    dd($tm->name);
             switch($tm->name){
                 case 'باي بال':
                     {
                         $paypal_emails = $request->input('paypal_emails');
+                        if($paypal_emails)
                         foreach($paypal_emails as $paypal_email){
                             $account = new EmployeeAccount;
                             $account->transfer_method_id = $tm->id;
@@ -94,6 +94,7 @@ class EmployeeController extends Controller
                         $employee_bank_names = $request->input('employee_bank_names');
                         $employee_bank_number = $request->input('employee_bank_numbers');
                         $i = 0;
+                        if($employee_bank_names)
                         foreach($employee_bank_names as $employee_bank_name){
                             $account = new EmployeeAccount;
                             $account->transfer_method_id = $tm->id;
@@ -105,12 +106,49 @@ class EmployeeController extends Controller
                         break;
                     }
                 case 'شيك':
-                    //todo
-                    break;
+                    {
+                        $check_numbers = $request->input('check_numbers');
+                        if($check_numbers)
+                        foreach($check_numbers as $check_number){
+                            $account = new EmployeeAccount;
+                            $account->transfer_method_id = $tm->id;
+                            $account->check_number = $check_number;
+                            $account->employee_id = $employee->id;
+                            $account->save();
+                        }
+                        break;
+                    }
+                case 'أخرى':
+                    {
+                        $other_method_names = $request->input('other_method_names');
+                        $other_method_number = $request->input('other_method_numbers');
+                        $i = 0;
+                        if($other_method_names)
+                        foreach($other_method_names as $other_method_name){
+                            $account = new EmployeeAccount;
+                            $account->transfer_method_id = $tm->id;
+                            $account->other_method_name = $other_method_name;
+                            $account->other_method_number = $other_method_number[$i++];
+                            $account->employee_id = $employee->id;
+                            $account->save();
+                        }
+                        break;
+                    }
                 default:
-                    //todo
+                    {
+                        $default_numbers = $request->input('default_account_numbers');
+                        if($default_numbers)
+                        foreach($default_numbers as $default_number){
+                            $account = new EmployeeAccount;
+                            $account->transfer_method_id = $tm->id;
+                            $account->default_number = $default_number;
+                            $account->employee_id = $employee->id;
+                            $account->save();
+                        }
+                        break;
+                    }
             }
-        }
+        
 
 
 

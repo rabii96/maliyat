@@ -85,6 +85,9 @@
                     });
                 });
 
+
+
+
                 $('#payment-type').on('change', function() {
 				
                     var vl = $("#payment-type :selected").val();
@@ -110,7 +113,181 @@
                     }
                     
                 });
-			
+
+
+
+
+                // Begin Add employee scripts
+                $('#transferMethodSelect').on('change', function() {
+				
+                    var vl = $("#transferMethodSelect :selected").val();
+                    switch(vl) {
+                        case '1':
+                            $("#paypal").slideDown();
+                            $("#bank").hide();
+                            $("#other").hide();
+                            $("#check").hide();
+                            $("#default").hide();
+                            break;
+                        case '2':
+                            $("#bank").slideDown();
+                            $("#paypal").hide();
+                            $("#other").hide();
+                            $("#check").hide();
+                            $("#default").hide();
+                            break;
+                        case '3':
+                            $("#check").slideDown();
+                            $("#paypal").hide();
+                            $("#other").hide();
+                            $("#bank").hide();
+                            $("#default").hide();
+                            break;
+                        case '0':
+                            $("#other").slideDown();
+                            $("#bank").hide();
+                            $("#paypal").hide();
+                            $("#check").hide();
+                            $("#default").hide();
+                            break;
+                        default:
+                            var defaultName = $("#transferMethodSelect :selected").text();
+                            $("#default").hide();
+                            $('#default_name').text(defaultName);
+                            $("#default").slideDown();
+                            $("#bank").hide();
+                            $("#paypal").hide();
+                            $("#check").hide();
+                            $("#other").hide();
+                    }
+                });
+
+
+
+                $('#add_employee_bank').click(function(){
+                    var bankName = $('#bank_name').val();
+                    var bankNumber = $('#bank_account_number').val();
+                    if((bankName!='')&&(bankNumber!='')){
+                        var bankTable = document.getElementById('bank_accounts_table');
+                        i++;
+                        bankTable.innerHTML += 
+                        "<tr>"+
+                            "<td>"+i+"</td>"+
+                            "<td>"+bankName+"</td>"+
+                            "<input type='hidden' name='employee_bank_names[]'' value='"+bankName+"'>"+
+                            "<td>"+bankNumber+"</td>"+
+                            "<input type='hidden' name='employee_bank_numbers[]' value='"+bankNumber+"'>"+
+                        "</tr>";
+                        $('#bank_name').val('');
+                        $('#bank_account_number').val('');                 
+                    }
+                });
+
+                $('#delete_employee_banks').click(function(){
+                    var bankTable = document.getElementById('bank_accounts_table');
+                    i=0;
+                    bankTable.innerHTML = ''; 
+                });
+
+
+
+                $('#add_paypal_email').click(function(){
+                    var paypalEmail = $('#paypal_email').val();
+                    if(paypalEmail!=''){
+                        var paypalTable = document.getElementById('paypal_emails_table');
+                        j++;
+                        paypalTable.innerHTML += 
+                        "<tr>"+
+                            "<td>"+j+"</td>"+
+                            "<td>"+paypalEmail+"</td>"+
+                            "<input type='hidden' name='paypal_emails[]'' value='"+paypalEmail+"'>"+
+                        "</tr>";
+                        $('#paypal_email').val('');
+                    }
+                });
+
+                $('#delete_paypal_emails').click(function(){
+                    var paypalTable = document.getElementById('paypal_emails_table');
+                    j=0;
+                    paypalTable.innerHTML = '';
+                });
+
+
+                $('#add_check').click(function(){
+                    var checkNumber = $('#check_number').val();
+                    if(checkNumber!=''){
+                        var checkTable = document.getElementById('checks_table');
+                        k++;
+                        checkTable.innerHTML += 
+                        "<tr>"+
+                            "<td>"+k+"</td>"+
+                            "<td>"+checkNumber+"</td>"+
+                            "<input type='hidden' name='check_numbers[]'' value='"+checkNumber+"'>"+
+                        "</tr>";
+                        $('#check_number').val('');                 
+                    }
+                });
+
+                $('#delete_checks').click(function(){
+                    var checkTable = document.getElementById('checks_table');
+                    k=0;
+                    checkTable.innerHTML = '';
+                });
+
+
+                $('#add_other_method').click(function(){
+                    var otherMethodName = $('#other_method_name').val();
+                    var otherMethodNumber = $('#other_method_number').val();
+                    if((otherMethodName!='')&&(otherMethodNumber!='')){
+                        var otherMethodTable = document.getElementById('other_methods_table');
+                        l++;
+                        otherMethodTable.innerHTML += 
+                        "<tr>"+
+                            "<td>"+l+"</td>"+
+                            "<td>"+otherMethodName+"</td>"+
+                            "<input type='hidden' name='other_method_names[]'' value='"+otherMethodName+"'>"+
+                            "<td>"+otherMethodNumber+"</td>"+
+                            "<input type='hidden' name='other_method_numbers[]' value='"+otherMethodNumber+"'>"+
+                        "</tr>";
+                        $('#other_method_name').val('');
+                        $('#other_method_number').val('');
+                    }
+                });
+
+                $('#delete_other_methods').click(function(){
+                    var otherMethodTable = document.getElementById('other_methods_table');
+                    l=0;
+                    otherMethodTable.innerHTML = ''; 
+                });
+
+
+                
+                $('#add_default').click(function(){
+                    var defaultNumber = $('#default_account_number').val();
+                    if(defaultNumber!=''){
+                        var defaultTable = document.getElementById('defaults_table');
+                        m++;
+                        defaultTable.innerHTML += 
+                        "<tr>"+
+                            "<td>"+m+"</td>"+
+                            "<td>"+defaultNumber+"</td>"+
+                            "<input type='hidden' name='default_account_numbers[]'' value='"+defaultNumber+"'>"+
+                        "</tr>";
+                        $('#default_account_number').val('');
+                    }
+                });
+
+                $('#delete_defaults').click(function(){
+                    var defaultTable = document.getElementById('defaults_table');
+                    m=0;
+                    defaultTable.innerHTML = '';
+                });
+
+
+
+            // End Add employee scripts
+                
+
                 // Without Search
                 $(".select-hide").select2({
                     dir: "rtl",
@@ -148,31 +325,7 @@
 			});
 			
 			
-			$('#transferMethodSelect').on('change', function() {
-				
-				var vl = $("#transferMethodSelect :selected").val();
-				//alert(vl);
-				switch(vl) {
-					case '1':
-						$("#paypal").slideDown();
-						$("#bank").hide();
-						$("#other").hide();
-						break;
-					case '2':
-						$("#bank").slideDown();
-						$("#paypal").hide();
-						$("#other").hide();
-						break;
-					case '0':
-						$("#other").slideDown();
-						$("#bank").hide();
-						$("#paypal").hide();
-						break;
-					default:
-						
-				}
-				
-			});
+
                 
                 
                 

@@ -16,10 +16,13 @@ class CreateEmployeeAccountsTable extends Migration
         Schema::create('employee_accounts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('bank_name')->nullable();
-            $table->integer('bank_account_number')->nullable();
+            $table->string('bank_account_number')->nullable();
             $table->string('paypal_email')->nullable();
-            $table->integer('iban_number')->nullable();
+            $table->string('check_number')->nullable();
             $table->integer('transfer_method_id');
+            $table->string('other_method_name')->nullable();
+            $table->string('other_method_number')->nullable();
+            $table->string('default_number')->nullable();
             $table->integer('employee_id');
             $table->timestamps();
         });

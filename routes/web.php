@@ -41,6 +41,10 @@ Route::get('/settings', 'SettingsController@index')->name('settings');
 Route::get('/users', 'UsersController@index')->name('allUsers');
 Route::get('/users/add', 'UsersController@create')->name('addUser');
 Route::post('/users/add', 'UsersController@store')->name('addUser');
+Route::get('/users/edit/{id}', 'UsersController@edit')->name('editUser');
+Route::post('/users/edit/{id}', 'UsersController@update')->name('editUser');
+Route::get('/users/delete/{id}', 'UsersController@destroy')->name('deleteUser');
+Route::get('/users/download/{id}', 'UsersController@download')->name('downloadUser');
 
 // Client routes
 Route::get('/clients/add', 'ClientController@create')->name('addClient');
