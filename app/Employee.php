@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
-    public function employee_account(){
+    public function employee_accounts(){
         return $this->hasMany('App\EmployeeAccount');
     }
     public function task(){
-        return $this->hasOne('App\Task');
+        return $this->belongsTo('App\Task', 'task_id');
     }
 }

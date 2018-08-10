@@ -10,6 +10,7 @@
 		<!-- BEGIN DASHBOARD STATS 1-->
 		<div class="row clearfix">
 			<div class="col-md-12">
+				@include('includes.messages')
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
 				<div class="portlet light ">
 					<div class="portlet-title">
@@ -25,6 +26,7 @@
 					<div class="portlet-body">
 
 
+
 						<div class="col-md-3">
 
 							<div class="marketplace__content">
@@ -35,48 +37,60 @@
 												أدوات التصفية
 												<i class="mdi mdi-chevron-down mdi-24px"></i>
 											</h3>
-											<div class="filters filters--vertical">
-												<div class="filters__section filters__section--category filters__section--vertical">
+											<div id="myFilter-wrapper" class="filters filters--vertical">
+												<div id="myFilters" class="filters__section filters__section--category filters__section--vertical">
 
-													<div class="filters__label filters__label--vertical">
-														<input id="checkbox-0" class="checkbox-style" name="checkbox-0" type="checkbox" checked>
-														<label for="checkbox-0" class="checkbox-style-3-label">
-															إختر الكل
-														</label>
-													</div>
-
+													
 													<div class="filters__section-content">
 
-														<div>
-															<input id="checkbox-1" class="checkbox-style" name="checkbox-1" type="checkbox" checked>
-															<label for="checkbox-1" class="checkbox-style-3-label">
-																الكل
-															</label>
-														</div>
 
 														<div>
-															<input id="checkbox-2" class="checkbox-style" name="checkbox-2" type="checkbox">
-															<label for="checkbox-2" class="checkbox-style-3-label">
+															<input id="selectUsers" class="checkbox-style" name="filter[]" value="مستخدم" checked type="checkbox">
+															<label for="selectUsers" class="checkbox-style-3-label">
 																المستخدمين
 															</label>
 														</div>
 
 														<div>
-															<input id="checkbox-3" class="checkbox-style" name="checkbox-3" type="checkbox">
-															<label for="checkbox-3" class="checkbox-style-3-label">
+															<input id="selectEmployees" class="checkbox-style" name="filter[]" value="مقدم خدمة" checked type="checkbox">
+															<label for="selectEmployees" class="checkbox-style-3-label">
 																مقدم خدمة
 															</label>
 														</div>
 
 														<div>
-															<input id="checkbox-4" class="checkbox-style" name="checkbox-4" type="checkbox">
-															<label for="checkbox-4" class="checkbox-style-3-label">
+															<input id="selectClients" class="checkbox-style" name="filter[]" value="عميل" checked type="checkbox">
+															<label for="selectClients" class="checkbox-style-3-label">
 																عميل
 															</label>
 														</div>
 
 
+														<script>
+															
+															function applyFilters(){
+																var table = $('#sample_1').DataTable();
+																table.draw();
+															}
 
+															$.fn.dataTable.ext.search.push(
+																function( settings, data, dataIndex ) {
+																	var filters = []
+																	$("input[name='filter[]']:checked").each(function(){
+																		filters.push($(this).val());
+																	});
+																	var type = data[2] ;
+															
+																	if ( jQuery.inArray(type,filters) !== -1)
+																	{
+																		return true;
+																	}
+																	return false;
+																}
+															);
+
+															
+														</script>
 
 
 
@@ -84,7 +98,7 @@
 														<div class="clearfix"></div>
 
 														<div class="text-center margin-top-30">
-															<button type="button" class="btn green">عـرض</button>
+															<button onclick="applyFilters()" type="button" class="btn green">عـرض</button>
 														</div>
 
 													</div>
@@ -248,25 +262,84 @@
 														</a>
 														<ul class="dropdown-menu pull-right">
 															<li>
-																<a href="#" class="font-purple">
+																<a class="font-purple" data-toggle="modal" data-target="#showClient{{ $client->id }}">
 																	<i class="icon-eye font-purple"></i> عـرض</a>
 															</li>
 															<li>
-																<a href="#" class="font-blue">
+																<a href="{{ route('editClient', ['id' => $client->id]) }}" class="font-blue">
 																	<i class="icon-note font-blue"></i> تعديل</a>
 															</li>
 															<li>
-																<a href="#basic" class="font-red" data-toggle="modal">
-																	<i class="icon-trash font-red"></i> حـذف</a>
+																<a href="#deleteClient{{ $client->id }}" class="font-red" data-toggle="modal">
+																		<i class="icon-trash font-red"></i> حـذف</a>
 															</li>
 															<li>
-																<a href="#" class="font-green">
-																	<i class="icon-cloud-download font-green"></i> تحميل</a>
+																	<a href="{{ route('downloadClient', ['id' => $client->id]) }}" class="font-green">
+																		<i class="icon-cloud-download font-green"></i> تحميل</a>
 															</li>
 														</ul>
 													</div>
 												</td>
 											</tr>
+											<div class="modal fade" id="showClient{{ $client->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title pull-left" id="exampleModalLabel">بيانات العميل</h5>
+																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+															</div>
+															<div class="modal-body">
+												
+																<div class="form-group">
+																	<label class="font-purple">اسم العميل </label>
+																	<h4>{{ $client->name}}</h4>
+																</div>
+																
+																@if( $client->description)
+																	<div class="form-group">
+																		<label class="font-purple">نبذة</label>
+																		<h4>{{ $client->description }}</h4>
+																	</div>
+																@endif
+																@if( $client->attachement)
+																	<div class="form-group">
+																			<label class="font-purple">الملف المرفق</label>
+																			<h5><a dir="ltr" href="{{ asset('storage/attachements/') }}/{{ $client->attachement }}" download>{{ $client->attachement }}</a></h5>
+																	</div>
+																@endif
+										
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-dismiss="modal">إغـلاق</button>
+															</div>
+														</div>
+													</div>
+											</div>
+											<div class="modal fade" id="deleteClient{{ $client->id }}" tabindex="-1" role="basic" aria-hidden="true">
+													<div class="modal-dialog">
+														<div class="modal-content del-modal font-white">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+																<h4 class="modal-title"></h4>
+															</div>
+															<div class="modal-body text-center">
+																<h3>
+																	<i class="fa fa-3x fa-trash"></i>
+																</h3>
+																متأكد أنك تريد حـذف العميل {{ $client->name }} ؟
+												
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn dark btn-default" data-dismiss="modal">إغلاق</button>
+																<a href="{{ route('deleteClient', ['id' => $client->id]) }}" class="btn btn-danger">حـذف</a>
+															</div>
+														</div>
+														<!-- /.modal-content -->
+													</div>
+													<!-- /.modal-dialog -->
+											</div>
 										@endforeach
 									@endif
 									@if($employees)
@@ -282,25 +355,129 @@
 														</a>
 														<ul class="dropdown-menu pull-right">
 															<li>
-																<a href="#" class="font-purple">
+																<a class="font-purple" data-toggle="modal" data-target="#showEmployee{{ $employee->id }}">
 																	<i class="icon-eye font-purple"></i> عـرض</a>
 															</li>
 															<li>
-																<a href="#" class="font-blue">
+																<a href="{{ route('editEmployee', ['id' => $employee->id]) }}" class="font-blue">
 																	<i class="icon-note font-blue"></i> تعديل</a>
 															</li>
 															<li>
-																<a href="#basic" class="font-red" data-toggle="modal">
-																	<i class="icon-trash font-red"></i> حـذف</a>
+																<a href="#deleteEmployee{{ $employee->id }}" class="font-red" data-toggle="modal">
+																		<i class="icon-trash font-red"></i> حـذف</a>
 															</li>
 															<li>
-																<a href="#" class="font-green">
-																	<i class="icon-cloud-download font-green"></i> تحميل</a>
+																	<a href="{{ route('downloadEmployee', ['id' => $employee->id]) }}" class="font-green">
+																		<i class="icon-cloud-download font-green"></i> تحميل</a>
 															</li>
 														</ul>
 													</div>
 												</td>
 											</tr>
+											<div class="modal fade" id="showEmployee{{ $employee->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title pull-left" id="exampleModalLabel">بيانات مقدم الخدمة</h5>
+																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+															</div>
+															<div class="modal-body">
+												
+																<div class="form-group">
+																	<label class="font-purple">اسم مقدم الخدمة </label>
+																	<h4>{{ $employee->name}}</h4>
+																</div>
+																
+																<div class="form-group">
+																	<label class="font-purple">الايميل </label>
+																	<h4>{{ $employee->email }}</h4>
+																</div>
+																<div class="form-group">
+																	<label class="font-purple">الجوال </label>
+																	<h4 dir="ltr" style="text-align: right">{{ $employee->phone }}</h4>
+																</div>
+																@if( $employee->description)
+																	<div class="form-group">
+																		<label class="font-purple">نبذة</label>
+																		<h4>{{ $employee->description }}</h4>
+																	</div>
+																@endif
+																<div class="form-group">
+																		<label class="font-purple">المهمة</label>
+																		<h4>{{ @$employee->task->name }}</h4>
+																</div>
+																<div class="form-group">
+																	@if(@$employee->employee_accounts)
+																		<label class="font-purple">طرق التحويل</label>
+																		@if(@$employee->employee_accounts[0]->transfer_method->name != 'أخرى')
+																			<h5>إسم طريقة التحويل : 
+																			{{ @$employee->employee_accounts[0]->transfer_method->name }}</h5>
+																		@endif
+																		@foreach(@$employee->employee_accounts as $account)
+																			@if($account->transfer_method->name == 'باي بال')
+																				<h5>الايميل : 
+																				{{ $account->paypal_email }}</h5>
+																			@elseif($account->transfer_method->name == 'بنك')
+																				<h5>إسم البنك : 
+																				{{ $account->bank_name }}</h5>
+																				<h5>رقم الحساب : 
+																				{{ $account->bank_account_number }}</h5>
+																			@elseif($account->transfer_method->name == 'شيك')
+																				<h5>رقم الشيك : 
+																				{{ $account->check_number }}</h5>
+																			@elseif($account->transfer_method->name == 'أخرى')
+																				<h5>إسم طريقة التحويل : 
+																				{{ $account->other_method_name }}</h5>
+																				<h5>رقم الحساب : 
+																				{{ $account->other_method_number }}</h5>
+																			@else
+																				<h5>رقم الحساب : 
+																				{{ $account->default_number }}</h5>
+																			@endif
+																			<hr>
+																			
+																		@endforeach
+																	@endif
+																</div>
+																@if( $employee->attachement)
+																	<div class="form-group">
+																			<label class="font-purple">الملف المرفق</label>
+																			<h5><a dir="rtl" href="{{ asset('storage/attachements/') }}/{{ $employee->attachement }}" download>{{ $employee->attachement }}</a></h5>
+																	</div>
+																@endif
+																
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-dismiss="modal">إغـلاق</button>
+															</div>
+														</div>
+													</div>
+											</div>
+											<div class="modal fade" id="deleteEmployee{{ $employee->id }}" tabindex="-1" role="basic" aria-hidden="true">
+													<div class="modal-dialog">
+														<div class="modal-content del-modal font-white">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+																<h4 class="modal-title"></h4>
+															</div>
+															<div class="modal-body text-center">
+																<h3>
+																	<i class="fa fa-3x fa-trash"></i>
+																</h3>
+																متأكد أنك تريد حـذف مقدم الخدمة {{ $employee->name }} ؟
+												
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn dark btn-default" data-dismiss="modal">إغلاق</button>
+																<a href="{{ route('deleteEmployee', ['id' => $employee->id]) }}" class="btn btn-danger">حـذف</a>
+															</div>
+														</div>
+														<!-- /.modal-content -->
+													</div>
+													<!-- /.modal-dialog -->
+											</div>
 										@endforeach
 									@endif
 								</tbody>

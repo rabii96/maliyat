@@ -3,9 +3,9 @@
     <!-- BEGIN HEADER INNER -->
     <div class="page-header-inner ">
         <!-- BEGIN LOGO -->
-        <div class="page-logo">
+        <div id="siteLogo-wrapper" class="page-logo">
             <a href="#">
-                <img src="<?php echo e(asset('assets/layouts/layout/img/logo-default.png ')); ?>" alt="logo" class="logo-default" /> </a>
+                <img id="siteLogo" src="<?php echo e(asset('storage/photos/logo.png ')); ?>" alt="logo" style="height: 45px; width:auto; margin-top: 17px" /> </a>
             <div class="menu-toggler sidebar-toggler">
             </div>
         </div>

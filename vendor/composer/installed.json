@@ -686,6 +686,44 @@
         ]
     },
     {
+        "name": "larapack/dd",
+        "version": "1.1",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/larapack/dd.git",
+            "reference": "561b5111a13d0094b59b5c81b1572489485fb948"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/larapack/dd/zipball/561b5111a13d0094b59b5c81b1572489485fb948",
+            "reference": "561b5111a13d0094b59b5c81b1572489485fb948",
+            "shasum": ""
+        },
+        "require": {
+            "symfony/var-dumper": "*"
+        },
+        "time": "2016-12-15T09:34:34+00:00",
+        "type": "package",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "src/helper.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mark Topper",
+                "email": "hi@webman.io"
+            }
+        ],
+        "description": "`dd` is a helper method in Laravel. This package will add the `dd` to your application."
+    },
+    {
         "name": "laravel/framework",
         "version": "v5.6.29",
         "version_normalized": "5.6.29.0",

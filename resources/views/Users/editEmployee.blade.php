@@ -11,21 +11,21 @@
             <!-- BEGIN DASHBOARD STATS 1-->
             <div class="row clearfix">
                 <div class="col-md-12">
+                    @include('includes.messages')
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                    <form method="POST" action="{{ route('addEmployee') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('editEmployee', [ 'id' => $employee->id ]) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="portlet light ">
 
                             <div class="portlet-title">
                                 <div class="caption font-dark">
                                     <i class="icon-layers font-dark"></i>
-                                    <span class="caption-subject bold uppercase">إضافة مقدم خدمة</span>
+                                    <span class="caption-subject bold uppercase">تعديل مقدم خدمة</span>
                                 </div>
                                 
                                 <div class="tools"> </div>
                             </div>
 
-                            @include('includes.messages')
                             <div class="portlet-body">
                                                                 
                                             
@@ -33,7 +33,7 @@
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                     <div class="form-group">
                                         <label for="single0">الاسم <span>*</span></label>
-                                        <input id="name" name="name" value="{{ old('name') }}" type="text" required class="form-control" placeholder=""> 
+                                        <input id="name" name="name" value="{{ $employee->name }}" type="text" required class="form-control" placeholder=""> 
                                     </div>
                                 </div>     
 
@@ -44,7 +44,7 @@
                                     <select id="employee_task" name="employee_task" required class="form-control select2 select-hide">
                                         <option value="" disabled selected>-- إختر --</option>
                                         @foreach($tasks as $task)
-                                            <option value="{{ $task->id }}">{{ $task->name }}</option>
+                                            <option value="{{ $task->id }}" {{ $employee->task->id == $task->id ? 'selected' : ''  }} >{{ $task->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -55,21 +55,21 @@
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                     <div class="form-group">
                                         <label>نبذة</label>
-                                        <textarea name="description" class="form-control" rows="5"></textarea>
+                                        <textarea name="description" class="form-control" rows="5">{{ $employee->description }}</textarea>
                                     </div>
                                 </div> 
                                 
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                         <div class="form-group">
                                             <label for="single0">الجوال <span>*</span></label>
-                                            <input dir="ltr" style="text-align: right" id="phone" name="phone" required type="text" class="form-control" placeholder=""> 
+                                            <input value="{{ $employee->phone }}" dir="ltr" style="text-align: right" id="phone" name="phone" required type="text" class="form-control" placeholder=""> 
                                         </div>
                                 </div>
 
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                         <div class="form-group">
                                             <label for="single0">الايميل <span>*</span></label>
-                                            <input id="email" name="email" value="{{ old('email') }}" required type="text" class="form-control" placeholder=""> 
+                                            <input id="email" name="email" value="{{ $employee->email }}" required type="text" class="form-control" placeholder=""> 
                                         </div>
                                 </div>
                                             
@@ -81,14 +81,58 @@
                                         <option disabled selected>-- إختر --</option>
                                         @foreach($transferMethods as $transferMethod)
                                             @if( $transferMethod->id  != 0 )  
-                                                <option value="{{ $transferMethod->id }}">{{ $transferMethod->name }}</option>
+                                                <option value="{{ $transferMethod->id }}" {{ $employee->employee_accounts[0]->transfer_method->id == $transferMethod->id ? 'selected' : ''  }} >{{ $transferMethod->name }}</option>
                                             @endif
                                         @endforeach
-                                        <option value="0">أخرى</option>
+                                        <option value="0" {{ $employee->employee_accounts[0]->transfer_method->id == 0 ? 'selected' : ''  }}>أخرى</option>
                                     </select>
                                 </div>
                                 </div>
                                 
+                                <script>
+                                    $(document).on('ready', function() {
+                                        var t = '{{ $employee->employee_accounts[0]->transfer_method->id }}';
+                                        switch(t) {
+                                            case '1':
+                                                $("#paypal").slideDown();
+                                                $("#bank").hide();
+                                                $("#other").hide();
+                                                $("#check").hide();
+                                                $("#default").hide();
+                                                break;
+                                            case '2':
+                                                $("#bank").slideDown();
+                                                $("#paypal").hide();
+                                                $("#other").hide();
+                                                $("#check").hide();
+                                                $("#default").hide();
+                                                break;
+                                            case '3':
+                                                $("#check").slideDown();
+                                                $("#paypal").hide();
+                                                $("#other").hide();
+                                                $("#bank").hide();
+                                                $("#default").hide();
+                                                break;
+                                            case '0':
+                                                $("#other").slideDown();
+                                                $("#bank").hide();
+                                                $("#paypal").hide();
+                                                $("#check").hide();
+                                                $("#default").hide();
+                                                break;
+                                            default:
+                                                var defaultName = $("#transferMethodSelect :selected").text();
+                                                $("#default").hide();
+                                                $('#default_name').text(defaultName);
+                                                $("#default").slideDown();
+                                                $("#bank").hide();
+                                                $("#paypal").hide();
+                                                $("#check").hide();
+                                                $("#other").hide();
+                                        }
+                                    });
+                                </script>
                                 
                                 
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
@@ -155,7 +199,16 @@
                                                     </thead>
                                                     <script>var j=0;</script>
                                                     <tbody id="paypal_emails_table">
-                                                        
+                                                        @if( $employee->employee_accounts[0]->transfer_method->name == 'باي بال')
+                                                            @foreach($employee->employee_accounts as $account)
+                                                                <tr>
+                                                                    <td>{{ $loop->iteration }}</td>
+                                                                    <script>j++;</script>
+                                                                    <td>{{ $account->paypal_email }}</td>
+                                                                    <input type="hidden" name="paypal_emails[]" value="{{ $account->paypal_email }}">
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -214,7 +267,19 @@
                                             </thead>
                                             <script>var i = 0;</script>
                                             <tbody id="bank_accounts_table">
-                                                    
+                                                    @if( $employee->employee_accounts[0]->transfer_method->name == 'بنك')
+                                                        @foreach($employee->employee_accounts as $account)
+                                                            <tr>
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <script>i++;</script>
+                                                                <td>{{ $account->bank_name }}</td>
+                                                                <input type="hidden" name="employee_bank_names[]" value="{{ $account->bank_name }}">
+                                                                <td>{{ $account->bank_account_number }}</td>
+                                                                <input type="hidden" name="employee_bank_numbers[]" value="{{ $account->bank_account_number }}">
+
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -267,7 +332,16 @@
                                             </thead>
                                             <script>var k = 0;</script>
                                             <tbody id="checks_table">
-                                                    
+                                                    @if( $employee->employee_accounts[0]->transfer_method->name == 'شيك')
+                                                        @foreach($employee->employee_accounts as $account)
+                                                            <tr>
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <script>k++;</script>
+                                                                <td>{{ $account->check_number }}</td>
+                                                                <input type="hidden" name="check_numbers[]" value="{{ $account->check_number }}">
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -327,7 +401,18 @@
                                             </thead>
                                             <script>var l=0;</script>
                                             <tbody id="other_methods_table">
-                                                
+                                                @if( $employee->employee_accounts[0]->transfer_method->name == 'أخرى')
+                                                    @foreach($employee->employee_accounts as $account)
+                                                        <tr>
+                                                            <td>{{ $loop->iteration }}</td>
+                                                            <script>l++;</script>
+                                                            <td>{{ $account->other_method_name }}</td>
+                                                            <input type="hidden" name="other_method_names[]" value="{{ $account->other_method_name }}">
+                                                            <td>{{ $account->other_method_number }}</td>
+                                                            <input type="hidden" name="other_method_numbers[]" value="{{ $account->other_method_number }}">
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -381,7 +466,16 @@
                                                 </thead>
                                                 <script>var m = 0;</script>
                                                 <tbody id="defaults_table">
-                                                        
+                                                    @if(! in_array( $employee->employee_accounts[0]->transfer_method->name, ['أخرى', 'باي بال', 'بنك', 'شيك']))
+                                                        @foreach($employee->employee_accounts as $account)
+                                                            <tr>
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <script>m++;</script>
+                                                                <td>{{ $account->default_number }}</td>
+                                                                <input type="hidden" name="default_account_numbers[]" value="{{ $account->default_number }}">
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>

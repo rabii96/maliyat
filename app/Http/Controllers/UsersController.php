@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\User;
+use App\Settings;
 use App\Client;
 use App\Employee;
 use PDF;
@@ -26,11 +27,16 @@ class UsersController extends Controller
     {
         $users = User::all();
         $clients = Client::all();
-        $employees = Employee::all();
+        $settings = Settings::find(1);
+        $employees = Employee::with([
+            'task',
+            'employee_accounts'
+            ])->get();
         return view('Users.allUsers')->with([
             'users' => $users ,
             'clients' => $clients,
             'employees' => $employees, 
+            'settings' => $settings,
         ]);
     }
 
@@ -41,7 +47,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('Users.addUser');
+        $settings = Settings::find(1);
+        return view('Users.addUser')->with('settings',$settings);
     }
 
     /**
@@ -98,7 +105,16 @@ class UsersController extends Controller
     {
         // Todo add permission validation
         $user = User::find($id);
-        return view('Users.editUser')->with('user',$user);
+        $settings = Settings::find(1);
+        if($user){
+            return view('Users.editUser')->with([
+                'user' => $user,
+                'settings' => $settings,
+            ]);
+        }else{
+            if(! intval($id)== 0)
+                return redirect()->route('allUsers')->with('error', 'هذا المستعمل فير موجود');
+        }
     }
 
     /**
@@ -166,9 +182,8 @@ class UsersController extends Controller
 
     public function download($id){
         $user = User::find($id);
-     /*   $pdf = PDF::loadView('users.userPDF', compact('user'));
-        return $pdf->stream('user.pdf');
-    */
+
+      //  return view('users.userPDF')->with('user', $user);
 
         $html = view('users.userPDF',['user'=>$user])->render(); // file render
 

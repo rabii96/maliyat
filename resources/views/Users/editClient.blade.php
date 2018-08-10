@@ -11,14 +11,15 @@
             <!-- BEGIN DASHBOARD STATS 1-->
             <div class="row clearfix">
                 <div class="col-md-12">
+                    @include('includes.messages')
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                    <form method="POST" action="{{ route('addClient') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('editClient' , ['id' => $client->id ]) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="portlet light ">
                             <div class="portlet-title">
                                 <div class="caption font-dark">
                                     <i class="icon-layers font-dark"></i>
-                                    <span class="caption-subject bold uppercase">إضافة عميل</span>
+                                    <span class="caption-subject bold uppercase">تعديل عميل</span>
                                 </div>
                                 
                                 <div class="tools"> </div>
@@ -30,7 +31,7 @@
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                 <div class="form-group">
                                     <label for="single0">الاسم <span>*</span></label>
-                                    <input name="name" type="text" class="form-control" placeholder=""> 
+                                    <input value="{{ $client->name }}" name="name" type="text" class="form-control" placeholder=""> 
                                 </div>
                                 </div>     
                                                                                                                 
@@ -38,7 +39,7 @@
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                 <div class="form-group">
                                     <label>نبذة</label>
-                                    <textarea name="description" class="form-control" rows="5"></textarea>
+                                    <textarea name="description" class="form-control" rows="5">{{ $client->description }}</textarea>
                                 </div>
                                 </div>                    
                                             

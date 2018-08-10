@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\EmployeeAccount;
+use App\ExpenseType;
 use Illuminate\Http\Request;
 
-class EmployeeAccountController extends Controller
+class ExpenseTypeController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -45,10 +41,10 @@ class EmployeeAccountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\EmployeeAccount  $employeeAccount
+     * @param  \App\ExpenseType  $expenseType
      * @return \Illuminate\Http\Response
      */
-    public function show(EmployeeAccount $employeeAccount)
+    public function show(ExpenseType $expenseType)
     {
         //
     }
@@ -56,10 +52,10 @@ class EmployeeAccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\EmployeeAccount  $employeeAccount
+     * @param  \App\ExpenseType  $expenseType
      * @return \Illuminate\Http\Response
      */
-    public function edit(EmployeeAccount $employeeAccount)
+    public function edit(ExpenseType $expenseType)
     {
         //
     }
@@ -68,10 +64,10 @@ class EmployeeAccountController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\EmployeeAccount  $employeeAccount
+     * @param  \App\ExpenseType  $expenseType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EmployeeAccount $employeeAccount)
+    public function update(Request $request, ExpenseType $expenseType)
     {
         //
     }
@@ -79,10 +75,10 @@ class EmployeeAccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\EmployeeAccount  $employeeAccount
+     * @param  \App\ExpenseType  $expenseType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EmployeeAccount $employeeAccount)
+    public function destroy(ExpenseType $expenseType)
     {
         //
     }

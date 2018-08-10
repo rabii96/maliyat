@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Settings;
 
 class PagesController extends Controller
 {
@@ -11,33 +12,43 @@ class PagesController extends Controller
         $this->middleware('auth');
     }
     public function dashboard(){
-        return view('dashboard.index');
+        $settings = Settings::find(1);
+        return view('dashboard.index')->with('settings',$settings);
     }
     public function addExpense(){
-        return view('Expenses.addExpense');
+        $settings = Settings::find(1);
+        return view('Expenses.addExpense')->with('settings',$settings);
     }
     public function allExpenses(){
-        return view('Expenses.allExpenses');
+        $settings = Settings::find(1);
+        return view('Expenses.allExpenses')->with('settings',$settings);
     }
     public function addPayment(){
-        return view('Payments.addPayment');
+        $settings = Settings::find(1);
+        return view('Payments.addPayment')->with('settings',$settings);
     }
     public function allPayments(){
-        return view('Payments.allPayments');
+        $settings = Settings::find(1);
+        return view('Payments.allPayments')->with('settings',$settings);
     }
     public function addProject(){
-        return view('ProjectsAndServices.addProject');
+        $settings = Settings::find(1);
+        return view('ProjectsAndServices.addProject')->with('settings',$settings);
     }
     public function addService(){
-        return view('ProjectsAndServices.addService');
+        $settings = Settings::find(1);
+        return view('ProjectsAndServices.addService')->with('settings',$settings);
     }
     public function allProjectsAndServices(){
-        return view('ProjectsAndServices.allProjectsAndServices');
+        $settings = Settings::find(1);
+        return view('ProjectsAndServices.allProjectsAndServices')->with('settings',$settings);
     }
     public function projectDetails(){
-        return view('ProjectsAndServices.projectDetails');
+        $settings = Settings::find(1);
+        return view('ProjectsAndServices.projectDetails')->with('settings',$settings);
     }
     public function serviceDetails(){
-        return view('ProjectsAndServices.serviceDetails');
+        $settings = Settings::find(1);
+        return view('ProjectsAndServices.serviceDetails')->with('settings',$settings);
     }
 }

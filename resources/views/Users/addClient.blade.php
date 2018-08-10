@@ -11,6 +11,7 @@
             <!-- BEGIN DASHBOARD STATS 1-->
             <div class="row clearfix">
                 <div class="col-md-12">
+                    @include('includes.messages')
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <form method="POST" action="{{ route('addClient') }}" enctype="multipart/form-data">
                         @csrf

@@ -11,6 +11,7 @@
 			<!-- BEGIN DASHBOARD STATS 1-->
 			<div class="row clearfix">
 				<div class="col-md-12">
+					@include('includes.messages')
 					<!-- BEGIN EXAMPLE TABLE PORTLET-->
 					<div class="portlet light ">
 						<div class="portlet-title">
@@ -55,37 +56,45 @@
 												
 												<div class="col-md-10 col-md-offset-1 col-xs-12">
 												
-
-												<div class="form-group">
-													<label class="control-label col-md-2">شعار الموقع</label>
-													<div class="col-md-8">
-														<div class="fileinput fileinput-new" data-provides="fileinput">
-															<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-																<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> </div>
-															<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-															<div>
-																<span class="btn default btn-file">
-																	<span class="fileinput-new"> إختر صورة الشعار </span>
-																	<span class="fileinput-exists"> تغيير </span>
-																	<input type="file" name="..."> </span>
-																<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> حذف </a>
+													<form action="{{ route('applySettings') }}" method="post" enctype="multipart/form-data">
+														@csrf
+														<div class="form-group">
+															<label class="control-label col-md-2">شعار الموقع</label>
+															<div class="col-md-8">
+																<div class="fileinput fileinput-new" data-provides="fileinput">
+																	<div class="fileinput-new thumbnail" style="max-width: 200px; max-height: 150px;">
+																		<img name="image" src="{{ asset('storage/photos/logo.png ') }}" alt="logo" /> </div>
+																	<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+																	<div>
+																		<span class="btn default btn-file">
+																			<span class="fileinput-new"> إختر صورة الشعار </span>
+																			<span class="fileinput-exists"> تغيير </span>
+																			<input type="file" name="photo" accept="image/*"> </span>
+																		<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> حذف </a>
+																	</div>
+																</div>
 															</div>
 														</div>
-													</div>
-												</div>
-												
-												<div class="form-group">
-													<label class="control-label col-md-2">عنوان النظام</label>
-													<div class="col-md-10">
-														<div class="input-icon">
-															<i class="fa fa-dashboard font-green "></i>
-															<input type="text" class="form-control" placeholder=""> 
+														
+														<div class="form-group">
+															<label class="control-label col-md-2">عنوان النظام</label>
+															<div class="col-md-10">
+																<div class="input-icon">
+																	<i class="fa fa-dashboard font-green "></i>
+																	<input type="text" name="title" class="form-control" value="{{ $settings->title }}""> 
+																</div>
+															</div>
 														</div>
-													</div>
-												</div>
-												
-												
-												
+														
+														<div class="form-actions">
+															<div class="row">
+																<div class="col-md-offset-3 col-md-9">
+																	<button id="applySettings" type="submit" class="btn btn-lg green">
+																		<i class="fa fa-check"></i> موافـق</button>
+																</div>
+															</div>
+														</div>
+													</form>
 
 												
 												
@@ -264,14 +273,7 @@
 												<hr>
 											</div>
 											
-											<div class="form-actions">
-												<div class="row">
-													<div class="col-md-offset-3 col-md-9">
-														<a href="javascript:;" class="btn btn-lg green">
-															<i class="fa fa-check"></i> موافـق</a>
-													</div>
-												</div>
-											</div>
+											
 										</div>
 										
 										

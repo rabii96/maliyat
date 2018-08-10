@@ -5,11 +5,12 @@
 <html lang="en" dir="rtl">
     <!--<![endif]-->
     @include('includes.head')
+    @include('includes.scripts')	
+
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
         @include('includes.header')
         @include('includes.container')
         @include('includes.footer')
         @include('includes.modal')
-        @include('includes.scripts')	
     </body>
 </html>

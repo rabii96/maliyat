@@ -23,9 +23,7 @@ Route::get('/project/{id}', 'PagesController@projectDetails')->name('projectDeta
 Route::get('/service/{id}', 'PagesController@serviceDetails')->name('serviceDetails');
 
 
-// Employee routes
-Route::get('/employees/add', 'EmployeeController@create')->name('addEmployee');
-Route::post('/employees/add', 'EmployeeController@store')->name('addEmployee');
+
 
 // Task routes
 Route::post('/addTask', 'TaskController@store')->name('addTask');
@@ -35,6 +33,7 @@ Route::post('/addTransferMethod', 'TransferMethodController@store')->name('addTr
 
 // Settings routes
 Route::get('/settings', 'SettingsController@index')->name('settings');
+Route::post('/settings', 'SettingsController@save')->name('applySettings');
 
 
 // User routes
@@ -49,6 +48,20 @@ Route::get('/users/download/{id}', 'UsersController@download')->name('downloadUs
 // Client routes
 Route::get('/clients/add', 'ClientController@create')->name('addClient');
 Route::post('/clients/add', 'ClientController@store')->name('addClient');
+Route::get('/clients/edit/{id}', 'ClientController@edit')->name('editClient');
+Route::post('/clients/edit/{id}', 'ClientController@update')->name('editClient');
+Route::get('/clients/delete/{id}', 'ClientController@destroy')->name('deleteClient');
+Route::get('/clients/download/{id}', 'ClientController@download')->name('downloadClient');
+
+// Employee routes
+Route::get('/employees/add', 'EmployeeController@create')->name('addEmployee');
+Route::post('/employees/add', 'EmployeeController@store')->name('addEmployee');
+Route::get('/employees/edit/{id}', 'EmployeeController@edit')->name('editEmployee');
+Route::post('/employees/edit/{id}', 'EmployeeController@update')->name('editEmployee');
+Route::get('/employees/delete/{id}', 'EmployeeController@destroy')->name('deleteEmployee');
+Route::get('/employees/download/{id}', 'EmployeeController@download')->name('downloadEmployee');
+
+
 
 // Authentication routes
 Auth::routes();
