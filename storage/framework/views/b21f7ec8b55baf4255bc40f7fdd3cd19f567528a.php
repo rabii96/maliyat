@@ -11,7 +11,7 @@
 <?php if(Request::is('expenses*')): ?>
     <h3 class="page-title">المصروفات</h3>
 <?php endif; ?>
-<?php if(Request::is('settings*')): ?>
+<?php if(Request::is('settings*', 'bankTransfer*')): ?>
     <h3 class="page-title">الإعدادات</h3>
 <?php endif; ?>
 <?php if(Request::is('users*', 'employees*' , 'clients*')): ?>
@@ -77,7 +77,7 @@
                             <span>إضافة مصروف</span>
                     </li>
                 <?php endif; ?>
-            <?php elseif(Request::is('settings')): ?>
+            <?php elseif(Request::is('settings', 'bankTransfer*')): ?>
                 <li class="active">
                         <span>الإعدادات</span>
                 </li>

@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Task;
 use App\Settings;
+use App\ExpenseType;
+use App\Bank;
+use App\BankTransfer;
+use App\Percentage;
 use Config;
 use App\TransferMethod;
 
@@ -23,11 +27,22 @@ class SettingsController extends Controller
     {
         $tasks = Task::all();
         $transferMethods = TransferMethod::all();
+        $expenseTypes = ExpenseType::all();
         $settings = Settings::find(1);
+        $banks = Bank::all();
+        $bankTransfers = BankTransfer::with([
+            'from_bank',
+            'to_bank'
+        ])->get();
+        $percentages = Percentage::all();
         return view('Settings.settings')->with([
             'tasks' => $tasks,
             'transferMethods' => $transferMethods,
             'settings' => $settings,
+            'expenseTypes' => $expenseTypes,
+            'banks' => $banks,
+            'percentages' => $percentages,
+            'bankTransfers' => $bankTransfers,
         ]);
     }
 

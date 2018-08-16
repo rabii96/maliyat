@@ -30,4 +30,24 @@ class TransferMethodController extends Controller
             }   
         }
     }
+
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        if($request->ajax()) {
+            $id = $request->input('transferMethodId');
+            $t = TransferMethod::find($id);
+            if($t){
+                $t->delete();
+                return 'Deleted successfully';
+            }else{
+                return 'This transfer method does not exist';
+            }
+        }
+    }
 }

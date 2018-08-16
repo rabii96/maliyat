@@ -49,6 +49,10 @@
     <!-- END THEME LAYOUT SCRIPTS -->
     
     <script>
+        	 
+            $(".marketplace__title").click(function(){
+                $(".filters__container--collapsed .filters").toggleClass("show__sbar");
+            });
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -56,6 +60,15 @@
             });
             
             $(document).on('ready', function() {
+                //Date Pickers
+                $('.date').datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    language: "ar"
+                });
+
+                $('.dt-buttons').hide();
+
 
                 $('#addTask').click(function (e){
                     e.preventDefault();
@@ -71,6 +84,21 @@
                     });
                 });
 
+                $('#addExpenseType').click(function (e){
+                    e.preventDefault();
+                    $.ajax ({
+                        url: "{{ route('addExpenseType') }}",
+                        method: 'post',
+                        data: { 'expenseTypeName': $('input[name=expenseTypeName]').val()} ,
+                        dataType: 'JSON' , 
+                        success: function (data){
+                            $('#expenseTypeName').val('');
+                            $('#expenses-wrapper').load(window.location + ' #expenses');
+                        }
+                    });
+                });
+                
+
                 $('#addTransferMethod').click(function (e){
                     e.preventDefault();
                     $.ajax ({
@@ -85,7 +113,125 @@
                     });
                 });
 
+                $('#addBank').click(function (e){
+                    e.preventDefault();
+                    $.ajax ({
+                        url: "{{ route('addBank') }}",
+                        method: 'post',
+                        data: {
+                            'bank_name': $('input[name=bank_name]').val() ,
+                            'account_number': $('input[name=account_number]').val() ,
+                            'initial_balance': $('input[name=initial_balance]').val() ,
+                            'iban_number': $('input[name=iban_number]').val() ,
+                            'percentage_name': $('input[name=percentage_name]').val() ,
+                            'percentage_value': $('input[name=percentage_value]').val() ,                            
+                        } ,
+                        dataType: 'JSON' , 
+                        success: function (data){
+                            $('#bank_name').val('');
+                            $('#account_number').val('');
+                            $('#initial_balance').val('');
+                            $('#iban_number').val('');
+                            $('#percentage_name').val('');
+                            $('#percentage_value').val('');
+                            $('#banks-wrapper').load(window.location + ' #banks');
+                        }
+                    });
+                });
 
+
+                $('#addPercentage').click(function (e){
+                    e.preventDefault();
+                    $.ajax ({
+                        url: "{{ route('addPercentage') }}",
+                        method: 'post',
+                        data: { 
+                            'percentageName': $('input[name=percentageName]').val(),
+                            'percentageValue': $('input[name=percentageValue]').val(),
+                            'remarks': $('#remarks').val(),
+                        } ,
+                        dataType: 'JSON' , 
+                        success: function (data){
+                            $('#percentageName').val('');
+                            $('#percentageValue').val('');
+                            $('#remarks').val('');
+                            $('#percentages-wrapper').load(window.location + ' #percentages');
+                            $('#transfer_percentage-wrapper').load(window.location + ' #transfer_percentage-div');
+                        }
+                    });
+                });
+
+                $('#select_from_bank').on('change', function() {
+                    var v = $('#select_from_bank :selected').val();
+                    $('#bank_from_number').val($('#fromB_number'+v).val());
+                });
+
+
+                $('#select_to_bank').on('change', function() {
+                    var v = $('#select_to_bank :selected').val();
+                    $('#bank_to_number').val($('#toB_number'+v).val());
+                });
+                $('#transfer_amount').on('keyup', function(){
+                    calcNetAmount();
+                });
+
+                $('#transfer_percentage').on('change', function() {
+                    calcNetAmount();
+                });
+
+                function calcNetAmount(){
+                    if($('#transfer_amount').val()!=''){
+                        var percentage =  $('#transfer_percentage :selected').attr('data-value');
+                        if(Number(percentage) != percentage){
+                            percentage = 0;
+                        }else{
+                            percentage = parseFloat(percentage)/100;
+                        }
+                        $('#transfer_percentage_value').val(parseFloat($('#transfer_amount').val()) * percentage);
+                        var net = parseFloat($('#transfer_amount').val()) - parseFloat($('#transfer_amount').val()) * percentage ;
+                        $('#net_transfer_amount').val(net);
+                    }else{
+                        $('#net_transfer_amount').val(0);
+                    }
+                }
+
+                $('#addBankTransfer').click(function (e){
+                    e.preventDefault();
+                    var formData = new FormData();
+                    var attachement = $('#attachement');
+                    formData.append('transfer_amount', $('#transfer_amount').val());
+                    formData.append('net_transfer_amount', $('#net_transfer_amount').val());
+                    formData.append('percentage_id', $('#transfer_percentage :selected').val());
+                    formData.append('transfer_percentage_value', $('#transfer_percentage_value').val());
+                    formData.append('from_bank_id', $('#select_from_bank :selected').val());
+                    formData.append('to_bank_id', $('#select_to_bank :selected').val());
+                    formData.append('attachement', attachement[0].files[0]);
+
+                    $.ajax ({
+                        url: "{{ route('addBankTransfer') }}",
+                        method: 'post',
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: formData ,
+                        dataType: 'JSON' , 
+                        success: function (data){
+                            $('#transfer_amount').val('');
+                            $('#net_transfer_amount').val('');
+                            $('#transfer_percentage_value').val('0');
+                            $('#dismissAttachement').click();
+                            $('#bankTransfers-wrapper').load(window.location + ' #bankTransfers');
+                            $('#banks-wrapper').load(window.location + ' #banks');
+                            alert('تمت عملية التحويل بنجاح');
+                        },
+                        error: function(data){
+                            if(data.responseText != '')
+                            alert(data.responseText);
+                        }
+                    });
+                });
+
+                
 
 
                 $('#payment-type').on('change', function() {
@@ -300,9 +446,9 @@
                     $("#payment-container").slideDown();
                     var num = $('#payment-num :selected').text();
                     $("#payment-list li").remove();
-                    for (i = 0; i < num; i++) {
+                    for (i = 1; i <= num; i++) {
                         $("#payment-list").append(
-                            '<li><div class="form-inline"><div class="form-group"><label class="sr-only">القيمة</label><div class="input-icon"><i class="fa fa-money font-green"></i><input type="text" class="form-control w-100" placeholder="القيمة" > </div></div><div class="form-group"><label class="sr-only">تاريخ الدفعة</label><div class="input-icon"><i class="fa fa-calendar-check-o font-green "></i><input type="text" class="form-control date" placeholder="تاريخ الدفعة"> </div></div></div><hr></li>'
+                            '<li><div class="form-inline"><div class="form-group"><label class="sr-only">القيمة</label><div class="input-icon"><i class="fa fa-money font-green"></i><input type="text" name="paymentValue[]" id="paymentValue'+i+'" class="form-control w-100" placeholder="القيمة" > </div></div><div class="form-group"><label class="sr-only">تاريخ الدفعة</label><div class="input-icon"><i class="fa fa-calendar-check-o font-green "></i><input type="text" name="paymentDate[]" id="paymentDate'+i+'" class="form-control date" placeholder="تاريخ الدفعة"> </div></div></div><hr></li>'
                         );
                     }
                 });
@@ -327,21 +473,8 @@
 			
 
                 
-                
-                
-                
-                
+                          
             });	
         		 
-	 //Date Pickers
-	  $('.date').datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        language: "ar"
-    });
-
-    $(".marketplace__title").click(function(){
-        $(".filters__container--collapsed .filters").toggleClass("show__sbar");
-    })
 
     </script>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExpenseTypesTable extends Migration
+class CreateBanksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,15 @@ class CreateExpenseTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('expense_types', function (Blueprint $table) {
+        Schema::create('banks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('account_number');
+            $table->float('initial_balance');
+            $table->float('current_balance');
+            $table->string('iban_number');
+            $table->string('percentage_name')->nullable();
+            $table->float('percentage_value')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +33,6 @@ class CreateExpenseTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expense_types');
+        Schema::dropIfExists('banks');
     }
 }

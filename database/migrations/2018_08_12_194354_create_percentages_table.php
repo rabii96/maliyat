@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExpenseTypesTable extends Migration
+class CreatePercentagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateExpenseTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('expense_types', function (Blueprint $table) {
+        Schema::create('percentages', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->float('value');
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateExpenseTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expense_types');
+        Schema::dropIfExists('percentages');
     }
 }

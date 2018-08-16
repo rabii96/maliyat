@@ -74,7 +74,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item  <?php echo e(Request::is('settings') ? 'active open' : ''); ?>">
+            <li class="nav-item  <?php echo e(Request::is('settings', 'bankTransfer*') ? 'active open' : ''); ?>">
                 <a href="<?php echo e(route('settings')); ?>" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
                     <span class="title">الإعدادات</span>

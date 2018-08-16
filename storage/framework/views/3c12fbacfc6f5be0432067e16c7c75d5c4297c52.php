@@ -5,27 +5,7 @@
         <div class="page-content">
             
             
-            <!-- BEGIN PAGE HEADER-->
-            <h3 class="page-title"> المشاريع والخدمات
-                <small></small>
-            </h3>
-            <div class="page-bar">
-                <ul class="page-breadcrumb">
-                    <li>
-                        <i class="icon-home"></i>
-                        <a href="../dashboard/index.html">الرئيسية</a>
-                        <i class="fa fa-angle-left"></i>
-                    </li>
-                    <li>
-                        <a href="#">عنوان القسم</a>
-                        <i class="fa fa-angle-left"></i>
-                    </li>
-                    <li class="active">
-                        <span>عنوان الصفحة</span>
-                    </li>
-                </ul>
-            </div>
-            <!-- END PAGE HEADER-->
+                <?php echo $__env->make('includes.pageHeader', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
             <!-- BEGIN DASHBOARD STATS 1-->
             <div class="row clearfix">
                 <div class="col-md-12">
@@ -36,7 +16,8 @@
                                 <i class="icon-layers font-dark"></i>
                                 <span class="caption-subject bold uppercase">مشروع رقم 2512412</span>
                             </div>
-                            
+                            <button type="button" class="btn green pull-right"><i class="icon-check"></i> إستلام المشروع </button>
+
                             <div class="tools"> </div>
                         </div>
                         <div class="portlet-body">

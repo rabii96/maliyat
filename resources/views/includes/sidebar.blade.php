@@ -74,7 +74,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item  {{Request::is('settings') ? 'active open' : ''}}">
+            <li class="nav-item  {{Request::is('settings', 'bankTransfer*') ? 'active open' : ''}}">
                 <a href="{{ route('settings') }}" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
                     <span class="title">الإعدادات</span>

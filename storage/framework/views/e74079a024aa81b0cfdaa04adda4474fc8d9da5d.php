@@ -69,7 +69,7 @@
 														<script>
 															
 															function applyFilters(){
-																var table = $('#sample_1').DataTable();
+																var table = $('#allUsers_table').DataTable();
 																table.draw();
 															}
 
@@ -118,7 +118,7 @@
 
 						<div class="col-md-9 clearfix">
 
-							<table class="table table-striped table-bordered table-hover dt-responsive grd_view" width="100%" id="sample_1">
+							<table class="table table-striped table-bordered table-hover dt-responsive grd_view" width="100%" id="allUsers_table">
 								<thead>
 									<tr>
 										<th class="desktop">م</th>
@@ -416,25 +416,25 @@
 																			<?php echo e(@$employee->employee_accounts[0]->transfer_method->name); ?></h5>
 																		<?php endif; ?>
 																		<?php $__currentLoopData = @$employee->employee_accounts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $account): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-																			<?php if($account->transfer_method->name == 'باي بال'): ?>
+																			<?php if(@$account->transfer_method->name == 'باي بال'): ?>
 																				<h5>الايميل : 
 																				<?php echo e($account->paypal_email); ?></h5>
-																			<?php elseif($account->transfer_method->name == 'بنك'): ?>
+																			<?php elseif(@$account->transfer_method->name == 'بنك'): ?>
 																				<h5>إسم البنك : 
 																				<?php echo e($account->bank_name); ?></h5>
 																				<h5>رقم الحساب : 
 																				<?php echo e($account->bank_account_number); ?></h5>
-																			<?php elseif($account->transfer_method->name == 'شيك'): ?>
+																			<?php elseif(@$account->transfer_method->name == 'شيك'): ?>
 																				<h5>رقم الشيك : 
 																				<?php echo e($account->check_number); ?></h5>
-																			<?php elseif($account->transfer_method->name == 'أخرى'): ?>
+																			<?php elseif(@$account->transfer_method->name == 'أخرى'): ?>
 																				<h5>إسم طريقة التحويل : 
 																				<?php echo e($account->other_method_name); ?></h5>
 																				<h5>رقم الحساب : 
 																				<?php echo e($account->other_method_number); ?></h5>
 																			<?php else: ?>
 																				<h5>رقم الحساب : 
-																				<?php echo e($account->default_number); ?></h5>
+																				<?php echo e(@$account->default_number); ?></h5>
 																			<?php endif; ?>
 																			<hr>
 																			

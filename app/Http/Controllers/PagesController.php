@@ -31,18 +31,12 @@ class PagesController extends Controller
         $settings = Settings::find(1);
         return view('Payments.allPayments')->with('settings',$settings);
     }
-    public function addProject(){
-        $settings = Settings::find(1);
-        return view('ProjectsAndServices.addProject')->with('settings',$settings);
-    }
+
     public function addService(){
         $settings = Settings::find(1);
         return view('ProjectsAndServices.addService')->with('settings',$settings);
     }
-    public function allProjectsAndServices(){
-        $settings = Settings::find(1);
-        return view('ProjectsAndServices.allProjectsAndServices')->with('settings',$settings);
-    }
+    
     public function projectDetails(){
         $settings = Settings::find(1);
         return view('ProjectsAndServices.projectDetails')->with('settings',$settings);

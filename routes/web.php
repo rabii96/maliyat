@@ -16,24 +16,51 @@ Route::get('/expenses/add', 'PagesController@addExpense')->name('addExpense');
 Route::get('/expenses', 'PagesController@allExpenses')->name('allExpenses');
 Route::get('/payments/add', 'PagesController@addPayment')->name('addPayment');
 Route::get('/payments', 'PagesController@allPayments')->name('allPayments');
-Route::get('/projects/add', 'PagesController@addProject')->name('addProject');
 Route::get('/services/add', 'PagesController@addService')->name('addService');
-Route::get('/projects-and-services', 'PagesController@allProjectsAndServices')->name('allProjectsAndServices');
 Route::get('/project/{id}', 'PagesController@projectDetails')->name('projectDetails');
 Route::get('/service/{id}', 'PagesController@serviceDetails')->name('serviceDetails');
 
+//Projects and services routes
+Route::get('/projects-and-services', 'ProjectController@index')->name('allProjectsAndServices');
+// Project routes
+Route::get('/projects/add', 'ProjectController@create')->name('addProject');
+Route::post('/projects/add', 'ProjectController@store')->name('addProject');
 
-
-
-// Task routes
-Route::post('/addTask', 'TaskController@store')->name('addTask');
-
-// Transfer methods routes
-Route::post('/addTransferMethod', 'TransferMethodController@store')->name('addTransferMethod');
 
 // Settings routes
 Route::get('/settings', 'SettingsController@index')->name('settings');
 Route::post('/settings', 'SettingsController@save')->name('applySettings');
+
+
+// Percentage routes
+Route::post('/addPercentage', 'PercentageController@store')->name('addPercentage');
+Route::get('/deletePercentage/{id}', 'PercentageController@destroy')->name('deletePercentage');
+
+
+// Task routes
+Route::post('/addTask', 'TaskController@store')->name('addTask');
+Route::get('/deleteTask', 'TaskController@destroy')->name('deleteTask');
+
+// Expense routes
+Route::post('/addExpenseType', 'ExpenseTypeController@store')->name('addExpenseType');
+Route::get('/deleteExpenseType', 'ExpenseTypeController@destroy')->name('deleteExpenseType');
+
+// Transfer methods routes
+Route::post('/addTransferMethod', 'TransferMethodController@store')->name('addTransferMethod');
+Route::get('/deleteTransferMethod', 'TransferMethodController@destroy')->name('deleteTransferMethod');
+
+// Bank routes
+Route::post('/addBank', 'BankController@store')->name('addBank');
+
+// BankTransfer routes
+Route::post('/addBankTransfer', 'BankTransferController@store')->name('addBankTransfer');
+Route::get('/bankTransfers/download/{id}', 'BankTransferController@download')->name('downloadBankTransfer');
+Route::get('/bankTransfers/edit/{id}', 'BankTransferController@edit')->name('editBankTransfer');
+Route::post('/bankTransfers/edit/{id}', 'BankTransferController@update')->name('editBankTransfer');
+Route::get('/bankTransfers/delete/{id}', 'BankTransferController@destroy')->name('deleteBankTransfer');
+
+
+
 
 
 // User routes

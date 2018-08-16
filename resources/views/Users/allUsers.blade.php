@@ -118,7 +118,7 @@
 
 						<div class="col-md-9 clearfix">
 
-							<table class="table table-striped table-bordered table-hover dt-responsive grd_view" width="100%" id="sample_1">
+							<table class="table table-striped table-bordered table-hover dt-responsive grd_view" width="100%" id="allUsers_table">
 								<thead>
 									<tr>
 										<th class="desktop">م</th>
@@ -416,25 +416,25 @@
 																			{{ @$employee->employee_accounts[0]->transfer_method->name }}</h5>
 																		@endif
 																		@foreach(@$employee->employee_accounts as $account)
-																			@if($account->transfer_method->name == 'باي بال')
+																			@if(@$account->transfer_method->name == 'باي بال')
 																				<h5>الايميل : 
 																				{{ $account->paypal_email }}</h5>
-																			@elseif($account->transfer_method->name == 'بنك')
+																			@elseif(@$account->transfer_method->name == 'بنك')
 																				<h5>إسم البنك : 
 																				{{ $account->bank_name }}</h5>
 																				<h5>رقم الحساب : 
 																				{{ $account->bank_account_number }}</h5>
-																			@elseif($account->transfer_method->name == 'شيك')
+																			@elseif(@$account->transfer_method->name == 'شيك')
 																				<h5>رقم الشيك : 
 																				{{ $account->check_number }}</h5>
-																			@elseif($account->transfer_method->name == 'أخرى')
+																			@elseif(@$account->transfer_method->name == 'أخرى')
 																				<h5>إسم طريقة التحويل : 
 																				{{ $account->other_method_name }}</h5>
 																				<h5>رقم الحساب : 
 																				{{ $account->other_method_number }}</h5>
 																			@else
 																				<h5>رقم الحساب : 
-																				{{ $account->default_number }}</h5>
+																				{{ @$account->default_number }}</h5>
 																			@endif
 																			<hr>
 																			

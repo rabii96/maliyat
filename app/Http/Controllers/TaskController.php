@@ -35,11 +35,19 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if($request->ajax()) {
+            $id = $request->input('taskId');
+            $t = Task::find($id);
+            if($t){
+                $t->delete();
+                return 'Deleted successfully';
+            }else{
+                return 'This task does not exist';
+            }
+        }
     }
 }

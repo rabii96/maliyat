@@ -18,7 +18,8 @@
                                 <i class="icon-layers font-dark"></i>
                                 <span class="caption-subject bold uppercase">مشروع رقم 2512412</span>
                             </div>
-                            
+                            <button type="button" class="btn green pull-right"><i class="icon-check"></i> إستلام المشروع </button>
+
                             <div class="tools"> </div>
                         </div>
                         <div class="portlet-body">

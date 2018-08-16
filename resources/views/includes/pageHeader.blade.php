@@ -11,7 +11,7 @@
 @if(Request::is('expenses*'))
     <h3 class="page-title">المصروفات</h3>
 @endif
-@if(Request::is('settings*'))
+@if(Request::is('settings*', 'bankTransfer*'))
     <h3 class="page-title">الإعدادات</h3>
 @endif
 @if(Request::is('users*', 'employees*' , 'clients*'))
@@ -77,7 +77,7 @@
                             <span>إضافة مصروف</span>
                     </li>
                 @endif
-            @elseif(Request::is('settings'))
+            @elseif(Request::is('settings', 'bankTransfer*'))
                 <li class="active">
                         <span>الإعدادات</span>
                 </li>
