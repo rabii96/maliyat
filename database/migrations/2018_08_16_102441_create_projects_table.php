@@ -18,11 +18,11 @@ class CreateProjectsTable extends Migration
             $table->string('name');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->string('details');
+            $table->string('details')->nullable();
             $table->integer('client_id');
             $table->float('total_cost');
-            $table->string('attachement');
-            $table->string('remarks');
+            $table->string('attachement')->nullable();
+            $table->string('remarks')->nullable();
             $table->boolean('finished');
             $table->timestamps();
         });

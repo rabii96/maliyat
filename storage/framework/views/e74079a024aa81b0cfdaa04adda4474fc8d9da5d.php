@@ -69,7 +69,7 @@
 														<script>
 															
 															function applyFilters(){
-																var table = $('#allUsers_table').DataTable();
+																var table = $('#sample_1').DataTable();
 																table.draw();
 															}
 

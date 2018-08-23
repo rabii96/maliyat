@@ -13,6 +13,7 @@
 			<!-- BEGIN DASHBOARD STATS 1-->
 			<div class="row clearfix">
 				<div class="col-md-12">
+					@include('includes.messages')
 					<!-- BEGIN EXAMPLE TABLE PORTLET-->
 					<div class="portlet light ">
 						<div class="portlet-title">
@@ -159,37 +160,110 @@
 								<tr>
 									<th class="desktop">م</th>
 									<th class="all no-padding"></th>
-									<th class="min-phone-l">اسم المشروع</th>
-									<th class="min-phone-l">رقم المشروع</th>
+									<th class="min-phone-l">الإسم</th>
+									<th class="min-phone-l">الرقم</th>
 									<th class="min-tablet">النوع</th>
 									<th class="none">العميل</th>
 									<th class="desktop">التفاصيل</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-red"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>مشروع</td>
-									<td>اسم العميل طالب المشروع</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right bg-grey-cararra">
-												<li><a href="projectDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addProject.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
+								<?php
+									$i = 1;
+								?>
+								@if($projects)
+									@foreach($projects as $project)
+										<tr>
+											<td>{{ $i++ }}</td>
+											<td class="p-relative">
+												@if($project->finished == true)
+													<div class="por-indicator bg-red"></div>
+												@else
+													<div class="por-indicator bg-default"></div>
+												@endif
+											</td>
+											<td>{{ $project->name }}</td>
+											<td>{{ $project->id }}</td>
+											<td>مشروع</td>
+											<td>{{ $project->client->name }}</td>
+											<td class="text-center">
+												<div class="btn-group">
+													<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
+														<i class="fa fa-angle-down"></i>
+													</a>
+													<ul class="dropdown-menu pull-right bg-grey-cararra">
+														<li><a href="{{ route('projectDetails', ['id' => $project->id]) }}" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
+														<li><a href="#" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
+														<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
+														<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									@endforeach
+								@endif
+
+								@if($services)
+									@foreach($services as $service)
+										<tr>
+											<td>{{ $i++ }}</td>
+											<td class="p-relative">
+												@if($service->finished == true)
+													<div class="por-indicator bg-red"></div>
+												@else
+													<div class="por-indicator bg-default"></div>
+												@endif
+											</td>
+											<td>{{ $service->name }}</td>
+											<td>{{ $service->id }}</td>
+											<td>خدمة</td>
+											<td></td>
+											<td class="text-center">
+												<div class="btn-group">
+													<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
+														<i class="fa fa-angle-down"></i>
+													</a>
+													<ul class="dropdown-menu pull-right bg-grey-cararra">
+														<li><a href="{{ route('serviceDetails', ['id' => $service->id]) }}" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
+														<li><a href="{{ route('editService', ['id' => $service->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
+														<li>
+															<a href="#deleteService{{ $service->id }}" class="font-red" data-toggle="modal">
+															<i class="icon-trash font-red"></i> حـذف</a>
+														</li>
+														<li>
+															<a href="{{ route('downloadService', ['id' => $service->id]) }}" class="font-green">
+															<i class="icon-cloud-download font-green"></i> تحميل</a>
+														</li>													
+													</ul>
+												</div>
+											</td>
+										</tr>
+										<div class="modal fade" id="deleteService{{ $service->id }}" tabindex="-1" role="basic" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content del-modal font-white">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+															<h4 class="modal-title"></h4>
+														</div>
+														<div class="modal-body text-center">
+															<h3>
+																<i class="fa fa-3x fa-trash"></i>
+															</h3>
+															متأكد أنك تريد حـذف الخدمة {{ $service->name }} ؟
+											
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn dark btn-default" data-dismiss="modal">إغلاق</button>
+															<a href="{{ route('deleteService', ['id' => $service->id]) }}" class="btn btn-danger">حـذف</a>
+														</div>
+													</div>
+													<!-- /.modal-content -->
+												</div>
+												<!-- /.modal-dialog -->
 										</div>
-									</td>
-								</tr>
+									@endforeach
+								@endif
+								<!--
 								<tr>
 									<td>2</td>
 									<td class="p-relative">
@@ -213,305 +287,7 @@
 										</div>
 									</td>
 								</tr>
-								<tr>
-									<td>3</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-default"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>مشروع</td>
-									<td>اسم العميل طالب المشروع</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="projectDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addProject.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-red"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>خدمة</td>
-									<td>اسم العميل طالب الخدمة</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="serviceDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addService.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-default"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>خدمة</td>
-									<td>اسم العميل طالب الخدمة</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="serviceDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addService.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-red"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>مشروع</td>
-									<td>اسم العميل طالب المشروع</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="projectDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addProject.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-default"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>خدمة</td>
-									<td>اسم العميل طالب الخدمة</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="serviceDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addService.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>8</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-default"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>مشروع</td>
-									<td>اسم العميل طالب المشروع</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="projectDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addProject.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>9</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-red"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>خدمة</td>
-									<td>اسم العميل طالب الخدمة</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="serviceDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addService.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>10</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-red"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>مشروع</td>
-									<td>اسم العميل طالب المشروع</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="projectDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addProject.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>11</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-red"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>خدمة</td>
-									<td>اسم العميل طالب الخدمة</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="serviceDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addService.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>12</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-default"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>مشروع</td>
-									<td>اسم العميل طالب المشروع</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="projectDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addProject.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>13</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-red"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>خدمة</td>
-									<td>اسم العميل طالب الخدمة</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="serviceDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addService.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>14</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-default"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>مشروع</td>
-									<td>اسم العميل طالب المشروع</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="projectDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addProject.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>15</td>
-									<td class="p-relative">
-										<div class="por-indicator bg-red"></div>
-									</td>
-									<td>تصميم وبرمجة متجر الكترونى</td>
-									<td>2512412</td>
-									<td>خدمة</td>
-									<td>اسم العميل طالب الخدمة</td>
-									<td class="text-center">
-										<div class="btn-group">
-											<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown" data-close-others="true"> إخـتر الأمـر
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li><a href="serviceDetails.html" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-												<li><a href="addService.html" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-												<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
-												<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
+								-->
 							</tbody>
 						</table>
 

@@ -79,12 +79,14 @@
                                     <label for="transferMethodSelect">طريقة التحويل <span>*</span></label>
                                     <select id="transferMethodSelect" name="transferMethodSelect" required class="form-control select2 select-hide">
                                         <option disabled selected>-- إختر --</option>
-                                        @foreach($transferMethods as $transferMethod)
-                                            @if( $transferMethod->id  != 0 )  
-                                                <option value="{{ $transferMethod->id }}">{{ $transferMethod->name }}</option>
-                                            @endif
-                                        @endforeach
-                                        <option value="0">أخرى</option>
+                                        @if($transferMethods)
+                                            @foreach($transferMethods as $transferMethod)
+                                                @if( $transferMethod->id  != 0 )  
+                                                    <option value="{{ $transferMethod->id }}">{{ $transferMethod->name }}</option>
+                                                @endif
+                                            @endforeach
+                                            <option value="0">أخرى</option>
+                                        @endif
                                     </select>
                                 </div>
                                 </div>

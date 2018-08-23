@@ -32,10 +32,7 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label>اسم المشروع <span>*</span></label>
-                                <div class="input-icon">
-                                    <i class="fa fa-file font-green "></i>
-                                    <input name="name" id="name" value="{{ old('name') }}" type="text" class="form-control" placeholder="اسم المشروع"> 
-                                </div>
+                                <input name="name" id="name" value="{{ old('name') }}" type="text" class="form-control" placeholder="اسم المشروع"> 
                             </div>
                             </div>
                                                                 
@@ -43,9 +40,9 @@
                             <div class="form-group">
                                 <label>التاريخ <span>*</span></label>
                                 <div class="input-group date-picker input-daterange" data-date="24/02/2018" data-date-format="dd/mm/yyyy">
-                                    <input type="text" class="form-control date col-md-6" name="start_date" id="start_date" value="{{ old('start_date') }}" placeholder="من تاريخ">
+                                    <input type="text" class="form-control date col-md-6" name="start_date" id="start_date" value="{{ old('start_date') }}" autocomplete="off" placeholder="من تاريخ">
                                     <span class="input-group-addon small-sp">  </span>
-                                    <input type="text" class="form-control date col-md-6" name="end_date" id="end_date" value="{{ old('end_date') }}" placeholder="إلى تاريخ"> 
+                                    <input type="text" class="form-control date col-md-6" name="end_date" id="end_date" value="{{ old('end_date') }}" autocomplete="off" placeholder="إلى تاريخ"> 
                                 </div>
                             </div>
                             </div>                           
@@ -74,7 +71,7 @@
                                 <label>تكلفة المشروع <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" name="total_cost" id="total_cost" value="{{ old('total_cost') }}" class="form-control" placeholder=""> 
+                                    <input type="text" name="total_cost" dir="ltr" style="text-align: right" id="total_cost" onkeyup="updateLastPayment()" value="{{ old('total_cost') }}" class="form-control" placeholder=""> 
                                 </div>
                             </div>
                             </div>
@@ -101,8 +98,74 @@
                                 </select>
                                 </div>
                             </div>
-                            
+                            <script>
+                                function updateLastPayment(){
+                                    var total_cost = parseFloat ($('#total_cost').val());
+                                    var last = $('#payment-num :selected').text();
+                                    var payments_sum = 0;
+                                    $("input[name='paymentValue[]']").each(function(){
+                                        if( $(this).attr('id') != 'paymentValue'+last){
+                                            var x = parseFloat($(this).val());
+                                            if(!isNaN(x)){
+                                                payments_sum += x;
+                                            }
+                                        }
+                                    });
+                                    if(!isNaN(total_cost)){
+                                        var last_payment = total_cost - payments_sum;
+                                        if(last_payment >= 0){
+                                            $('#paymentValue'+last).val(last_payment);
+                                        }else{
+                                            $("input[name='paymentValue[]']").each(function(){
+                                                if( $(this).attr('id') != 'paymentValue'+last){
+                                                    $(this).val('');
+                                                }
+                                            });
+                                            $('#paymentValue'+last).val(total_cost);
+                                        }
+                                    }
+                                }
+                                function updateCost(i){
+                                    var last = $('#payment-num :selected').text();
+                                    var total_cost = parseFloat ($('#total_cost').val());
+                                    
+                                    if(last == ''+i){
+                                        var payments_sum = 0;
+                                        $("input[name='paymentValue[]']").each(function(){
+                                            var x = parseFloat($(this).val());
+                                            if(!isNaN(x)){
+                                                payments_sum += x;
+                                            }
+                                        });
+                                        $('#total_cost').val(payments_sum);
+                                        return;
+                                    }else{
+                                        var payments_sum = 0;
+                                        $("input[name='paymentValue[]']").each(function(){
+                                            if( $(this).attr('id') != 'paymentValue'+last){
+                                                var x = parseFloat($(this).val());
+                                                if(!isNaN(x)){
+                                                    payments_sum += x;
+                                                }
+                                            }
+                                        });
+                                    }
+                                    
+                                    
+                                    if(!isNaN(total_cost)){
+                                        var last_payment = total_cost - payments_sum;
+                                        if(last_payment >= 0){
+                                            $('#paymentValue'+last).val(last_payment);
+                                        }else{
+                                            $('#paymentValue'+last).val(0);
+                                            $('#total_cost').val(payments_sum);
+                                        }
+                                    }
+                                    
+                                }
+                            </script>
                             <div id="payment-container" style="display: none;">
+                                <br><br><br>
                                 <label>تواريخ الدفعات <span>*</span></label>
                                 
                                 

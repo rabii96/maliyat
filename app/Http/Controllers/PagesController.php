@@ -15,34 +15,4 @@ class PagesController extends Controller
         $settings = Settings::find(1);
         return view('dashboard.index')->with('settings',$settings);
     }
-    public function addExpense(){
-        $settings = Settings::find(1);
-        return view('Expenses.addExpense')->with('settings',$settings);
-    }
-    public function allExpenses(){
-        $settings = Settings::find(1);
-        return view('Expenses.allExpenses')->with('settings',$settings);
-    }
-    public function addPayment(){
-        $settings = Settings::find(1);
-        return view('Payments.addPayment')->with('settings',$settings);
-    }
-    public function allPayments(){
-        $settings = Settings::find(1);
-        return view('Payments.allPayments')->with('settings',$settings);
-    }
-
-    public function addService(){
-        $settings = Settings::find(1);
-        return view('ProjectsAndServices.addService')->with('settings',$settings);
-    }
-    
-    public function projectDetails(){
-        $settings = Settings::find(1);
-        return view('ProjectsAndServices.projectDetails')->with('settings',$settings);
-    }
-    public function serviceDetails(){
-        $settings = Settings::find(1);
-        return view('ProjectsAndServices.serviceDetails')->with('settings',$settings);
-    }
 }

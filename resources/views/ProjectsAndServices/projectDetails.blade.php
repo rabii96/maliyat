@@ -16,10 +16,11 @@
                         <div class="portlet-title">
                             <div class="caption font-dark">
                                 <i class="icon-layers font-dark"></i>
-                                <span class="caption-subject bold uppercase">مشروع رقم 2512412</span>
+                                <span class="caption-subject bold uppercase">مشروع رقم {{ $project->id }}</span>
                             </div>
-                            <button type="button" class="btn green pull-right"><i class="icon-check"></i> إستلام المشروع </button>
-
+                            @if($project->finished == false)
+                                <a href="{{ route('receiveProject' , [ 'id' => $project->id]) }}" class="btn green pull-right"><i class="icon-check"></i> إستلام المشروع </a>
+                            @endif
                             <div class="tools"> </div>
                         </div>
                         <div class="portlet-body">
@@ -31,7 +32,7 @@
                                 <label>اسم المشروع </label>
                                 <div class="input-icon">
                                     <i class="fa fa-file font-green "></i>
-                                    <input type="text" class="form-control" value="اسم المشروع" disabled> 
+                                    <input type="text" class="form-control" value="{{ $project->name }}" disabled> 
                                 </div>
                             </div>
                             </div>
@@ -40,9 +41,29 @@
                             <div class="form-group">
                                 <label>التاريخ </label>
                                 <div class="input-group date-picker input-daterange" data-date="24/02/2018" data-date-format="dd/mm/yyyy">
-                                    <input type="text" class="form-control date col-md-6" name="from" value="24/02/2018" disabled>
+                                    <?php
+                                        $start_month = $project->start_date->format('M');
+                                        $end_month = $project->end_date->format('M');
+                                        $arabic_months = [
+                                            "Jan" => "يناير",
+                                            "Feb" => "فبراير",
+                                            "Mar" => "مارس",
+                                            "Apr" => "أبريل",
+                                            "May" => "مايو",
+                                            "Jun" => "يونيو",
+                                            "Jul" => "يوليو",
+                                            "Aug" => "أغسطس",
+                                            "Sep" => "سبتمبر",
+                                            "Oct" => "أكتوبر",
+                                            "Nov" => "نوفمبر",
+                                            "Dec" => "ديسمبر"
+                                        ];
+                                        $st_month = $arabic_months[$start_month];
+                                        $e_month = $arabic_months[$end_month];
+                                    ?>
+                                    <input type="text" class="form-control date col-md-6" name="from" value="{{ $project->start_date->format('d') }} {{ $st_month }} {{ $project->start_date->format('Y') }}" disabled>
                                     <span class="input-group-addon small-sp">  </span>
-                                    <input type="text" class="form-control date col-md-6" name="to" value="24/02/2018" disabled> 
+                                    <input type="text" class="form-control date col-md-6" name="to" value="{{ $project->end_date->format('d') }} {{ $e_month }} {{ $project->end_date->format('Y') }}" disabled> 
                                 </div>
                             </div>
                             </div>                           
@@ -50,7 +71,7 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label>التفاصيل</label>
-                                <textarea class="form-control" rows="5" disabled>نص نص نص نص نص نص نص</textarea>
+                                <textarea class="form-control" rows="5" disabled>{{ $project->details }}</textarea>
                             </div>
                             </div>
                                                                 
@@ -59,7 +80,7 @@
                                 <label>العميل </label>
                                 <div class="input-icon">
                                     <i class="fa fa-user font-green "></i>
-                                    <input type="text" class="form-control" value="اسم العميل" disabled> 
+                                    <input type="text" class="form-control" value="{{ $project->client->name }}" disabled> 
                                 </div>
                             </div>
                             </div>                           
@@ -69,7 +90,7 @@
                                 <label>تكلفة المشروع </label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" value="548 ريال" disabled> 
+                                    <input type="text" class="form-control" value="{{ $project->total_cost }} ريال" disabled> 
                                 </div>
                             </div>
                             </div>
@@ -85,7 +106,7 @@
                                 <label>عدد الدفعات </label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" value="4" disabled> 
+                                    <input type="text" class="form-control" value="{{ $project->expected_payments->count() }}" disabled> 
                                 </div>
                             </div>
                             <div class="col-md-4 col-xs-12">
@@ -93,7 +114,15 @@
                                 <label>إجمالى المبلغ المستلم </label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" value="4" disabled> 
+                                    <?php
+                                        $total_paid = 0;
+                                        $total_remaining = 0;
+                                        foreach($project->expected_payments as $p){
+                                            $total_paid += $p->paid_value;
+                                            $total_remaining += $p->remaining_value;
+                                        }
+                                    ?>
+                                    <input type="text" class="form-control" value="{{ $total_paid }}" disabled> 
                                 </div>
                             </div>
                             </div>   
@@ -103,7 +132,7 @@
                                 <label>إجمالى المبلغ المتبقية </label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" value="4" disabled> 
+                                    <input type="text" class="form-control" value="{{ $total_remaining }}" disabled> 
                                 </div>
                             </div>
                             </div>                       		
@@ -113,7 +142,7 @@
                                 <label>إجمالى المبلغ المصروفة </label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" value="4" disabled> 
+                                    <input type="text" class="form-control" value="xx" disabled> 
                                 </div>
                             </div>
                             </div>
@@ -128,50 +157,47 @@
                                 </div>
                                 <div class="mt-list-container list-simple ext-1 bg-white">
                                     <ul>
-                                        <li class="mt-list-item done">
-                                            <div class="list-icon-container">
-                                                <i class="icon-check"></i>
-                                            </div>
-                                            <div class="list-datetime"> 24/2/2018 </div>
-                                            <div class="list-item-content">
-                                                <h3 class="uppercase">
-                                                    <a href="javascript:;">500 ريال</a>
-                                                </h3>
-                                            </div>
-                                        </li>
-                                        <li class="mt-list-item done">
-                                            <div class="list-icon-container">
-                                                <i class="icon-check"></i>
-                                            </div>
-                                            <div class="list-datetime"> 24/2/2018 </div>
-                                            <div class="list-item-content">
-                                                <h3 class="uppercase">
-                                                    <a href="javascript:;">150 ريال</a>
-                                                </h3>
-                                            </div>
-                                        </li>
-                                        <li class="mt-list-item late">
-                                            <div class="list-icon-container">
-                                                <i class="icon-close"></i>
-                                            </div>
-                                            <div class="list-datetime"> 24/2/2018 </div>
-                                            <div class="list-item-content">
-                                                <h3 class="uppercase">
-                                                    <a href="javascript:;">100 ريال</a>
-                                                </h3>
-                                            </div>
-                                        </li>
-                                        <li class="mt-list-item wait">
-                                            <div class="list-icon-container">
-                                                <i class="icon-close"></i>
-                                            </div>
-                                            <div class="list-datetime"> 24/2/2018 </div>
-                                            <div class="list-item-content">
-                                                <h3 class="uppercase">
-                                                    <a href="javascript:;">250 ريال</a>
-                                                </h3>
-                                            </div>
-                                        </li>
+                                        @foreach($project->expected_payments as $p)
+                                            @if($p->state == 'Paid')
+                                                <li class="mt-list-item done">
+                                                    <div class="list-icon-container">
+                                                        <i class="icon-check"></i>
+                                                    </div>
+                                                    <div class="list-datetime">{{ $p->date->format('d/m/Y') }}</div>
+                                                    <div class="list-item-content">
+                                                        <h3 class="uppercase">
+                                                            <a href="javascript:;">{{ $p->value }} ريال</a>
+                                                        </h3>
+                                                    </div>
+                                                </li>
+                                            @elseif($p->state == 'Unpaid')
+                                                @if(strtotime($p->date) >= strtotime((new Date('-1 day'))))
+                                                    <li class="mt-list-item wait">
+                                                        <div class="list-icon-container">
+                                                            <i class="icon-close"></i>
+                                                        </div>
+                                                        <div class="list-datetime">{{ $p->date->format('d/m/Y') }}</div>
+                                                        <div class="list-item-content">
+                                                            <h3 class="uppercase">
+                                                                <a href="javascript:;">{{ $p->value }} ريال</a>
+                                                            </h3>
+                                                        </div>
+                                                    </li>
+                                                @else
+                                                    <li class="mt-list-item late">
+                                                        <div class="list-icon-container">
+                                                            <i class="icon-close"></i>
+                                                        </div>
+                                                        <div class="list-datetime">{{ $p->date->format('d/m/Y') }}</div>
+                                                        <div class="list-item-content">
+                                                            <h3 class="uppercase">
+                                                                <a href="javascript:;">{{ $p->value }} ريال</a>
+                                                            </h3>
+                                                        </div>
+                                                    </li>
+                                                @endif
+                                            @endif
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
@@ -200,7 +226,7 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label>ملاحظات</label>
-                                <textarea class="form-control" rows="5" disabled></textarea>
+                                <textarea class="form-control" rows="5" disabled>{{ @$project->remarks }}</textarea>
                             </div>
                             </div>
                             
@@ -217,7 +243,7 @@
                                 <label>صافى الربح</label>
                                 <div class="col-md-12">
                                 
-                                    <input type="text" class="form-control" value="800 ريال" disabled>
+                                    <input type="text" class="form-control" value="xxx ريال" disabled>
                                     
                                 </div>
                             </div>

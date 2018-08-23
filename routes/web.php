@@ -12,46 +12,70 @@
 */
 
 Route::get('/', 'PagesController@dashboard')->name('dashboard');
-Route::get('/expenses/add', 'PagesController@addExpense')->name('addExpense');
-Route::get('/expenses', 'PagesController@allExpenses')->name('allExpenses');
-Route::get('/payments/add', 'PagesController@addPayment')->name('addPayment');
-Route::get('/payments', 'PagesController@allPayments')->name('allPayments');
-Route::get('/services/add', 'PagesController@addService')->name('addService');
-Route::get('/project/{id}', 'PagesController@projectDetails')->name('projectDetails');
-Route::get('/service/{id}', 'PagesController@serviceDetails')->name('serviceDetails');
+
+
+
+
 
 //Projects and services routes
 Route::get('/projects-and-services', 'ProjectController@index')->name('allProjectsAndServices');
 // Project routes
 Route::get('/projects/add', 'ProjectController@create')->name('addProject');
 Route::post('/projects/add', 'ProjectController@store')->name('addProject');
+Route::get('/project/{id}', 'ProjectController@show')->name('projectDetails');
+Route::get('/project/{id}/receive', 'ProjectController@receive')->name('receiveProject');
+// Services routes
+Route::get('/services/add', 'ServiceController@create')->name('addService');
+Route::post('/services/add', 'ServiceController@store')->name('addService');
+Route::get('/service/{id}', 'ServiceController@show')->name('serviceDetails');
+Route::get('/service/edit/{id}', 'ServiceController@edit')->name('editService');
+Route::post('/service/edit/{id}', 'ServiceController@update')->name('editService');
+Route::get('/service/{id}/receive', 'ServiceController@receive')->name('receiveService');
+Route::get('/service/delete/{id}', 'ServiceController@destroy')->name('deleteService');
+Route::get('/service/download/{id}', 'ServiceController@download')->name('downloadService');
+
+
+
+
+// Payments routes
+Route::get('/payments/add', 'RealPaymentController@create')->name('addPayment');
+Route::post('/payments/add', 'RealPaymentController@store')->name('addPayment');
+Route::get('/payments/download/{id}', 'RealPaymentController@download')->name('downloadPayment');
+Route::post('/updatePaymentNumbers', 'RealPaymentController@updatePaymentNumbers')->name('updatePaymentNumbers');
+Route::get('/payments', 'RealPaymentController@index')->name('allPayments');
+Route::get('/payments/edit/{id}', 'RealPaymentController@edit')->name('editPayment');
+Route::post('/payments/edit/{id}', 'RealPaymentController@update')->name('editPayment');
+Route::get('/payments/delete/{id}', 'RealPaymentController@destroy')->name('deletePayment');
+
+
+
+
+// Expenses routes
+Route::get('/expenses/add', 'ExpenseController@create')->name('addExpense');
+Route::post('/expenses/add', 'ExpenseController@store')->name('addExpense');
+Route::get('/expenses', 'ExpenseController@index')->name('allExpenses');
+Route::post('/updateProjectServiceId', 'ExpenseController@updateProjectServiceId')->name('updateProjectServiceId');
+
+
 
 
 // Settings routes
 Route::get('/settings', 'SettingsController@index')->name('settings');
 Route::post('/settings', 'SettingsController@save')->name('applySettings');
-
-
 // Percentage routes
 Route::post('/addPercentage', 'PercentageController@store')->name('addPercentage');
 Route::get('/deletePercentage/{id}', 'PercentageController@destroy')->name('deletePercentage');
-
-
 // Task routes
 Route::post('/addTask', 'TaskController@store')->name('addTask');
 Route::get('/deleteTask', 'TaskController@destroy')->name('deleteTask');
-
 // Expense routes
 Route::post('/addExpenseType', 'ExpenseTypeController@store')->name('addExpenseType');
 Route::get('/deleteExpenseType', 'ExpenseTypeController@destroy')->name('deleteExpenseType');
-
 // Transfer methods routes
 Route::post('/addTransferMethod', 'TransferMethodController@store')->name('addTransferMethod');
 Route::get('/deleteTransferMethod', 'TransferMethodController@destroy')->name('deleteTransferMethod');
-
 // Bank routes
 Route::post('/addBank', 'BankController@store')->name('addBank');
-
 // BankTransfer routes
 Route::post('/addBankTransfer', 'BankTransferController@store')->name('addBankTransfer');
 Route::get('/bankTransfers/download/{id}', 'BankTransferController@download')->name('downloadBankTransfer');

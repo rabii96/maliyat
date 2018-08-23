@@ -5,7 +5,7 @@
         <!-- BEGIN LOGO -->
         <div id="siteLogo-wrapper" class="page-logo">
             <a href="#">
-                <img id="siteLogo" src="{{ asset('storage/photos/logo.png ') }}" alt="logo" style="height: 45px; width:auto; margin-top: 17px" /> </a>
+                <img id="siteLogo" src="{{ asset('storage/photos/logo.png ') }}" alt="logo" class="logo-default" style="height: 45px; width:auto; margin-top: 17px" /> </a>
             <div class="menu-toggler sidebar-toggler">
             </div>
         </div>

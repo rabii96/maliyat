@@ -11,6 +11,5 @@
         @include('includes.header')
         @include('includes.container')
         @include('includes.footer')
-        @include('includes.modal')
     </body>
 </html>

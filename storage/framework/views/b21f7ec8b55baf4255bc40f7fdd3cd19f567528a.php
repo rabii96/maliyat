@@ -2,11 +2,11 @@
 <?php if(Request::is('/')): ?>
     <h3 class="page-title">الرئيسية</h3>
 <?php endif; ?>
-<?php if(Request::is('projects-and-services' , 'projects/*' , 'services/*')): ?>
+<?php if(Request::is('projects-and-services' , 'project*' , 'service*')): ?>
     <h3 class="page-title">المشاريع والخدمات</h3>
 <?php endif; ?>
 <?php if(Request::is('payments*')): ?>
-    <h3 class="page-title">المدفوعات</h3>
+    <h3 class="page-title">الدفعات</h3>
 <?php endif; ?>
 <?php if(Request::is('expenses*')): ?>
     <h3 class="page-title">المصروفات</h3>
@@ -27,7 +27,7 @@
             </li>
         <?php endif; ?>
 
-            <?php if(Request::is('projects-and-services' , 'projects/*' , 'services/*')): ?>
+            <?php if(Request::is('projects-and-services' , 'project*' , 'service*')): ?>
                 <li>
                     <a href="#">المشاريع و الخدمات</a>
                     <i class="fa fa-angle-left"></i>
@@ -36,9 +36,25 @@
                     <li class="active">
                             <span>إضافة مشروع</span>
                     </li>
+                <?php elseif(Request::is('project/edit/*')): ?>
+                    <li class="active">
+                            <span>تعديل مشروع</span>
+                    </li>
+                <?php elseif(Request::is('project/*')): ?>
+                    <li class="active">
+                            <span>عرض مشروع</span>
+                    </li>
                 <?php elseif(Request::is('services/add')): ?>
                     <li class="active">
                             <span>إضافة خدمة</span>
+                    </li>
+                <?php elseif(Request::is('service/edit/*')): ?>
+                    <li class="active">
+                            <span>تعديل خدمة</span>
+                    </li>
+                <?php elseif(Request::is('service/*')): ?>
+                    <li class="active">
+                            <span>عرض خدمة</span>
                     </li>
                 <?php elseif(Request::is('projects-and-services')): ?>
                     <li class="active">
@@ -51,12 +67,12 @@
                 </li>
             <?php elseif(Request::is('payments*')): ?>
                 <li>
-                    <a href="#">المدفوعات</a>
+                    <a href="#">الدفعات</a>
                     <i class="fa fa-angle-left"></i>
                 </li>
                 <?php if(Request::is('payments')): ?>
                     <li class="active">
-                            <span>كل المدفوعات</span>
+                            <span>كل الدفعات</span>
                     </li>
                 <?php elseif(Request::is('payments/add')): ?>
                     <li class="active">

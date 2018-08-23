@@ -9,6 +9,7 @@
             <!-- BEGIN DASHBOARD STATS 1-->
             <div class="row clearfix">
                 <div class="col-md-12">
+                    <?php echo $__env->make('includes.messages', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light ">
                         <div class="portlet-title">
@@ -20,32 +21,31 @@
                             <div class="tools"> </div>
                         </div>
                         <div class="portlet-body">
-                                                            
+                        <form method="POST" action="<?php echo e(route('addPayment')); ?>" enctype="multipart/form-data">
+                            <?php echo csrf_field(); ?>                               
                                         
                                                                                     
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
-                                <label for="single0">اسم المشروع <span>*</span></label>
-                                <select id="single0" class="form-control select2 ">
+                                <label for="project_name">اسم المشروع <span>*</span></label>
+                                <select id="project_name" name="project_id" class="form-control select2 ">
                                     <option></option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
+                                    <?php if($projects): ?>
+                                        <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($project->id); ?>"><?php echo e($project->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
                                 </select>
                             </div>
                             </div>     
                                                                                     
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
-                                <label for="single1">رقم الدفعة <span>*</span></label>
-                                <select id="single1" class="form-control select2 ">
+                                <label for="payment_number">رقم الدفعة <span>*</span></label>
+                                <select id="payment_number" name="payment_number" class="form-control select2 ">
                                     <option></option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
                                 </select>
+                                <input type="hidden" name="expected_payment_id" id="expected_payment_id">
                             </div>
                             </div>                           
                                                                 
@@ -54,7 +54,7 @@
                                 <label>مبلغ الدفعة <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" placeholder="" disabled> 
+                                    <input id="paymentValue" type="text" class="form-control" placeholder="" disabled> 
                                 </div>
                             </div>
                             </div>                             
@@ -64,7 +64,7 @@
                                 <label>المبلغ المدفوع <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" placeholder=""> 
+                                    <input id="currentPaidValue" name="currentPaidValue" type="text" class="form-control" placeholder=""> 
                                 </div>
                             </div>
                             </div>        
@@ -72,11 +72,15 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label for="payment-type">نوع الدفعة <span>*</span></label>
-                                <select id="payment-type" class="form-control select2 select-hide">
-                                    <option value="0">-- إختر --</option>
-                                    <option value="1">شيك</option>
-                                    <option value="2">باى بال</option>
-                                    <option value="3">كاش</option>
+                                <select id="payment-type" name="transfer_method" class="form-control select2 select-hide">
+                                    <option disabled selected>-- إختر --</option>
+                                    <option value="-1">كاش</option>
+                                    <?php $__currentLoopData = $transferMethods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $transferMethod): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php if( $transferMethod->id  != 0 ): ?>  
+                                                <option value="<?php echo e($transferMethod->id); ?>"><?php echo e($transferMethod->name); ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="0">أخرى</option>
                                 </select>
                             </div>
                             </div>                              
@@ -86,28 +90,29 @@
                                 <label>الباقى <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" placeholder="" disabled> 
+                                    <input id="currentRemainingValue" name="currentRemainingValue" type="text" class="form-control" placeholder="" disabled> 
                                 </div>
                             </div>
                             </div> 
                                 
                             <div class="col-md-6 col-md-offset-3 col-sm-12">                  
                             <div class="form-group">
-                                <label for="single4">البنك المحول اليه <span>*</span></label>
-                                <select id="single4" class="form-control select2 ">
+                                <label for="bank_payment">البنك المحول اليه <span>*</span></label>
+                                <select id="bank_payment" name="to_bank_id" class="form-control select2 ">
                                     <option></option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
+                                    <?php if($banks): ?>
+                                        <?php $__currentLoopData = $banks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bank): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option data-bank_number="<?php echo e($bank->account_number); ?>" value="<?php echo e($bank->id); ?>"><?php echo e($bank->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
                                 </select>
                             </div>
                             </div>  
                                                                     
                             <div class="col-md-6 col-md-offset-3 col-sm-12">                   
                             <div class="form-group">
-                                <label for="single">رقم الحساب </label>
-                                    <input type="text" class="form-control" placeholder="" disabled> 
+                                <label for="bank_payment_number">رقم الحساب </label>
+                                    <input id="bank_payment_number" type="text" class="form-control" placeholder="" disabled> 
                             </div>  
                             </div>
                                         
@@ -126,12 +131,13 @@
                                                     
                             <div class="form-group">
                                 <label for="single">اسم البنك <span>*</span></label>
-                                <select id="single" class="form-control select2 ">
+                                <select id="single" name="from_bank_id" class="form-control select2 ">
                                     <option></option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
+                                    <?php if($banks): ?>
+                                        <?php $__currentLoopData = $banks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bank): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option data-bank_number="<?php echo e($bank->account_number); ?>" value="<?php echo e($bank->id); ?>"><?php echo e($bank->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
                                 </select>
                             </div>
                                     
@@ -140,14 +146,14 @@
                                 <label for="single">تاريخ <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-calendar font-green "></i>
-                                <input type="text" class="form-control date" name="from" placeholder="">
+                                <input type="text" class="form-control date" name="date_check" placeholder="">
                                 </div>
                             </div>
                                                                     
                                                     
                             <div class="form-group">
                                 <label for="single">رقم الشيك <span>*</span></label>
-                                    <input type="text" class="form-control" placeholder=""> 
+                                    <input type="text" name="check_number" class="form-control" placeholder=""> 
                             </div>
                             
                             
@@ -164,13 +170,7 @@
                                                     
                             <div class="form-group">
                                 <label for="single3">اسم المحول <span>*</span></label>
-                                <select id="single3" class="form-control select2 ">
-                                    <option></option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
+                                <input id="single3" name="transferer_name" type="text" class="form-control" placeholder=""> 
                             </div>
                                     
                                                                     
@@ -178,7 +178,7 @@
                                 <label for="single">تاريخ <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-calendar font-green "></i>
-                                <input type="text" class="form-control date" name="from" placeholder="">
+                                <input type="text" class="form-control date" name="date_cash" placeholder="">
                                 </div>
                             </div>
                             
@@ -199,11 +199,72 @@
                                                     
                             <div class="form-group">
                                 <label for="single">حساب الباى بال <span>*</span></label>
-                                <input type="email" class="form-control" placeholder=""> 
+                                <input type="email" name="paypal_email" class="form-control" placeholder=""> 
                             </div>
                             
                             
                             </fieldset> 
+                            </div>
+
+                            <div class="col-md-6 col-md-offset-3 col-sm-12"> 
+                                                                    
+                                <fieldset id="bank" style="display: none;">
+                                    <legend class="font-purple">
+                                        بنك
+                                    </legend>
+                                                                            
+                                                            
+                                    <div class="form-group">
+                                            <label for="single">اسم البنك <span>*</span></label>
+                                            <select id="single" name="from_bank_id" class="form-control select2 ">
+                                                <option></option>
+                                                <?php if($banks): ?>
+                                                    <?php $__currentLoopData = $banks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bank): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <option data-bank_number="<?php echo e($bank->account_number); ?>" value="<?php echo e($bank->id); ?>"><?php echo e($bank->name); ?></option>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                <?php endif; ?>
+                                            </select>
+                                            <br>
+                                        <label for="single">رقم الحساب<span>*</span></label>
+                                        <input type="text" name="from_bank_number" class="form-control" placeholder=""> 
+                                    </div>
+                                    
+                                    
+                                </fieldset> 
+                            </div>
+
+                            <div class="col-md-6 col-md-offset-3 col-sm-12"> 
+                                                                    
+                                <fieldset id="other" style="display: none;">
+                                    <legend class="font-purple">
+                                        أخرى
+                                    </legend>
+                                                                            
+                                                            
+                                    <div class="form-group">
+                                        <label for="single">رقم الحساب<span>*</span></label>
+                                        <input type="text" name="other_number" class="form-control" placeholder=""> 
+                                    </div>
+                                    
+                                    
+                                </fieldset> 
+                            </div>
+
+                            <div class="col-md-6 col-md-offset-3 col-sm-12"> 
+                                                                    
+                                <fieldset id="default" style="display: none;">
+                                    <legend id="default_name" class="font-purple">
+                                       x
+                                    </legend>
+                                                                            
+                                                            
+                                    <div class="form-group">
+                                        <label for="single">رقم الحساب<span>*</span></label>
+                                        <input type="text" name="default_number" class="form-control" placeholder=""> 
+                                    </div>
+                                    
+                                    
+                                </fieldset> 
                             </div>
                             
                             
@@ -227,7 +288,7 @@
                                         <span class="input-group-addon btn default btn-file">
                                             <span class="fileinput-new"> إختر المرفق </span>
                                             <span class="fileinput-exists"> تغيير </span>
-                                            <input type="file" name="..."> </span>
+                                            <input type="file" name="attachement"> </span>
                                         <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> حذف </a>
                                     </div>
                                 </div>
@@ -243,12 +304,12 @@
                                                                 
                             <div class="col-md-6 col-md-offset-3 col-sm-12 text-center">
                             
-            <button type="button" class="btn green pull-right margin-right-10">إضافة/تعديل</button>
+                            <button type="submit" class="btn green pull-right margin-right-10">إضافة/تعديل</button>
             
                             </div>
                             
                             <div class="clearfix"></div>
-                            
+                        </form>
                         </div>
                     </div>
                     <!-- END EXAMPLE TABLE PORTLET-->

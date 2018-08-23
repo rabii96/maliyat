@@ -60,12 +60,7 @@
             });
             
             $(document).on('ready', function() {
-                //Date Pickers
-                $('.date').datepicker({
-                    autoclose: true,
-                    todayHighlight: true,
-                    language: "ar"
-                });
+                
 
                 $('.dt-buttons').hide();
 
@@ -220,6 +215,8 @@
                             $('#net_transfer_amount').val('');
                             $('#transfer_percentage_value').val('0');
                             $('#dismissAttachement').click();
+                            $('#select_from_bank').val(null).trigger('change');
+                            $('#select_to_bank').val(null).trigger('change');
                             $('#bankTransfers-wrapper').load(window.location + ' #bankTransfers');
                             $('#banks-wrapper').load(window.location + ' #banks');
                             alert('تمت عملية التحويل بنجاح');
@@ -232,6 +229,61 @@
                 });
 
                 
+                $('#project_name').on('change',function(e){
+                    $("#payment_number option").remove();
+                    $('#payment_number').val(null).trigger('change');
+                    $('#paymentValue').val('');
+                    $.ajax({
+                        url: "<?php echo e(route('updatePaymentNumbers')); ?>",
+                        method: 'post',
+                        data: {
+                            'projectId' : e.target.value
+                        },
+                        dataType: 'JSON' ,
+                        success: function(data){
+                            $('#payment_number').append(
+                                '<option></option>'
+                            );
+                            $.each(data, function(index,payment){
+                                $('#payment_number').append(
+                                    '<option data-id="'+payment.id+'" value="'+payment.remaining_value+'">'+(payment.index)+'</option>'
+                                )
+                            });
+                        }
+                    });
+                });
+
+                $('#currentPaidValue').on('keyup',function(){
+                    var paymentValue = parseFloat($('#paymentValue').val());
+                    if(!isNaN(paymentValue)){
+                        var currentPaidValue = parseFloat($('#currentPaidValue').val());
+                        if(!isNaN(currentPaidValue)){
+                            var x = paymentValue - currentPaidValue;
+                            if(x>=0){
+                                $('#currentRemainingValue').val(x);
+                            }else{
+                                $('#currentPaidValue').val('');
+                                $('#currentRemainingValue').val(paymentValue);
+                            }
+                        }
+                    }
+                });
+
+                $('#payment_number').on('change',function(){
+                    var payment_value = $('#payment_number :selected').val();
+                    $('#expected_payment_id').val($('#payment_number :selected').attr('data-id'));
+                    if(payment_value){
+                        $('#paymentValue').val(payment_value);
+                        $('#currentRemainingValue').val(payment_value);
+                    }
+                });
+
+                $('#bank_payment').on('change', function(){
+                    var number = $('#bank_payment :selected').attr('data-bank_number');
+                    if(number){
+                        $('#bank_payment_number').val(number)
+                    }
+                });
 
 
                 $('#payment-type').on('change', function() {
@@ -240,22 +292,54 @@
                     //alert(vl);
                     switch(vl) {
                         case '1':
-                            $("#check").slideDown();
-                            $("#paypal").hide();
+                            $("#paypal").slideDown();
+                            $("#bank").hide();
+                            $("#other").hide();
+                            $("#check").hide();
+                            $("#default").hide();
                             $("#transfer").hide();
                             break;
                         case '2':
-                            $("#paypal").slideDown();
+                            $("#bank").slideDown();
+                            $("#paypal").hide();
+                            $("#other").hide();
                             $("#check").hide();
+                            $("#default").hide();
                             $("#transfer").hide();
                             break;
                         case '3':
-                            $("#transfer").slideDown();
-                            $("#check").hide();
+                            $("#check").slideDown();
                             $("#paypal").hide();
+                            $("#other").hide();
+                            $("#bank").hide();
+                            $("#default").hide();
+                            $("#transfer").hide();
+                            break;
+                        case '0':
+                            $("#other").slideDown();
+                            $("#bank").hide();
+                            $("#paypal").hide();
+                            $("#check").hide();
+                            $("#default").hide();
+                            $("#transfer").hide();
+                            break;
+                        case '-1' :
+                            $("#transfer").slideDown();
+                            $("#bank").hide();
+                            $("#paypal").hide();
+                            $("#check").hide();
+                            $("#default").hide();
+                            $("#other").hide();
                             break;
                         default:
-                            
+                            var defaultName = $("#payment-type :selected").text();
+                            $("#default").hide();
+                            $('#default_name').text(defaultName);
+                            $("#default").slideDown();
+                            $("#bank").hide();
+                            $("#paypal").hide();
+                            $("#check").hide();
+                            $("#other").hide();
                     }
                     
                 });
@@ -429,6 +513,37 @@
                     defaultTable.innerHTML = '';
                 });
 
+                $('#type').on('change',function(e){
+                    $("#project_service_id option").remove();
+                    $.ajax({
+                        url: "<?php echo e(route('updateProjectServiceId')); ?>",
+                        method: 'post',
+                        data: {
+                            'type' : e.target.value
+                        },
+                        dataType: 'JSON' ,
+                        success: function(data){
+                            $('#project_service_id').append(
+                                '<option disabled selected value="-1">-- إختر --</option>'
+                            );
+                            $.each(data, function(index,data){
+                                $('#project_service_id').append(
+                                    '<option "value="'+data.id+'">'+(data.name)+'</option>'
+                                )
+                            });
+                            $('#project_service_id').val(-1).trigger('change');
+                        }
+                    });
+                });
+
+                $('#client_id').on('change', function(){
+                    $("[name='showClients']").each(function(){
+                        $(this).addClass('hidden');
+                    });
+                    var x = ($('#client_id :selected').val());
+                    $('#showClient'+x).removeClass('hidden');
+                });
+
 
 
             // End Add employee scripts
@@ -448,11 +563,51 @@
                     $("#payment-list li").remove();
                     for (i = 1; i <= num; i++) {
                         $("#payment-list").append(
-                            '<li><div class="form-inline"><div class="form-group"><label class="sr-only">القيمة</label><div class="input-icon"><i class="fa fa-money font-green"></i><input type="text" name="paymentValue[]" id="paymentValue'+i+'" class="form-control w-100" placeholder="القيمة" > </div></div><div class="form-group"><label class="sr-only">تاريخ الدفعة</label><div class="input-icon"><i class="fa fa-calendar-check-o font-green "></i><input type="text" name="paymentDate[]" id="paymentDate'+i+'" class="form-control date" placeholder="تاريخ الدفعة"> </div></div></div><hr></li>'
+                            '<li><div class="form-inline"><div class="form-group"><label class="sr-only">القيمة</label><div class="input-icon"><i class="fa fa-money font-green"></i><input type="text" dir="ltr" style="text-align: right" name="paymentValue[]" id="paymentValue'+i+'"  onkeyup="updateCost('+i+');" class="form-control w-100" placeholder="القيمة" > </div></div><div class="form-group"><label class="sr-only">تاريخ الدفعة</label><div class="input-icon"><i class="fa fa-calendar-check-o font-green "></i><input type="text" name="paymentDate[]" id="paymentDate'+i+'" class="form-control date" placeholder="تاريخ الدفعة"> </div></div></div><hr></li>'
                         );
                     }
+                    var total_cost = parseFloat ($('#total_cost').val());
+                    var last = $('#payment-num :selected').text();
+                    if(!isNaN(total_cost)){
+                        $('#paymentValue'+last).val(total_cost);
+                    }
                 });
+
+                $('#value').on('keyup',function(){
+                    calcValuePlusPercentage();
+                });
+
+                $('#percentage_id').on('change', function(){
+                    calcValuePlusPercentage();
+                });
+
+                function calcValuePlusPercentage(){
+                    var value = parseFloat($('#value').val());
+                        if(!isNaN(value)){
+                            var per_sum = 0;
+                            $('#percentage_id :selected').each(function(){
+                                var percentage = $(this).attr('data-value');
+                                if(Number(percentage) != percentage){
+                                    percentage = 0;
+                                }else{
+                                    percentage = parseFloat(percentage)/100;
+                                }
+                                per_sum+= percentage;
+                            });
+                            value = value + (value * per_sum);
+                            $('#value_plus_percentage').val(value);
+                        }
+                }
+
                 
+
+
+                //Date Pickers
+                $('.date').datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    language: "ar"
+                });
                 
                 $("#payment-container").delegate("input[type=text].date", "focusin", function(){
                     $(this).datepicker({

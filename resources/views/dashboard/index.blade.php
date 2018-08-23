@@ -200,7 +200,7 @@
                     <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 ">
                         <h4 class="widget-thumb-heading">المشاريع الناجحة</h4>
                         <div class="widget-thumb-wrap">
-                            <i class="widget-thumb-icon bg-green-meadow icon-dislike"></i>
+                            <i class="widget-thumb-icon bg-green-meadow icon-like"></i>
                             <div class="widget-thumb-body">
                                 <span class="widget-thumb-subtitle">مشاريع</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="5">0</span>
@@ -217,7 +217,7 @@
                     <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 ">
                         <h4 class="widget-thumb-heading">المشاريع الخاسرة</h4>
                         <div class="widget-thumb-wrap">
-                            <i class="widget-thumb-icon bg-red icon-like"></i>
+                            <i class="widget-thumb-icon bg-red icon-dislike"></i>
                             <div class="widget-thumb-body">
                                 <span class="widget-thumb-subtitle">مشاريع</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="10">0</span>

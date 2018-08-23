@@ -11,7 +11,10 @@
             <!-- BEGIN DASHBOARD STATS 1-->
             <div class="row clearfix">
                 <div class="col-md-12">
+                    @include('includes.messages')
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <form method="POST" action="{{ route('addService') }}" enctype="multipart/form-data">
+                    @csrf
                     <div class="portlet light ">
                         <div class="portlet-title">
                             <div class="caption font-dark">
@@ -19,7 +22,6 @@
                                 <span class="caption-subject bold uppercase">إضافة خدمة</span>
                             </div>
                             
-            <button type="button" class="btn green pull-right"><i class="icon-check"></i> إستلام الخدمة </button>
                             <div class="tools"> </div>
                         </div>
                         <div class="portlet-body">
@@ -29,12 +31,20 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label>اسم الخدمة <span>*</span></label>
-                                <div class="input-icon">
-                                    <i class="fa fa-file font-green "></i>
-                                    <input type="text" class="form-control" placeholder="اسم الخدمة"> 
+                                <input type="text" name="name" value="{{ old('name') }}" class="form-control" placeholder="اسم الخدمة"> 
+                            </div>
+                            </div>
+
+                            <div class="col-md-6 col-md-offset-3 col-sm-12">
+                                <div class="form-group">
+                                    <label>التاريخ</label>
+                                    <div class="input-group date-picker input-daterange" data-date="24/02/2018" data-date-format="dd/mm/yyyy">
+                                        <input type="text" class="form-control date col-md-6" name="start_date" id="start_date" value="{{ old('start_date') }}" autocomplete="off" placeholder="من تاريخ">
+                                        <span class="input-group-addon small-sp">  </span>
+                                        <input type="text" class="form-control date col-md-6" name="end_date" id="end_date" value="{{ old('end_date') }}" autocomplete="off" placeholder="إلى تاريخ"> 
+                                    </div>
                                 </div>
-                            </div>
-                            </div>
+                                </div> 
                                                                 
                                                                 
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
@@ -42,7 +52,7 @@
                                 <label>التكلفة الاجمالية </label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" placeholder=""> 
+                                    <input type="text" name="total_cost" value="{{ old('total_cost') }}" class="form-control" placeholder=""> 
                                 </div>
                             </div>
                             </div>
@@ -51,7 +61,7 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label>التفاصيل</label>
-                                <textarea class="form-control" rows="5"></textarea>
+                                <textarea name="details" class="form-control" rows="5">{{ old('details') }}</textarea>
                             </div>
                             </div>
                             
@@ -70,7 +80,7 @@
                                         <span class="input-group-addon btn default btn-file">
                                             <span class="fileinput-new"> إختر المرفق </span>
                                             <span class="fileinput-exists"> تغيير </span>
-                                            <input type="file" name="..."> </span>
+                                            <input type="file" name="attachement"> </span>
                                         <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> حذف </a>
                                     </div>
                                 </div>
@@ -81,7 +91,7 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label>ملاحظات</label>
-                                <textarea class="form-control" rows="5"></textarea>
+                                <textarea name="remarks" class="form-control" rows="5"></textarea>
                             </div>
                             </div>
                             
@@ -95,7 +105,7 @@
                                                                 
                             <div class="col-md-6 col-md-offset-3 col-sm-12 text-center">
                             
-            <button type="button" class="btn green pull-right margin-right-10">إضافة/تعديل</button>
+                            <button type="submit" class="btn green pull-right margin-right-10">إضافة/تعديل</button>
             
                             </div>
                             
@@ -103,6 +113,7 @@
                             
                         </div>
                     </div>
+                    </form>
                     <!-- END EXAMPLE TABLE PORTLET-->
                 </div>
                 

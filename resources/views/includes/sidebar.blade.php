@@ -11,7 +11,7 @@
                     <span class="selected"></span>
                 </a>
             </li>
-            <li class="nav-item  {{Request::is('projects-and-services' , 'projects/*' , 'services/*') ? 'active open' : ''}}">
+            <li class="nav-item  {{Request::is('projects-and-services' , 'project*' , 'service*') ? 'active open' : ''}}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-layers"></i>
                     <span class="title">المشاريع والخدمات</span>
@@ -38,13 +38,13 @@
             <li class="nav-item  {{Request::is('payments*') ? 'active open' : ''}}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-wallet"></i>
-                    <span class="title">المدفوعات</span>
+                    <span class="title">الدفعات</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
                     <li class="nav-item  {{Request::is('payments') ? 'active open' : ''}}">
                         <a href="{{ route('allPayments') }}" class="nav-link ">
-                            <span class="title">كل المدفوعات</span>
+                            <span class="title">كل الدفعات</span>
                         </a>
                     </li>
                     <li class="nav-item  {{Request::is('payments/add') ? 'active open' : ''}}">
