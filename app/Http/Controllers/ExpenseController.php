@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Expense;
 use App\ExpenseType;
 use App\Settings;
-use App\Client;
+use App\Employee;
 use App\Bank;
 use App\Percentage;
 use App\TransferMethod;
@@ -36,14 +36,14 @@ class ExpenseController extends Controller
     {
         $settings = Settings::find(1);
         $expenseTypes = ExpenseType::all();
-        $clients = Client::all();
+        $employees = Employee::all();
         $banks = Bank::all();
         $transferMethods = TransferMethod::all();
         $percentages = Percentage::all();
         return view('Expenses.addExpense')->with([
             'settings' => $settings,
             'expenseTypes' => $expenseTypes,
-            'clients' => $clients,
+            'employees' => $employees,
             'banks' => $banks,
             'transferMethods' => $transferMethods,
             'percentages' => $percentages
@@ -58,7 +58,33 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-
+        $this->validate($request,[
+            'name' => 'required',
+            'type' => 'required',
+            'project_service_id' => 'required',
+            'employee_id' => 'required',
+            'bank_id' => 'required',
+            'transfer_method_id' => 'required',
+            'value' => 'required',
+            'percentage_id' => 'required',
+            'value_plus_percentage' => 'required',
+            'date' => 'required',
+            'attachement' => 'nullable|max:1999'
+        ]);
+        $expense = new Expense;
+        $expense->name = $request->input('name');
+        $expense->type = $request->input('type');
+       // $expense->project_service_id = $request->input('project_service_id');
+        $expense->employee_id = $request->input('employee_id');
+        $expense->bank_id = $request->input('bank_id');
+        $expense->transfer_method_id = $request->input('transfer_method_id');
+        $expense->value = $request->input('value');
+       // $expense->percentage_id = $request->input('percentage_id');
+        $expense->value_plus_percentage = $request->input('value_plus_percentage');
+        //$expense->date = $request->input('date');
+        $expense->details = $request->input('details');
+        $expense->remarks = $request->input('attachement');
+        //$expense->attachement = $request->input('attachement');
     }
 
     /**
@@ -113,12 +139,26 @@ class ExpenseController extends Controller
             $expenseType = ExpenseType::find($typeId);
             $type = $expenseType->name;
             if($type == 'خدمة'){
-                $data = Service::all();
+                $services = Service::all();
+                foreach($services as $s){
+                    $s->type = 'service';
+                }
+                $data = $services;
             }elseif($type == 'مشروع'){
-                $data = Project::all();
+                $projects = Project::all();
+                foreach($projects as $p){
+                    $p->type = 'project';
+                }
+                $data = $projects;
             }else{
                 $projects = Project::all();
+                foreach($projects as $p){
+                    $p->type = 'project';
+                }
                 $services = Service::all();
+                foreach($services as $s){
+                    $s->type = 'service';
+                }
                 $data = array_merge($projects->toArray(), $services->toArray());
             }
             return $data;

@@ -751,8 +751,13 @@
 											var table = $('#bankTransfers_table').DataTable();
 											table.draw();
 										}
+										var allowFilter = ['bankTransfers_table'];
 										$.fn.dataTable.ext.search.push(
 											function( settings, data, dataIndex ) {
+												if ( $.inArray( settings.nTable.getAttribute('id'), allowFilter ) == -1 )
+												{
+													return true;
+												}
 												var filters = []
 												$("select[name='filters[]'] :selected").each(function(){
 													filters.push($(this).val());

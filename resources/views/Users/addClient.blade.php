@@ -13,7 +13,7 @@
                 <div class="col-md-12">
                     @include('includes.messages')
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                    <form method="POST" action="{{ route('addClient') }}" enctype="multipart/form-data">
+                    <form id="addClientForm" method="POST" action="{{ route('addClient') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="portlet light ">
                             <div class="portlet-title">

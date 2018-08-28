@@ -11,7 +11,7 @@
                 <div class="col-md-12">
                     <?php echo $__env->make('includes.messages', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                    <form method="POST" action="<?php echo e(route('addEmployee')); ?>" enctype="multipart/form-data">
+                    <form id="add_employee_form" method="POST" action="<?php echo e(route('addEmployee')); ?>" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
                         <div class="portlet light ">
 
@@ -31,7 +31,7 @@
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                     <div class="form-group">
                                         <label for="single0">الاسم <span>*</span></label>
-                                        <input id="name" name="name" value="<?php echo e(old('name')); ?>" type="text" required class="form-control" placeholder=""> 
+                                        <input autocomplete="off" id="name" name="name" value="<?php echo e(old('name')); ?>" type="text"  class="form-control" placeholder=""> 
                                     </div>
                                 </div>     
 
@@ -39,8 +39,8 @@
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                 <div class="form-group">
                                     <label for="employee_task">مهامه <span>*</span></label>
-                                    <select id="employee_task" name="employee_task" required class="form-control select2 select-hide">
-                                        <option value="" disabled selected>-- إختر --</option>
+                                    <select id="employee_task" name="employee_task"  class="form-control select2 select-hide">
+                                        <option value="" selected>-- إختر --</option>
                                         <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option value="<?php echo e($task->id); ?>"><?php echo e($task->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -60,14 +60,14 @@
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                         <div class="form-group">
                                             <label for="single0">الجوال <span>*</span></label>
-                                            <input dir="ltr" style="text-align: right" id="phone" name="phone" required type="text" class="form-control" placeholder=""> 
+                                            <input autocomplete="off" dir="ltr" style="text-align: right" id="phone" name="phone"  type="text" class="form-control" placeholder=""> 
                                         </div>
                                 </div>
 
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                         <div class="form-group">
                                             <label for="single0">الايميل <span>*</span></label>
-                                            <input id="email" name="email" value="<?php echo e(old('email')); ?>" required type="text" class="form-control" placeholder=""> 
+                                            <input autocomplete="off" id="email" name="email" value="<?php echo e(old('email')); ?>"  type="text" class="form-control" placeholder=""> 
                                         </div>
                                 </div>
                                             
@@ -75,14 +75,16 @@
                                 <div class="col-md-6 col-md-offset-3 col-sm-12">
                                 <div class="form-group">
                                     <label for="transferMethodSelect">طريقة التحويل <span>*</span></label>
-                                    <select id="transferMethodSelect" name="transferMethodSelect" required class="form-control select2 select-hide">
-                                        <option disabled selected>-- إختر --</option>
-                                        <?php $__currentLoopData = $transferMethods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $transferMethod): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <?php if( $transferMethod->id  != 0 ): ?>  
-                                                <option value="<?php echo e($transferMethod->id); ?>"><?php echo e($transferMethod->name); ?></option>
-                                            <?php endif; ?>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="0">أخرى</option>
+                                    <select id="transferMethodSelect" name="transferMethodSelect"  class="form-control select2 select-hide">
+                                        <option value="" disabled selected>-- إختر --</option>
+                                        <?php if($transferMethods): ?>
+                                            <?php $__currentLoopData = $transferMethods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $transferMethod): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php if( $transferMethod->id  != 0 ): ?>  
+                                                    <option value="<?php echo e($transferMethod->id); ?>"><?php echo e($transferMethod->name); ?></option>
+                                                <?php endif; ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="0">أخرى</option>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
                                 </div>
@@ -102,7 +104,7 @@
                                             <span class="input-group-addon btn default btn-file">
                                                 <span class="fileinput-new"> إختر المرفق </span>
                                                 <span class="fileinput-exists"> تغيير </span>
-                                                <input type="file" name="attachement"> </span>
+                                                <input autocomplete="off" type="file" name="attachement"> </span>
                                             <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> حذف </a>
                                         </div>
                                     </div>
@@ -124,7 +126,7 @@
                                     <label>الايميل </label>
                                     <div class="input-icon">
                                         <i class="fa fa-envelope font-green "></i>
-                                        <input name="paypal_email" id="paypal_email" type="text" class="form-control" placeholder=""> 
+                                        <input autocomplete="off" name="paypal_email" id="paypal_email" type="text" class="form-control" placeholder=""> 
                                     </div>
                                 </div>
                             
@@ -175,14 +177,14 @@
                                         <label>اسم البنك </label>
                                         <div class="input-icon">
                                             <i class="fa fa-bank font-green "></i>
-                                            <input name="bank_name" id="bank_name" type="text" class="form-control" placeholder=""> 
+                                            <input autocomplete="off" name="bank_name" id="bank_name" type="text" class="form-control" placeholder=""> 
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>رقم الحساب </label>
                                         <div class="input-icon">
                                             <i class="fa fa-barcode font-green "></i>
-                                            <input name="bank_account_number" dir="ltr" style="text-align: right" id="bank_account_number" dir="ltr" style="text-align: right" type="text" class="form-control" placeholder=""> 
+                                            <input autocomplete="off" name="bank_account_number" dir="ltr" style="text-align: right" id="bank_account_number" dir="ltr" style="text-align: right" type="text" class="form-control" placeholder=""> 
                                         </div>
                                     </div>
                                 
@@ -236,7 +238,7 @@
                                         <label>رقم الشيك </label>
                                         <div class="input-icon">
                                             <i class="fa fa-barcode font-green "></i>
-                                            <input name="check_number" dir="ltr" style="text-align: right" id="check_number" dir="ltr" style="text-align: right" type="text" class="form-control" placeholder=""> 
+                                            <input autocomplete="off" name="check_number" dir="ltr" style="text-align: right" id="check_number" dir="ltr" style="text-align: right" type="text" class="form-control" placeholder=""> 
                                         </div>
                                     </div>
                                 
@@ -288,14 +290,14 @@
                                         <label>طريقة التحويل </label>
                                         <div class="input-icon">
                                             <i class="fa fa-random font-green "></i>
-                                            <input name="other_method_name" id="other_method_name" type="text" class="form-control" placeholder=""> 
+                                            <input autocomplete="off" name="other_method_name" id="other_method_name" type="text" class="form-control" placeholder=""> 
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>الرقم </label>
                                         <div class="input-icon">
                                             <i class="fa fa-barcode font-green "></i>
-                                            <input name="other_method_number" dir="ltr" style="text-align: right" id="other_method_number" dir="ltr" style="text-align: right" type="text" class="form-control" placeholder=""> 
+                                            <input autocomplete="off" name="other_method_number" dir="ltr" style="text-align: right" id="other_method_number" dir="ltr" style="text-align: right" type="text" class="form-control" placeholder=""> 
                                         </div>
                                     </div>
                                 
@@ -350,7 +352,7 @@
                                             <label>رقم الحساب </label>
                                             <div class="input-icon">
                                                 <i class="fa fa-barcode font-green "></i>
-                                                <input name="default_account_number" dir="ltr" style="text-align: right" id="default_account_number" dir="ltr" style="text-align: right" type="text" class="form-control" placeholder=""> 
+                                                <input autocomplete="off" name="default_account_number" dir="ltr" style="text-align: right" id="default_account_number" dir="ltr" style="text-align: right" type="text" class="form-control" placeholder=""> 
                                             </div>
                                         </div>
                                     

@@ -11,7 +11,7 @@
                 <div class="col-md-12">
                     <?php echo $__env->make('includes.messages', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                    <form method="POST" action="<?php echo e(route('addClient')); ?>" enctype="multipart/form-data">
+                    <form id="addClientForm" method="POST" action="<?php echo e(route('addClient')); ?>" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
                         <div class="portlet light ">
                             <div class="portlet-title">

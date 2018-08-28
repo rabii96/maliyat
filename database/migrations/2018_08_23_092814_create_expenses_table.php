@@ -20,11 +20,12 @@ class CreateExpensesTable extends Migration
             $table->string('details');
             $table->integer('project_id');
             $table->integer('service_id');
-            $table->integer('client_id');
+            $table->integer('employee_id');
             $table->integer('bank_id');
             $table->integer('transfer_method_id');
             $table->float('value');
-            $table->integer('percentage_id');
+            $table->float('value_plus_percentage');
+            $table->string('percentage_id');
             $table->dateTime('date');
             $table->string('attachement');
             $table->timestamps();

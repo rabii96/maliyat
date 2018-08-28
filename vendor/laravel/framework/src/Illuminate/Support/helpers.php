@@ -544,6 +544,22 @@ if (! function_exists('data_set')) {
     }
 }
 
+if (! function_exists('dd')) {
+    /**
+     * Dump the passed variables and end the script.
+     *
+     * @param  mixed  $args
+     * @return void
+     */
+    function dd(...$args)
+    {
+        foreach ($args as $x) {
+            (new Dumper)->dump($x);
+        }
+
+        die(1);
+    }
+}
 
 if (! function_exists('e')) {
     /**

@@ -30,8 +30,8 @@
 @endif
 <script>
     $(document).ready (function(){
-            $("#message").fadeTo(2000, 500).slideUp(500, function(){
-                $("#message").slideUp(500);
+            $("#message").fadeTo(3000, 500).slideUp(600, function(){
+                $("#message").slideUp(600);
             });   
     });
 </script>

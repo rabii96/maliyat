@@ -10,7 +10,7 @@
                 <div class="col-md-12">
                     <?php echo $__env->make('includes.messages', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                    <form action="<?php echo e(route('addExpense')); ?>" method="POST" enctype="multipart/form-data">
+                    <form id="addExpenseForm" action="<?php echo e(route('addExpense')); ?>" method="POST" enctype="multipart/form-data">
                     <?php echo csrf_field(); ?>
                     <div class="portlet light ">
                         <div class="portlet-title">
@@ -28,7 +28,7 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label for="single0">اسم المصروف <span>*</span></label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder=""> 
+                                <input autocomplete="off" type="text" name="name" id="name" class="form-control" placeholder=""> 
                             </div>
                             </div>     
                                                                                     
@@ -61,24 +61,27 @@
                                     
                                 </select>
                             </div>
-                            </div>      
+                            </div>   
+                            
+                            <input autocomplete="off" type="hidden" name="service_id" id="service_id">
+                            <input autocomplete="off" type="hidden" name="project_id" id="project_id">
                                                                                     
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <div class="input-group">
-                                <label for="client_id">صاحب المصروف <span>*</span></label>
-                                <select id="client_id" name="client_id" class="form-control select2 ">
+                                <label for="employee_id">صاحب المصروف <span>*</span></label>
+                                <select id="employee_id" name="employee_id" class="form-control select2 ">
                                     <option></option>
-                                    <?php if($clients): ?>
-                                        <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($c->id); ?>"><?php echo e($c->name); ?></option>
+                                    <?php if($employees): ?>
+                                        <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $e): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($e->id); ?>"><?php echo e($e->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     <?php endif; ?>
                                 </select>
-                                <?php if($clients): ?>
-                                    <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php if($employees): ?>
+                                    <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $e): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <span class="input-group-btn btn-addon">
-                                            <button type="button" name="showClients" id="showClient<?php echo e($c->id); ?>" class="btn green hidden" data-toggle="modal" data-target="#client<?php echo e($c->id); ?>">عرض البيانات</button>
+                                            <button type="button" name="showEmployees" id="showEmployee<?php echo e($e->id); ?>" class="btn green hidden" data-toggle="modal" data-target="#employee<?php echo e($e->id); ?>">عرض البيانات</button>
                                         </span>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <?php endif; ?>
@@ -87,10 +90,10 @@
                             </div>
                             </div>    
                             
-                            <?php if($clients): ?>
-                                <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($employees): ?>
+                                <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $e): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             
-                            <div class="modal fade" id="client<?php echo e($c->id); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="employee<?php echo e($e->id); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -103,19 +106,64 @@
                             
                                             <div class="form-group">
                                                 <label class="font-purple">اسم صاحب المصروف </label>
-                                                <h4><?php echo e($c->name); ?></h4>
+                                                <h4><?php echo e($e->name); ?></h4>
                                             </div>
 
-                                            <?php if( $c->description): ?>
+                                            <div class="form-group">
+                                                <label class="font-purple">الايميل </label>
+                                                <h4><?php echo e($e->email); ?></h4>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="font-purple">الجوال </label>
+                                                <h4 dir="ltr" style="text-align: right"><?php echo e($e->phone); ?></h4>
+                                            </div>
+                                            <?php if( $e->description): ?>
                                                 <div class="form-group">
                                                     <label class="font-purple">نبذة</label>
-                                                    <h4><?php echo e($c->description); ?></h4>
+                                                    <h4><?php echo e($e->description); ?></h4>
                                                 </div>
                                             <?php endif; ?>
-                                            <?php if( $c->attachement): ?>
+                                            <div class="form-group">
+                                                    <label class="font-purple">المهمة</label>
+                                                    <h4><?php echo e(@$e->task->name); ?></h4>
+                                            </div>
+                                            <div class="form-group">
+                                                <?php if(@$e->employee_accounts): ?>
+                                                    <label class="font-purple">طرق التحويل</label>
+                                                    <?php if(@$e->employee_accounts[0]->transfer_method->name != 'أخرى'): ?>
+                                                        <h5>إسم طريقة التحويل : 
+                                                        <?php echo e(@$e->employee_accounts[0]->transfer_method->name); ?></h5>
+                                                    <?php endif; ?>
+                                                    <?php $__currentLoopData = @$e->employee_accounts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $account): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php if(@$account->transfer_method->name == 'باي بال'): ?>
+                                                            <h5>الايميل : 
+                                                            <?php echo e($account->paypal_email); ?></h5>
+                                                        <?php elseif(@$account->transfer_method->name == 'بنك'): ?>
+                                                            <h5>إسم البنك : 
+                                                            <?php echo e($account->bank_name); ?></h5>
+                                                            <h5>رقم الحساب : 
+                                                            <?php echo e($account->bank_account_number); ?></h5>
+                                                        <?php elseif(@$account->transfer_method->name == 'شيك'): ?>
+                                                            <h5>رقم الشيك : 
+                                                            <?php echo e($account->check_number); ?></h5>
+                                                        <?php elseif(@$account->transfer_method->name == 'أخرى'): ?>
+                                                            <h5>إسم طريقة التحويل : 
+                                                            <?php echo e($account->other_method_name); ?></h5>
+                                                            <h5>رقم الحساب : 
+                                                            <?php echo e($account->other_method_number); ?></h5>
+                                                        <?php else: ?>
+                                                            <h5>رقم الحساب : 
+                                                            <?php echo e(@$account->default_number); ?></h5>
+                                                        <?php endif; ?>
+                                                        <hr>
+                                                        
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                <?php endif; ?>
+                                            </div>
+                                            <?php if( $e->attachement): ?>
                                                 <div class="form-group">
                                                         <label class="font-purple">الملف المرفق</label>
-                                                        <h5><a dir="ltr" href="<?php echo e(asset('storage/attachements/')); ?>/<?php echo e($c->attachement); ?>" download><?php echo e($c->attachement); ?></a></h5>
+                                                        <h5><a dir="rtl" href="<?php echo e(asset('storage/attachements/')); ?>/<?php echo e($e->attachement); ?>" download><?php echo e($e->attachement); ?></a></h5>
                                                 </div>
                                             <?php endif; ?>
                             
@@ -134,7 +182,7 @@
                             <div class="form-group">
                                 <label for="bank_id">الحساب المحول منه <span>*</span></label>
                                 <select id="bank_id" name="bank_id" class="form-control select2 select-hide">
-                                    <option>-- إختر --</option>
+                                    <option value="" disabled selected>-- إختر --</option>
                                     <?php if($banks): ?>
                                         <?php $__currentLoopData = $banks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option value="<?php echo e($b->id); ?>"><?php echo e($b->name); ?></option>
@@ -149,7 +197,7 @@
                             <div class="form-group">
                                 <label for="transfer_method_id">طريقة التحويل <span>*</span></label>
                                 <select id="transfer_method_id" name="transfer_method_id" class="form-control select2 select-hide">
-                                    <option>-- إختر --</option>
+                                    <option value="" disabled selected>-- إختر --</option>
                                     <?php if($transferMethods): ?>
                                         <?php $__currentLoopData = $transferMethods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $t): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <?php if($t->id != 0): ?>
@@ -167,7 +215,7 @@
                                 <label for="value">المبلغ <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" id="value" name="value" class="form-control" placeholder=""> 
+                                    <input autocomplete="off" dir="ltr" style="text-align: right" type="text" id="value" name="value" class="form-control" placeholder=""> 
                                 </div>
                             </div>
                             </div>      
@@ -175,7 +223,8 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label for="percentage_id">إضافة نسبة <span>*</span></label>
-                                <select id="percentage_id" name="percentage_id" class="form-control select2 " multiple>
+                                <select id="percentage_id" name="percentage_id" class="form-control select2 ">
+                                    <option value="" disabled selected>-- إختر --</option>
                                     <?php if($percentages): ?>
                                         <?php $__currentLoopData = $percentages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option data-value="<?php echo e($p->value); ?>" value="<?php echo e($p->id); ?>"><?php echo e($p->name); ?></option>
@@ -190,7 +239,7 @@
                                 <label>إجمالى المبلغ مع النسبة <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input name="value_plus_percentage" id="value_plus_percentage" type="text" class="form-control" placeholder="" readonly> 
+                                    <input autocomplete="off" name="value_plus_percentage" id="value_plus_percentage" type="text" class="form-control" placeholder="" readonly> 
                                 </div>
                             </div>
                             </div>  
@@ -202,7 +251,7 @@
                                 <label for="date">التاريخ <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-calendar font-green "></i>
-                                <input name="date" id="date" type="text" class="form-control date" placeholder="">
+                                <input autocomplete="off" name="date" id="date" type="text" class="form-control date" placeholder="">
                                 </div>
                             </div>
                             </div> 
@@ -222,7 +271,7 @@
                                         <span class="input-group-addon btn default btn-file">
                                             <span class="fileinput-new"> إختر المرفق </span>
                                             <span class="fileinput-exists"> تغيير </span>
-                                            <input type="file" name="attachement"> </span>
+                                            <input autocomplete="off" type="file" name="attachement"> </span>
                                         <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> حذف </a>
                                     </div>
                                 </div>
