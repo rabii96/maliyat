@@ -101,7 +101,7 @@
                             <i class="widget-thumb-icon icon-calculator bg-green-seagreen"></i>
                             <div class="widget-thumb-body">
                                 <span class="widget-thumb-subtitle">ريال</span>
-                                <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $net_profit }}">0</span>
+                                <span dir="ltr" style="text-align: right" class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $net_profit }}">0</span>
                             </div>
                         <a class="more" href="javascript:;"> التفاصيل
                             <i class="m-icon-swapleft m-icon-white"></i>

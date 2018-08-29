@@ -260,7 +260,7 @@
 											<td>
 												{{ $ex->id }}
 											</td>
-											<td>{{ $ex->value_plus_percentage }}</td>
+											<td>{{ $ex->value_plus_percentage }} ريال</td>
 											<td>
 												@if($ex->project)
 													{{ $ex->project->client->name }}
