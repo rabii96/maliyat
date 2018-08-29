@@ -90,7 +90,7 @@
                                 <div class="col-md-12"> 
                                 <label for="payment-num">عدد الدفعات <span>*</span></label>
                                 <select id="payment-num" class="form-control select2 select-hide">
-                                    <option value="0">-- إختر --</option>
+                                    <option value="" selected disabled>-- إختر --</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>

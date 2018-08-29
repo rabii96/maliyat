@@ -455,7 +455,7 @@
                     defaultTable.innerHTML = '';
                 });
 
-                $('#type').on('change',function(e){
+                $('#type_id').on('change',function(e){
                     $("#project_service_id option").remove();
                     $.ajax({
                         url: "{{ route('updateProjectServiceId') }}",
@@ -488,6 +488,7 @@
 
                 $('#project_service_id').on('change',function(){
                    var type = $('#project_service_id :selected').attr('data-type');
+                   $('#type').val(type);
                    var id = $('#project_service_id :selected').val();
                    $('#project_id').val('');
                    $('#service_id').val('');
@@ -508,6 +509,9 @@
                 
                 
                 $('#payment-num').on('change', function() {
+                    if($('#changed_payments').val() == 'false'){
+                        $('#changed_payments').val('true');
+                    }
                     $("#payment-container").slideDown();
                     var num = $('#payment-num :selected').text();
                     $("#payment-list li").remove();

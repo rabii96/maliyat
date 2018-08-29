@@ -125,8 +125,17 @@
                             <div class="form-group">
                                 <label>إجمالى المبلغ المصروف</label>
                                 <div class="col-md-12">
+
+                                    @php
+                                        $expenses = 0;
+                                        if($service->expenses){
+                                            foreach ($service->expenses as $ex) {
+                                                $expenses += $ex->value_plus_percentage;
+                                            }
+                                        }
+                                    @endphp
                                 
-                                    <input type="text" class="form-control" value="xx ريال" disabled>
+                                    <input type="text" class="form-control" value="{{ $expenses }} ريال" disabled>
                                     
                                 </div>
                             </div>

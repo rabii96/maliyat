@@ -14,4 +14,8 @@ class Bank extends Model
         return $this->hasMany('App\RealPayment');
     }
 
+    public function expenses(){
+        return $this->hasMany('App\Expense');
+    }
+
 }

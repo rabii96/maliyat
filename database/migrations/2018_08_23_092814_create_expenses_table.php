@@ -17,17 +17,18 @@ class CreateExpensesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('expense_type_id');
-            $table->string('details');
-            $table->integer('project_id');
-            $table->integer('service_id');
+            $table->string('details')->nullable();
+            $table->integer('project_id')->nullable();
+            $table->integer('service_id')->nullable();
             $table->integer('employee_id');
             $table->integer('bank_id');
             $table->integer('transfer_method_id');
             $table->float('value');
             $table->float('value_plus_percentage');
-            $table->string('percentage_id');
+            $table->integer('percentage_id');
             $table->dateTime('date');
-            $table->string('attachement');
+            $table->string('attachement')->nullable();
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

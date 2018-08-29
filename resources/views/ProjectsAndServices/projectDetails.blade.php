@@ -129,7 +129,7 @@
                                                             
                             <div class="col-md-4 col-xs-12">
                                 <div class="form-group">
-                                <label>إجمالى المبلغ المتبقية </label>
+                                <label>إجمالى المبلغ المتبقي </label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
                                     <input type="text" class="form-control" value="{{ $total_remaining }}" disabled> 
@@ -139,10 +139,19 @@
                             
                             <div class="col-md-4 col-xs-12">
                                 <div class="form-group">
-                                <label>إجمالى المبلغ المصروفة </label>
+                                <label>إجمالى المبلغ المصروف </label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" class="form-control" value="xx" disabled> 
+                                    @php
+                                        $expenses = 0;
+                                        if($project->expenses){
+                                            foreach ($project->expenses as $ex) {
+                                                $expenses += $ex->value_plus_percentage;
+                                            }
+                                        }
+                                        $net_profit = $total_paid - $expenses;
+                                    @endphp
+                                    <input type="text" class="form-control" value="{{ $expenses }}" disabled> 
                                 </div>
                             </div>
                             </div>
@@ -243,7 +252,7 @@
                                 <label>صافى الربح</label>
                                 <div class="col-md-12">
                                 
-                                    <input type="text" class="form-control" value="xxx ريال" disabled>
+                                    <input type="text" class="form-control" value="{{ $net_profit }} ريال" disabled>
                                     
                                 </div>
                             </div>

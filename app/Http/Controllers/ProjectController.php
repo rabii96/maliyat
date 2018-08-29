@@ -130,12 +130,18 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit($id)
     {
-        //
+        $project = Project::find($id);
+        $settings = Settings::find(1);
+        $clients = Client::all();
+        return view('ProjectsAndServices.editProject')->with([
+            'settings' => $settings,
+            'clients' => $clients,
+            'project' => $project,
+        ]);
     }
 
     /**
@@ -145,9 +151,9 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $id)
     {
-        //
+        dd($request->all());
     }
 
     /**

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  mar. 28 août 2018 à 16:48
+-- Généré le :  mer. 29 août 2018 à 18:47
 -- Version du serveur :  10.1.35-MariaDB
 -- Version de PHP :  7.2.9
 
@@ -46,9 +46,10 @@ CREATE TABLE `banks` (
 --
 
 INSERT INTO `banks` (`id`, `name`, `account_number`, `initial_balance`, `current_balance`, `iban_number`, `percentage_name`, `percentage_value`, `created_at`, `updated_at`) VALUES
-(1, 'بنك مصر', '111-222-333', 1500.00, 2200.00, '123456789', NULL, NULL, '2018-08-28 11:42:36', '2018-08-28 12:00:00'),
-(2, 'بنك البركة', '555 222 480', 3000.00, 1545.00, '987654321', NULL, NULL, '2018-08-28 11:43:08', '2018-08-28 12:00:21'),
-(3, 'بنك الزيتونة', '12121212', 2500.00, 3900.00, '1005002', 'نسبة زيتونية', 5.00, '2018-08-28 11:43:59', '2018-08-28 12:00:46');
+(1, 'بنك مصر', '111-222-333', 1500.00, 2600.00, '123456789', NULL, NULL, '2018-08-28 11:42:36', '2018-08-29 10:14:20'),
+(2, 'بنك البركة', '555 222 480', 3000.00, 1535.00, '987654321', NULL, NULL, '2018-08-28 11:43:08', '2018-08-29 15:42:32'),
+(3, 'بنك الزيتونة', '12121212', 2500.00, 2079.80, '1005002', 'نسبة زيتونية', 5.00, '2018-08-28 11:43:59', '2018-08-29 12:11:05'),
+(4, 'بنك الأمان', '123456', 3500.00, 3000.00, '09003200', NULL, NULL, '2018-08-29 15:39:46', '2018-08-29 15:42:32');
 
 -- --------------------------------------------------------
 
@@ -76,7 +77,8 @@ CREATE TABLE `bank_transfers` (
 INSERT INTO `bank_transfers` (`id`, `from_bank_id`, `to_bank_id`, `transfer_amount`, `net_transfer_amount`, `percentage_id`, `transfer_percentage`, `attachement`, `created_at`, `updated_at`) VALUES
 (1, 1, 2, 500.00, 495.00, 1, 5.00, NULL, '2018-08-28 11:45:02', '2018-08-28 11:45:02'),
 (2, 2, 3, 1000.00, 800.00, 2, 200.00, NULL, '2018-08-28 11:45:25', '2018-08-28 11:45:25'),
-(3, 2, 1, 1000.00, 1000.00, NULL, 0.00, NULL, '2018-08-28 11:45:59', '2018-08-28 11:45:59');
+(3, 2, 1, 1000.00, 1000.00, NULL, 0.00, NULL, '2018-08-28 11:45:59', '2018-08-28 11:45:59'),
+(4, 4, 2, 500.00, 495.00, 1, 5.00, NULL, '2018-08-29 15:42:32', '2018-08-29 15:42:32');
 
 -- --------------------------------------------------------
 
@@ -184,10 +186,12 @@ INSERT INTO `expected_payments` (`id`, `project_id`, `index`, `value`, `paid_val
 (1, 1, 1, 200.00, 200.00, 0.00, '2018-08-05 12:57:12', 'Paid', '2018-08-28 11:57:12', '2018-08-28 12:00:00'),
 (2, 1, 2, 150.00, 50.00, 100.00, '2018-08-15 12:57:12', 'Unpaid', '2018-08-28 11:57:12', '2018-08-28 12:00:21'),
 (3, 1, 3, 150.00, 0.00, 150.00, '2018-08-31 12:57:12', 'Unpaid', '2018-08-28 11:57:12', '2018-08-28 11:57:12'),
-(4, 2, 1, 1000.00, 600.00, 400.00, '2018-07-25 12:58:59', 'Unpaid', '2018-08-28 11:58:59', '2018-08-28 12:00:46'),
+(4, 2, 1, 1000.00, 1000.00, 0.00, '2018-07-25 12:58:59', 'Paid', '2018-08-28 11:58:59', '2018-08-29 10:14:20'),
 (5, 2, 2, 600.00, 0.00, 600.00, '2018-08-30 12:58:59', 'Unpaid', '2018-08-28 11:58:59', '2018-08-28 11:58:59'),
 (6, 2, 3, 400.00, 0.00, 400.00, '2018-09-05 12:58:59', 'Unpaid', '2018-08-28 11:58:59', '2018-08-28 11:58:59'),
-(7, 2, 4, 500.00, 0.00, 500.00, '2018-09-06 12:58:59', 'Unpaid', '2018-08-28 11:58:59', '2018-08-28 11:58:59');
+(7, 2, 4, 500.00, 0.00, 500.00, '2018-09-06 12:58:59', 'Unpaid', '2018-08-28 11:58:59', '2018-08-28 11:58:59'),
+(8, 3, 1, 700.00, 0.00, 700.00, '2018-08-21 14:52:01', 'Unpaid', '2018-08-29 13:52:01', '2018-08-29 13:52:01'),
+(9, 3, 2, 800.00, 0.00, 800.00, '2018-08-30 14:52:01', 'Unpaid', '2018-08-29 13:52:01', '2018-08-29 13:52:01');
 
 -- --------------------------------------------------------
 
@@ -199,20 +203,30 @@ CREATE TABLE `expenses` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `expense_type_id` int(11) NOT NULL,
-  `details` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `project_id` int(11) NOT NULL,
-  `service_id` int(11) NOT NULL,
+  `details` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
+  `service_id` int(11) DEFAULT NULL,
   `employee_id` int(11) NOT NULL,
   `bank_id` int(11) NOT NULL,
   `transfer_method_id` int(11) NOT NULL,
   `value` double(8,2) NOT NULL,
   `value_plus_percentage` double(8,2) NOT NULL,
-  `percentage_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `percentage_id` int(11) NOT NULL,
   `date` datetime NOT NULL,
-  `attachement` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attachement` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remarks` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `expenses`
+--
+
+INSERT INTO `expenses` (`id`, `name`, `expense_type_id`, `details`, `project_id`, `service_id`, `employee_id`, `bank_id`, `transfer_method_id`, `value`, `value_plus_percentage`, `percentage_id`, `date`, `attachement`, `remarks`, `created_at`, `updated_at`) VALUES
+(2, 'مصروف خدمة', 2, 'يا سلام', NULL, 2, 2, 2, 1, 500.00, 505.00, 1, '2018-08-29 00:00:00', NULL, NULL, '2018-08-29 09:25:15', '2018-08-29 09:25:15'),
+(3, 'مصروف جديد', 3, 'إنه مصروف جديد', 1, NULL, 2, 3, 3, 1500.00, 1800.00, 2, '2018-09-05 10:53:22', 'resolution_1535540002.sh', NULL, '2018-08-29 09:53:22', '2018-08-29 09:53:22'),
+(4, 'شراء لوازم التنظيف', 2, NULL, NULL, 1, 2, 3, 1, 20.00, 20.20, 1, '2018-08-29 13:11:05', NULL, NULL, '2018-08-29 12:11:05', '2018-08-29 12:11:05');
 
 -- --------------------------------------------------------
 
@@ -334,7 +348,8 @@ CREATE TABLE `projects` (
 
 INSERT INTO `projects` (`id`, `name`, `start_date`, `end_date`, `details`, `client_id`, `total_cost`, `attachement`, `remarks`, `finished`, `created_at`, `updated_at`) VALUES
 (1, 'تصميم موقع خيرتك', '2018-08-03 12:57:11', '2018-09-01 12:57:11', 'تصميم موقع خيرتك باستخدام laravel', 1, 500.00, 'micro0.1554433_1535461031.jpg', NULL, 0, '2018-08-28 11:57:11', '2018-08-28 11:57:11'),
-(2, 'برمجة اغوية', '2018-07-04 12:58:59', '2018-09-06 12:58:59', 'لا توجد', 2, 2500.00, NULL, NULL, 1, '2018-08-28 11:58:59', '2018-08-28 11:59:30');
+(2, 'برمجة لغوية', '2018-07-04 12:58:59', '2018-09-06 12:58:59', 'لا توجد', 2, 2500.00, NULL, NULL, 1, '2018-08-28 11:58:59', '2018-08-28 11:59:30'),
+(3, 'مشروع', '2018-08-01 14:52:01', '2018-08-10 14:52:01', NULL, 1, 1500.00, NULL, NULL, 0, '2018-08-29 13:52:01', '2018-08-29 13:52:01');
 
 -- --------------------------------------------------------
 
@@ -367,7 +382,8 @@ CREATE TABLE `real_payments` (
 INSERT INTO `real_payments` (`id`, `expected_payment_id`, `project_id`, `paid_value`, `transfer_method_id`, `to_bank_id`, `date`, `from_bank_id`, `from_bank_number`, `check_number`, `paypal_email`, `transferer_name`, `attachement`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 200.00, NULL, 1, '2018-08-28 13:00:01', NULL, NULL, NULL, NULL, 'ربيع', NULL, '2018-08-28 12:00:01', '2018-08-28 12:00:01'),
 (2, 2, 1, 50.00, 1, 2, '2018-08-28 13:00:21', NULL, NULL, NULL, 'paypal@mail.com', NULL, NULL, '2018-08-28 12:00:21', '2018-08-28 12:00:21'),
-(3, 4, 2, 600.00, 2, 3, '2018-08-28 13:00:46', 2, '123123123', NULL, NULL, NULL, NULL, '2018-08-28 12:00:46', '2018-08-28 12:00:46');
+(3, 4, 2, 600.00, 2, 3, '2018-08-28 13:00:46', 2, '123123123', NULL, NULL, NULL, NULL, '2018-08-28 12:00:46', '2018-08-28 12:00:46'),
+(4, 4, 2, 400.00, 1, 1, '2018-08-29 11:14:20', NULL, NULL, NULL, 'paypal@mail.com', NULL, NULL, '2018-08-29 10:14:20', '2018-08-29 10:14:20');
 
 -- --------------------------------------------------------
 
@@ -389,6 +405,14 @@ CREATE TABLE `services` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `services`
+--
+
+INSERT INTO `services` (`id`, `name`, `total_cost`, `start_date`, `end_date`, `details`, `attachement`, `remarks`, `finished`, `created_at`, `updated_at`) VALUES
+(1, 'تنظيف قاعة المؤسسة', 50.00, '2018-08-28 08:14:25', '2018-08-28 08:14:25', NULL, NULL, NULL, 1, '2018-08-29 07:14:25', '2018-08-29 15:46:42'),
+(2, 'خدمة قوية', 1500.00, '2018-08-15 08:14:55', '2018-08-23 08:14:55', NULL, NULL, NULL, 0, '2018-08-29 07:14:55', '2018-08-29 07:14:55');
+
 -- --------------------------------------------------------
 
 --
@@ -407,7 +431,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `title`, `created_at`, `updated_at`) VALUES
-(1, 'نظام الماليات', NULL, NULL);
+(1, 'نظام الماليات', NULL, '2018-08-28 15:10:45');
 
 -- --------------------------------------------------------
 
@@ -603,13 +627,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `banks`
 --
 ALTER TABLE `banks`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `bank_transfers`
 --
 ALTER TABLE `bank_transfers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `clients`
@@ -633,13 +657,13 @@ ALTER TABLE `employee_accounts`
 -- AUTO_INCREMENT pour la table `expected_payments`
 --
 ALTER TABLE `expected_payments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `expense_types`
@@ -663,19 +687,19 @@ ALTER TABLE `percentages`
 -- AUTO_INCREMENT pour la table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `real_payments`
 --
 ALTER TABLE `real_payments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `settings`
@@ -693,7 +717,7 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT pour la table `transfer_methods`
 --
 ALTER TABLE `transfer_methods`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `users`

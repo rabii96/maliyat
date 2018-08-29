@@ -193,7 +193,7 @@
 													</a>
 													<ul class="dropdown-menu pull-right bg-grey-cararra">
 														<li><a href="{{ route('projectDetails', ['id' => $project->id]) }}" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-														<li><a href="#" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
+														<li><a href="{{ route('editProject', ['id' => $project->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
 														<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
 														<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
 													</ul>

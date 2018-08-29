@@ -9,4 +9,8 @@ class Percentage extends Model
     public function bankTransfers(){
         return $this->hasMany('App\BankTransfer');
     }
+
+    public function expenses(){
+        return $this->hasMany('App\Expense');
+    }
 }

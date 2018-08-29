@@ -12,6 +12,7 @@ use App\TransferMethod;
 use App\Project;
 use App\Service;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ExpenseController extends Controller
 {
@@ -23,7 +24,11 @@ class ExpenseController extends Controller
     public function index()
     {
         $settings = Settings::find(1);
-        return view('Expenses.allExpenses')->with('settings',$settings);
+        $expenses = Expense::all();
+        return view('Expenses.allExpenses')->with([
+            'settings' => $settings,
+            'expenses' => $expenses,
+        ]);
     }
 
 
@@ -40,13 +45,17 @@ class ExpenseController extends Controller
         $banks = Bank::all();
         $transferMethods = TransferMethod::all();
         $percentages = Percentage::all();
+        $projects = Project::all();
+        $services = Service::all();
         return view('Expenses.addExpense')->with([
             'settings' => $settings,
             'expenseTypes' => $expenseTypes,
             'employees' => $employees,
             'banks' => $banks,
             'transferMethods' => $transferMethods,
-            'percentages' => $percentages
+            'percentages' => $percentages,
+            'projects' => $projects,
+            'services' => $services
         ]);
     }
 
@@ -73,18 +82,38 @@ class ExpenseController extends Controller
         ]);
         $expense = new Expense;
         $expense->name = $request->input('name');
-        $expense->type = $request->input('type');
-       // $expense->project_service_id = $request->input('project_service_id');
+        $expense->expense_type_id = $request->input('type_id');
+        $type = $request->input('type');
+        if($type == 'project'){
+            $expense->project_id = $request->input('project_id');
+        }else if($type == 'service'){
+            $expense->service_id = $request->input('service_id');
+        }
         $expense->employee_id = $request->input('employee_id');
         $expense->bank_id = $request->input('bank_id');
         $expense->transfer_method_id = $request->input('transfer_method_id');
         $expense->value = $request->input('value');
-       // $expense->percentage_id = $request->input('percentage_id');
+        $expense->percentage_id = $request->input('percentage_id');
         $expense->value_plus_percentage = $request->input('value_plus_percentage');
-        //$expense->date = $request->input('date');
+        $date = Carbon::createFromFormat('m/d/Y', $request->input('date'))->toDateTimeString();
+        $expense->date = $date ;
         $expense->details = $request->input('details');
-        $expense->remarks = $request->input('attachement');
-        //$expense->attachement = $request->input('attachement');
+        if($request->hasFile('attachement')){
+            $filenameWithExt = $request->file('attachement')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extenstion = $request->file('attachement')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
+            $path = $request->file('attachement')->storeAs('public/attachements' , $fileNameToStore);
+        }else{
+            $fileNameToStore = null;
+        }
+        $expense->attachement = $fileNameToStore;
+        $expense->remarks = $request->input('remarks');
+        $expense->save();
+        $b = Bank::find($request->input('bank_id'));
+        $b->current_balance -= $request->input('value_plus_percentage');
+        $b->save();
+        return redirect()->route('allExpenses')->with('success', 'تمت إضافة المصروف بنجاح');   
     }
 
     /**

@@ -15,7 +15,7 @@ $(function(){
     });
 
     $.validator.addMethod( "lettersonly", function( value, element ) {
-        return this.optional( element ) || /^[a-zأ-ي ]+$/i.test( value );
+        return this.optional( element ) || /^[a-zأ-ي ﻻءﻵ]+$/i.test( value );
     });
 
     $.validator.addMethod('customfloat', function (value, element) {

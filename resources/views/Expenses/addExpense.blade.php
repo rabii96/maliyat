@@ -36,8 +36,8 @@
                                                                                     
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
-                                <label for="type">النوع <span>*</span></label>
-                                <select id="type" name="type" class="form-control select2 select-hide">
+                                <label for="type_id">النوع <span>*</span></label>
+                                <select id="type_id" name="type_id" class="form-control select2 select-hide">
                                     <option disabled selected>-- إختر --</option>
                                     @if($expenseTypes)
                                         @foreach($expenseTypes as $ex)
@@ -60,13 +60,18 @@
                                 <label for="project_service_id">اسم المشروع/الخدمة <span>*</span></label>
                                 <select id="project_service_id" name="project_service_id" class="form-control select2 select-hide">
                                     <option disabled selected value="-1">-- إختر --</option>
-                                    
+                                    @foreach (@$projects as $p)
+                                        <option data-type="project" value="{{ $p->id }}">{{ $p->name }}</option>
+                                    @endforeach
+                                    @foreach (@$services as $s)
+                                        <option data-type="service" value="{{ $s->id }}">{{ $s->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             </div>   
-                            
-                            <input autocomplete="off" type="hidden" name="service_id" id="service_id">
-                            <input autocomplete="off" type="hidden" name="project_id" id="project_id">
+                            <input type="hidden" name="type" id="type">
+                            <input type="hidden" name="project_id" id="project_id">
+                            <input type="hidden" name="service_id" id="service_id">
                                                                                     
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">

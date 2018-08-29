@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'PagesController@dashboard')->name('dashboard');
+Route::get('/', 'DashboardController@index')->name('dashboard');
 
 
 
@@ -23,7 +23,11 @@ Route::get('/projects-and-services', 'ProjectController@index')->name('allProjec
 Route::get('/projects/add', 'ProjectController@create')->name('addProject');
 Route::post('/projects/add', 'ProjectController@store')->name('addProject');
 Route::get('/project/{id}', 'ProjectController@show')->name('projectDetails');
+Route::get('/project/edit/{id}', 'ProjectController@edit')->name('editProject');
+Route::post('/project/edit/{id}', 'ProjectController@update')->name('editProject');
+Route::get('/project/delete/{id}', 'ProjectController@destroy')->name('deleteProject');
 Route::get('/project/{id}/receive', 'ProjectController@receive')->name('receiveProject');
+Route::get('/project/download/{id}', 'ProjectController@download')->name('downloadProject');
 // Services routes
 Route::get('/services/add', 'ServiceController@create')->name('addService');
 Route::post('/services/add', 'ServiceController@store')->name('addService');

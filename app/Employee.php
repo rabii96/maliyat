@@ -12,4 +12,8 @@ class Employee extends Model
     public function task(){
         return $this->belongsTo('App\Task', 'task_id');
     }
+
+    public function expenses(){
+        return $this->hasMany('App\Expense');
+    }
 }
