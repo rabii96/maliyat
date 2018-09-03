@@ -36,7 +36,9 @@ class Expense extends Model
 
     public function getDates(){
         return [
-            'date'
+            'date',
+            'created_at',
+            'updates_at'
         ];
     }
 }

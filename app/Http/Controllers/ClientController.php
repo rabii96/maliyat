@@ -143,7 +143,7 @@ class ClientController extends Controller
         $client = Client::find($id);
 
 
-        $html = view('users.clientPDF',['client'=>$client])->render(); // file render
+        $html = view('Users.clientPDF',['client'=>$client])->render(); // file render
 
         $pdfarr = [
             'title'=> $client->name,

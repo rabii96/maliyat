@@ -85,7 +85,7 @@ class BankTransferController extends Controller
         $banks = Bank::all();
         $percentages = Percentage::all();
         if($bankTransfer){
-            return view('settings.editBankTransfer')->with([
+            return view('Settings.editBankTransfer')->with([
                 'bankTransfer' => $bankTransfer,
                 'settings' => $settings,
                 'banks' => $banks,
@@ -170,7 +170,7 @@ class BankTransferController extends Controller
     public function download($id){
         $bankTransfer = BankTransfer::find($id);
 
-        $html = view('settings.bankTransferPDF',['bankTransfer'=>$bankTransfer])->render(); // file render
+        $html = view('Settings.bankTransferPDF',['bankTransfer'=>$bankTransfer])->render(); // file render
 
         $pdfarr = [
             'title'=> 'تحويل',

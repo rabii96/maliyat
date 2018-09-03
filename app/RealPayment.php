@@ -28,7 +28,9 @@ class RealPayment extends Model
 
     public function getDates(){
         return [
-            'date'
+            'date',
+            'created_at',
+            'updated_at'
         ];
     }
 }

@@ -4,7 +4,7 @@
     <div class="page-header-inner ">
         <!-- BEGIN LOGO -->
         <div id="siteLogo-wrapper" class="page-logo">
-            <a href="#">
+            <a href="{{ route('dashboard') }}">
                 <img id="siteLogo" src="{{ asset('storage/photos/logo.png ') }}" alt="logo" class="logo-default" style="height: 45px; width:auto; margin-top: 17px" /> </a>
             <div class="menu-toggler sidebar-toggler">
             </div>

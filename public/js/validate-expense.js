@@ -33,7 +33,7 @@ $(function(){
                 lettersonly : true,
                 minlength : 3
             } , 
-            type : {
+            type_id : {
                 required : true
             } ,
             project_service_id : {
@@ -66,7 +66,7 @@ $(function(){
                 lettersonly : 'إسم المصروف  يجب أن يحتوي على حروف فقط.',
                 minlength :  'إسم المصروف يجب أن يحتوي على 3 حروف على الأقل.',
             } , 
-            type : {
+            type_id : {
                 required : 'الرجاء إختيار النوع.'
             } ,
             project_service_id : {

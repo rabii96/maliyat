@@ -57,6 +57,9 @@ Route::get('/payments/delete/{id}', 'RealPaymentController@destroy')->name('dele
 // Expenses routes
 Route::get('/expenses/add', 'ExpenseController@create')->name('addExpense');
 Route::post('/expenses/add', 'ExpenseController@store')->name('addExpense');
+Route::get('/expenses/edit/{id}', 'ExpenseController@edit')->name('editExpense');
+Route::post('/expenses/edit/{id}', 'ExpenseController@update')->name('editExpense');
+Route::get('/expenses/delete/{id}', 'ExpenseController@destroy')->name('deleteExpense');
 Route::get('/expenses', 'ExpenseController@index')->name('allExpenses');
 Route::post('/updateProjectServiceId', 'ExpenseController@updateProjectServiceId')->name('updateProjectServiceId');
 

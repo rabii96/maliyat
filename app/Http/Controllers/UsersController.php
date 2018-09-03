@@ -185,7 +185,7 @@ class UsersController extends Controller
 
       //  return view('users.userPDF')->with('user', $user);
 
-        $html = view('users.userPDF',['user'=>$user])->render(); // file render
+        $html = view('Users.userPDF',['user'=>$user])->render(); // file render
 
         $pdfarr = [
             'title'=> $user->username,

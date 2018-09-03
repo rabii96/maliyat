@@ -349,7 +349,7 @@ class EmployeeController extends Controller
         $employee = Employee::find($id);
 
 
-        $html = view('users.employeePDF',['employee'=>$employee])->render(); // file render
+        $html = view('Users.employeePDF',['employee'=>$employee])->render(); // file render
 
         $pdfarr = [
             'title'=> $employee->name,

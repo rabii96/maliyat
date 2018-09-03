@@ -23,7 +23,7 @@
                             <div class="tools"> </div>
                         </div>
                         <div class="portlet-body">
-                        <form method="POST" action="{{ route('addPayment') }}" enctype="multipart/form-data">
+                        <form id="addPaymentForm" method="POST" action="{{ route('addPayment') }}" enctype="multipart/form-data">
                             @csrf                               
                                         
                                                                                     
@@ -45,9 +45,10 @@
                             <div class="form-group">
                                 <label for="payment_number">رقم الدفعة <span>*</span></label>
                                 <select id="payment_number" name="payment_number" class="form-control select2 ">
-                                    <option></option>
+                                    <option value=""></option>
+                                    <option value="0" disabled>إختر اسم المشروع أولا</option>
                                 </select>
-                                <input type="hidden" name="expected_payment_id" id="expected_payment_id">
+                                <input autocomplete="off"  type="hidden" name="expected_payment_id" id="expected_payment_id">
                             </div>
                             </div>                           
                                                                 
@@ -56,7 +57,7 @@
                                 <label>مبلغ الدفعة <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input id="paymentValue" type="text" class="form-control" placeholder="" disabled> 
+                                    <input autocomplete="off"  id="paymentValue" type="text" class="form-control" placeholder="" disabled> 
                                 </div>
                             </div>
                             </div>                             
@@ -66,7 +67,7 @@
                                 <label>المبلغ المدفوع <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input id="currentPaidValue" name="currentPaidValue" type="text" class="form-control" placeholder=""> 
+                                    <input autocomplete="off"  id="currentPaidValue" name="currentPaidValue" type="text" class="form-control" placeholder=""> 
                                 </div>
                             </div>
                             </div>        
@@ -75,7 +76,7 @@
                             <div class="form-group">
                                 <label for="payment-type">نوع الدفعة <span>*</span></label>
                                 <select id="payment-type" name="transfer_method" class="form-control select2 select-hide">
-                                    <option disabled selected>-- إختر --</option>
+                                    <option value="" disabled selected>-- إختر --</option>
                                     <option value="-1">كاش</option>
                                     @foreach($transferMethods as $transferMethod)
                                             @if( $transferMethod->id  != 0 )  
@@ -92,7 +93,7 @@
                                 <label>الباقى <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input id="currentRemainingValue" name="currentRemainingValue" type="text" class="form-control" placeholder="" disabled> 
+                                    <input autocomplete="off"  id="currentRemainingValue" name="currentRemainingValue" type="text" class="form-control" placeholder="" disabled> 
                                 </div>
                             </div>
                             </div> 
@@ -101,7 +102,7 @@
                             <div class="form-group">
                                 <label for="bank_payment">البنك المحول اليه <span>*</span></label>
                                 <select id="bank_payment" name="to_bank_id" class="form-control select2 ">
-                                    <option></option>
+                                    <option value=""></option>
                                     @if($banks)
                                         @foreach($banks as $bank)
                                             <option data-bank_number="{{ $bank->account_number }}" value="{{ $bank->id }}">{{ $bank->name }}</option>
@@ -114,7 +115,7 @@
                             <div class="col-md-6 col-md-offset-3 col-sm-12">                   
                             <div class="form-group">
                                 <label for="bank_payment_number">رقم الحساب </label>
-                                    <input id="bank_payment_number" type="text" class="form-control" placeholder="" disabled> 
+                                    <input autocomplete="off"  id="bank_payment_number" type="text" class="form-control" placeholder="" disabled> 
                             </div>  
                             </div>
                                         
@@ -134,7 +135,7 @@
                             <div class="form-group">
                                 <label for="single">اسم البنك <span>*</span></label>
                                 <select id="single" name="from_bank_id" class="form-control select2 ">
-                                    <option></option>
+                                    <option value=""></option>
                                     @if($banks)
                                         @foreach($banks as $bank)
                                             <option data-bank_number="{{ $bank->account_number }}" value="{{ $bank->id }}">{{ $bank->name }}</option>
@@ -148,14 +149,14 @@
                                 <label for="single">تاريخ <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-calendar font-green "></i>
-                                <input type="text" class="form-control date" name="date_check" placeholder="">
+                                <input autocomplete="off"  type="text" class="form-control date" name="date_check" placeholder="">
                                 </div>
                             </div>
                                                                     
                                                     
                             <div class="form-group">
                                 <label for="single">رقم الشيك <span>*</span></label>
-                                    <input type="text" name="check_number" class="form-control" placeholder=""> 
+                                    <input autocomplete="off"  type="text" name="check_number" class="form-control" placeholder=""> 
                             </div>
                             
                             
@@ -172,7 +173,7 @@
                                                     
                             <div class="form-group">
                                 <label for="single3">اسم المحول <span>*</span></label>
-                                <input id="single3" name="transferer_name" type="text" class="form-control" placeholder=""> 
+                                <input autocomplete="off"  id="transferer_name" name="transferer_name" type="text" class="form-control" placeholder=""> 
                             </div>
                                     
                                                                     
@@ -180,7 +181,7 @@
                                 <label for="single">تاريخ <span>*</span></label>
                                 <div class="input-icon">
                                     <i class="fa fa-calendar font-green "></i>
-                                <input type="text" class="form-control date" name="date_cash" placeholder="">
+                                <input autocomplete="off" id="date_cash" type="text" class="form-control date" name="date_cash" placeholder="">
                                 </div>
                             </div>
                             
@@ -200,8 +201,8 @@
                                                                     
                                                     
                             <div class="form-group">
-                                <label for="single">حساب الباى بال <span>*</span></label>
-                                <input type="email" name="paypal_email" class="form-control" placeholder=""> 
+                                <label for="paypal_email">حساب الباى بال <span>*</span></label>
+                                <input autocomplete="off"  type="email" id="paypal_email" name="paypal_email" class="form-control" placeholder=""> 
                             </div>
                             
                             
@@ -217,8 +218,8 @@
                                                                             
                                                             
                                     <div class="form-group">
-                                            <label for="single">اسم البنك <span>*</span></label>
-                                            <select id="single" name="from_bank_id" class="form-control select2 ">
+                                            <label for="from_bank_id">اسم البنك <span>*</span></label>
+                                            <select id="from_bank_id" name="from_bank_id" class="form-control select2 ">
                                                 <option></option>
                                                 @if($banks)
                                                     @foreach($banks as $bank)
@@ -226,9 +227,11 @@
                                                     @endforeach
                                                 @endif
                                             </select>
-                                            <br>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
                                         <label for="single">رقم الحساب<span>*</span></label>
-                                        <input type="text" name="from_bank_number" class="form-control" placeholder=""> 
+                                        <input autocomplete="off" dir="ltr" style="text-align: right" type="text" id="from_bank_number" name="from_bank_number" class="form-control" placeholder=""> 
                                     </div>
                                     
                                     
@@ -245,7 +248,7 @@
                                                             
                                     <div class="form-group">
                                         <label for="single">رقم الحساب<span>*</span></label>
-                                        <input type="text" name="other_number" class="form-control" placeholder=""> 
+                                        <input autocomplete="off"  type="text" id="other_number" name="other_number" class="form-control" placeholder=""> 
                                     </div>
                                     
                                     
@@ -262,7 +265,7 @@
                                                             
                                     <div class="form-group">
                                         <label for="single">رقم الحساب<span>*</span></label>
-                                        <input type="text" name="default_number" class="form-control" placeholder=""> 
+                                        <input autocomplete="off" type="text" id="default_number" name="default_number" class="form-control" placeholder=""> 
                                     </div>
                                     
                                     
@@ -290,7 +293,7 @@
                                         <span class="input-group-addon btn default btn-file">
                                             <span class="fileinput-new"> إختر المرفق </span>
                                             <span class="fileinput-exists"> تغيير </span>
-                                            <input type="file" name="attachement"> </span>
+                                            <input autocomplete="off"  type="file" name="attachement"> </span>
                                         <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> حذف </a>
                                     </div>
                                 </div>

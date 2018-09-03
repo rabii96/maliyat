@@ -457,11 +457,72 @@
 															<div class="portlet-body bnk">
 																{{ $bank->current_balance }} ريال
 															</div>
-															<a class="more" href="javascript:;"> التفاصيل
+															<a class="more" href="javascript:;" data-toggle="modal" data-target="#showBankDetails{{ $bank->id }}"> التفاصيل
 																<i class="m-icon-swapleft m-icon-dark"></i>
 															</a>
 														</div>
 													</div>
+													<div class="modal fade" id="showBankDetails{{ $bank->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h5 class="modal-title pull-left" id="exampleModalLabel">بيانات البنك</h5>
+																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
+																</div>
+																<div class="modal-body">
+																	<div class="form-group">
+																		<label class="font-purple">اسم البنك </label>
+																		<h4>{{ $bank->name}}</h4>
+																	</div>
+																	
+
+																	<div class="form-group">
+																		<label class="font-purple">رقم حسابه</label>
+																		<h4 dir="ltr" style="text-align: right">{{ $bank->account_number}}</h4>
+																	</div>
+
+																	
+																	<div class="form-group">
+																		<label class="font-purple">الرصيد الإفتتاحي</label>
+																		<h4>{{ $bank->initial_balance}} ريال</h4>
+																	</div>
+
+																	<div class="form-group">
+																		<label class="font-purple">الرصيد الحالي</label>
+																		<h4>{{ $bank->current_balance}} ريال</h4>
+																	</div>
+
+																	<div class="form-group">
+																		<label class="font-purple">تحويلات البنك</label>
+																		@foreach ($bankTransfers as $t)
+																			@if(($t->from_bank == $bank) || ($t->to_bank == $bank))
+																				<h5>من : {{ $t->from_bank->name }}</h5>
+																				<h5>إلى : {{ $t->to_bank->name }}</h5>
+																				<h5>المبلغ المحول : {{ $t->transfer_amount }}</h5>
+																				@if($t->percentage)
+																					<h5>النسبة المقتطعة : {{ $t->percentage->name}} ({{$t->percentage->value}}%)</h5>
+																					<h5>صافي المبلغ : {{ $t->net_transfer_amount }}</h5>
+																				@endif
+																				<hr>
+																			@endif
+
+																			
+																		@endforeach
+																		
+																	</div>
+
+																	
+																	
+											
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-secondary" data-dismiss="modal">إغـلاق</button>
+																</div>
+															</div>
+														</div>
+												</div>
 												@endforeach
 											@endif
 										</div>
@@ -704,8 +765,8 @@
 									
 
 									<div>
-										<input id="checkbox-2" class="checkbox-style" name="checkbox-2" type="checkbox">
-										<label for="checkbox-2" class="checkbox-style-3-label">
+										<input id="bank_filter" class="checkbox-style" name="bank_filter" value="true" checked type="checkbox">
+										<label for="bank_filter" class="checkbox-style-3-label">
 											جميع تحويلات بنك
 										</label>
 										<div class="col-md-12">
@@ -744,24 +805,47 @@
 											$('#to').removeAttr('disabled');
 										});
 										$('#any_time').on('click',function(){
+											$('#from').val('');
 											$('#from').attr('disabled','disabled');
+											$('#to').val('');
 											$('#to').attr('disabled','disabled');
+										});
+
+										$('#bank_filter').on('click', function(){
+											if($('#bank_filter').val()=="true"){
+												$("select[name='filters[]']").attr('disabled', 'disabled').trigger('change');
+												$("select[name='filters[]']").val(null).trigger('change');
+												$('#bank_filter').val('false');
+											}else{
+												$("select[name='filters[]']").removeAttr('disabled').trigger('change');
+												$('#bank_filter').val('true');
+											}
 										});
 										function applyFilters(){
 											var table = $('#bankTransfers_table').DataTable();
 											table.draw();
 										}
-										var allowFilter = ['bankTransfers_table'];
+										var bankTransfers = ['bankTransfers_table'];
 										$.fn.dataTable.ext.search.push(
 											function( settings, data, dataIndex ) {
-												if ( $.inArray( settings.nTable.getAttribute('id'), allowFilter ) == -1 )
+												if ( $.inArray( settings.nTable.getAttribute('id'), bankTransfers ) == -1 )
 												{
 													return true;
 												}
 												var filters = []
-												$("select[name='filters[]'] :selected").each(function(){
-													filters.push($(this).val());
-												});
+												if($('#bank_filter').val()=="true"){
+														$("select[name='filters[]'] :selected").each(function(){
+														filters.push($(this).val());
+													});
+												}else{
+													$("select[name='filters[]'] :selected").each(function(){
+														filters.push($(this).val());
+													});
+													$("select[name='filters[]'] :not(:selected)").each(function(){
+														filters.push($(this).val());
+													});
+												}
+												
 												var time = $("input[name='time']:checked" ).val();
 												var fromBank = data[1] ;
 												var toBank = data[2] ;
@@ -1226,30 +1310,30 @@
 
 									<div class="filters__section-content">
 
-									<div>
-										<input id="checkbox-1" name="checkbox-1" type="checkbox" checked>
-										<label for="checkbox-1" class="checkbox-style-3-label">
-											اى وقت
-										</label>
-									</div>
-
-									<div class="col-md-12">
-										<hr>
-									</div>
-
-									<div>
-										<input id="checkbox-10" class="checkbox-style" name="checkbox-10" type="checkbox">
-										<label for="checkbox-10" class="checkbox-style-3-label">
-											فترة محددة
-										</label>
-										<div class="col-md-12">
-											<input type="text" class="form-control date" name="from" placeholder="من تاريخ">
+										<div>
+											<input id="any_time2" class="checkbox-style" name="time2" value="any_time" type="radio" checked>
+											<label for="any_time2" class="checkbox-style-3-label">
+												اى وقت
+											</label>
 										</div>
-										<hr>
+
 										<div class="col-md-12">
-											<input type="text" class="form-control date" name="to" placeholder="إلى تاريخ">
+											<hr>
 										</div>
-									</div>
+
+										<div>
+											<input id="limited_time2" class="checkbox-style" name="time2" value="limited_time" type="radio">
+											<label for="limited_time2" class="checkbox-style-3-label">
+												فترة محددة
+											</label>
+											<div class="col-md-12">
+												<input type="text" class="form-control date" id="from2" name="from" disabled placeholder="من تاريخ">
+											</div>
+											<hr>
+											<div class="col-md-12">
+												<input type="text" class="form-control date" id="to2" name="to" disabled placeholder="إلى تاريخ">
+											</div>
+										</div>
 
 
 									<div class="col-md-12">
@@ -1258,35 +1342,37 @@
 									
 
 									<div>
-										<input id="checkbox-222" class="checkbox-style" name="checkbox-222" type="checkbox">
-										<label for="checkbox-222" class="checkbox-style-3-label">
-											جميع نسب مشروع
+										<input id="project_filter" class="checkbox-style" name="project_filter" value="false" type="checkbox">
+										<label for="project_filter" class="checkbox-style-3-label">
+											جميع مصروفات مشروع
 										</label>
 										<div class="col-md-12">
-										<select class="form-control select2 " multiple>
-											<option>-- إختر --</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-										</select>
+											<select disabled id="p_filter" class="form-control select2 ">
+												<option></option>
+												@foreach ($projects as $p)
+													<option value="{{ $p->name }}">{{ $p->name }}</option>
+												@endforeach
+											</select>
 										</div>
 									</div>
+			
+								
+									<div class="col-md-12">
+										<hr>
+									</div>
 									
-
 									<div>
-										<input id="checkbox-333" class="checkbox-style" name="checkbox-333" type="checkbox">
-										<label for="checkbox-333" class="checkbox-style-3-label">
-											جميع نسب عميل
+										<input id="client_filter" class="checkbox-style" name="client_filter" value="false" type="checkbox">
+										<label for="client_filter" class="checkbox-style-3-label">
+											جميع مصروفات عميل
 										</label>
 										<div class="col-md-12">
-										<select class="form-control select2 " multiple>
-											<option>-- إختر --</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-										</select>
+											<select disabled id="c_filter" class="form-control select2 ">
+												<option></option>
+												@foreach ($clients as $client)
+													<option value="{{ $client->name }}">{{ $client->name }}</option>
+												@endforeach
+											</select>
 										</div>
 									</div>
 
@@ -1295,11 +1381,141 @@
 									<div class="clearfix"></div>
 
 									<div class="text-center margin-top-30">
-										<button type="button" class="btn green">عـرض</button>
+										<button onclick="applyFilters2()" type="button" class="btn green">عـرض</button>
 									</div>
 
 									</div>
 									</div>
+
+									<script>
+											var from2 = '';
+											$("#from2").on("change",function(){
+												var selected = $(this).val();
+												from2 = selected;
+											});
+											var to2 = '';
+											$("#to2").on("change",function(){
+												var selected = $(this).val();
+												to2 = selected;
+											});
+
+											$('#limited_time2').on('click',function(){
+												$('#from2').removeAttr('disabled');
+												$('#to2').removeAttr('disabled');
+											});
+											$('#any_time2').on('click',function(){
+												$('#from2').val('');
+												$('#from2').attr('disabled','disabled');
+												$('#to2').val('');
+												$('#to2').attr('disabled','disabled');
+											});
+											$('#project_filter').on('click', function(){
+												if($('#project_filter').val()=="true"){
+													$("#p_filter").attr('disabled', 'disabled').trigger('change');
+													$("#p_filter").val(null).trigger('change');
+													$('#project_filter').val('false');
+												}else{
+													$("#p_filter").removeAttr('disabled').trigger('change');
+													$('#project_filter').val('true');
+												}
+											});
+											$('#client_filter').on('click', function(){
+												if($('#client_filter').val()=="true"){
+													$("#c_filter").attr('disabled', 'disabled').trigger('change');
+													$("#c_filter").val(null).trigger('change');
+													$('#client_filter').val('false');
+												}else{
+													$("#c_filter").removeAttr('disabled').trigger('change');
+													$('#client_filter').val('true');
+												}
+											});
+
+											function applyFilters2(){
+											var table = $('#percentageResume').DataTable();
+											table.draw();
+										}
+										var percentageResume = ['percentageResume'];
+										$.fn.dataTable.ext.search.push(
+											function( settings, data, dataIndex ) {
+												if ( $.inArray( settings.nTable.getAttribute('id'), percentageResume ) == -1 )
+												{
+													return true;
+												}
+												
+												
+												var time = $("input[name='time2']:checked" ).val();
+												var date = data[5];
+												var inRange;
+												console.log('date : '+date+' , from : '+from2+' , to : '+to2);
+												if(time == 'any_time'){
+													inRange = true;
+												}else{
+													inRange = false;
+													if((from2 == '')&&(to2 == '')){
+														inRange = true;
+													}else if(from2 == ''){
+														if	(
+																(moment(date).isBefore(to2)) || 
+																(moment(date).isSame(to2))
+															)
+														{
+															inRange = true;
+														}
+													}else if(to2 == ''){
+														if	(
+																(moment(date).isAfter(from2)) || 
+																(moment(date).isSame(from2))
+															)
+														{
+															inRange = true;
+														}
+													}else{
+														if	( 
+																(
+																	(moment(date).isBefore(to2)) || 
+																	(moment(date).isSame(to2))
+																) && 
+																(
+																	(moment(date).isAfter(from2)) || 
+																	(moment(date).isSame(from2))
+																)
+															) 
+														{
+															inRange = true;
+														}
+													}
+												}
+												var client_filter = $('#client_filter').val();
+												var clientMatches = true;
+												var project_filter = $('#project_filter').val();
+												var projectMatches = true;
+												if(client_filter == 'false'){
+													clientMatches = true;
+												}else{
+													var c_filter = $("#c_filter").val();
+													var client = data[2];
+													if(c_filter == client){
+														clientMatches = true;
+													}else{
+														clientMatches = false;
+													}
+												}
+												if(project_filter == 'false'){
+													projectMatches = true;
+												}else{
+													var p_filter = $("#p_filter").val();
+													var project = data[1];
+													if(p_filter == project){
+														projectMatches = true;
+													}else{
+														projectMatches = false;
+													}
+												}
+										
+												return inRange && projectMatches && clientMatches;
+											}
+										);
+										</script>
 
 									</div></form></div></div>
 									</div>
@@ -1313,7 +1529,7 @@
 									<div class="col-md-9 clearfix">
 									
 									<div class="table-responsive margin-top-40">
-										<table class="table table-striped table-bordered table-hover dt-responsive grd_view" width="100%" id="sample_1">
+										<table class="table table-striped table-bordered table-hover dt-responsive grd_view" width="100%" id="percentageResume">
 										<thead>
 											<tr>
 												<th class="desktop no-padding">م</th>
@@ -1325,18 +1541,73 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td>1</td>
-												<td>تطبيق مياه</td>
-												<td>احمد على</td>
-												<td>عمولة</td>
-												<td>100 ريال</td>
-												<td class="text-center">
-													<a class="btn btn-sm purple btn-outline" href="#"> عـرض
-														<i class="icon-eye"></i>
-													</a>
-												</td>
-											</tr>
+											@foreach ($percentages as $p)
+												@foreach ($p->expenses as $pexp)
+													@if($pexp->project)
+														<tr>
+															<td>{{ $loop->iteration }}</td>
+																<td>{{ $pexp->project->name }}</td>
+															<td>{{ @$pexp->project->client->name }}</td>
+															<td>{{ $pexp->percentage->name }}</td>
+															<td>{{ $pexp->value_plus_percentage - $pexp->value}} ريال</td>
+															<td data-search="{{ $pexp->date->format('m/d/Y') }}" class="text-center">
+																<a class="btn btn-sm purple btn-outline" href="#" data-toggle="modal" data-target="#showPer{{ $pexp->id }}"> عـرض
+																	<i class="icon-eye"></i>
+																</a>
+															</td>
+														</tr>
+														<div class="modal fade" id="showPer{{ $pexp->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h5 class="modal-title pull-left" id="exampleModalLabel">تقرير النسبة</h5>
+																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																				<span aria-hidden="true">&times;</span>
+																			</button>
+																		</div>
+																		<div class="modal-body">
+															
+																			<div class="form-group">
+																				<label class="font-purple">اسم النسبة </label>
+																				<h4>{{ $pexp->percentage->name}} ({{ $pexp->percentage->value }}%)</h4>
+																			</div>
+
+																			<div class="form-group">
+																				<label class="font-purple">اسم المشروع </label>
+																				<h4>{{ $pexp->project->name}}</h4>
+																			</div>
+
+																			<div class="form-group">
+																				<label class="font-purple">اسم العميل </label>
+																				<h4>{{ $pexp->project->client->name}}</h4>
+																			</div>
+
+																			<div class="form-group">
+																				<label class="font-purple">اسم المصروف الذي استعملت فيه </label>
+																				<h4>{{ $pexp->name}}</h4>
+																			</div>
+
+																			<div class="form-group">
+																				<label class="font-purple">قيمة المصروف</label>
+																				<h4>{{ $pexp->value}} ريال</h4>
+																			</div>
+
+																			<div class="form-group">
+																				<label class="font-purple">قيمة النسبة</label>
+																				<h4 dir="ltr" style="text-align: right">{{ $pexp->value}} x {{ $pexp->percentage->value}}% = {{ $pexp->value_plus_percentage - $pexp->value}} ريال</h4>
+																			</div>
+																			
+													
+																		</div>
+																		<div class="modal-footer">
+																			<button type="button" class="btn btn-secondary" data-dismiss="modal">إغـلاق</button>
+																		</div>
+																	</div>
+																</div>
+														</div>
+													@endif
+												@endforeach
+											@endforeach
 										</tbody>
 									</table>
 									</div>

@@ -55,6 +55,7 @@
     <script src="{{ asset('js/validate-employees.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/validate-clients.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/validate-expense.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/validate-payment.js') }}" type="text/javascript"></script>
 
 
     
@@ -77,6 +78,22 @@
 
                 $('#addTask').click(function (e){
                     e.preventDefault();
+                    @php
+                        $permissions = unserialize(Auth::user()->permissions);
+                        if($permissions == null){
+                            $permissions = [];
+                        }
+                        if(in_array('settingsGeneralAdd',$permissions)){
+                            $denied = 'false';
+                        }else{
+                            $denied = 'true';
+                        }
+                    @endphp
+                    if('{{ $denied }}' == 'true'){
+                        $('#taskName').val('');
+                        alert('صلاحياتك لا تمكنك من القيام بهذه العملية');
+                        return ;
+                    }
                     $.ajax ({
                         url: "{{ route('addTask') }}",
                         method: 'post',
@@ -91,6 +108,22 @@
 
                 $('#addExpenseType').click(function (e){
                     e.preventDefault();
+                    @php
+                        $permissions = unserialize(Auth::user()->permissions);
+                        if($permissions == null){
+                            $permissions = [];
+                        }
+                        if(in_array('settingsGeneralAdd',$permissions)){
+                            $denied = 'false';
+                        }else{
+                            $denied = 'true';
+                        }
+                    @endphp
+                    if('{{ $denied }}' == 'true'){
+                        $('#expenseTypeName').val('');
+                        alert('صلاحياتك لا تمكنك من القيام بهذه العملية');
+                        return ;
+                    }
                     $.ajax ({
                         url: "{{ route('addExpenseType') }}",
                         method: 'post',
@@ -106,6 +139,22 @@
 
                 $('#addTransferMethod').click(function (e){
                     e.preventDefault();
+                    @php
+                        $permissions = unserialize(Auth::user()->permissions);
+                        if($permissions == null){
+                            $permissions = [];
+                        }
+                        if(in_array('settingsGeneralAdd',$permissions)){
+                            $denied = 'false';
+                        }else{
+                            $denied = 'true';
+                        }
+                    @endphp
+                    if('{{ $denied }}' == 'true'){
+                        $('#transferMethodName').val('');
+                        alert('صلاحياتك لا تمكنك من القيام بهذه العملية');
+                        return ;
+                    }
                     $.ajax ({
                         url: "{{ route('addTransferMethod') }}",
                         method: 'post',
@@ -120,6 +169,27 @@
 
                 $('#addBank').click(function (e){
                     e.preventDefault();
+                    @php
+                        $permissions = unserialize(Auth::user()->permissions);
+                        if($permissions == null){
+                            $permissions = [];
+                        }
+                        if(in_array('settingsBankAdd',$permissions)){
+                            $denied = 'false';
+                        }else{
+                            $denied = 'true';
+                        }
+                    @endphp
+                    if('{{ $denied }}' == 'true'){
+                        $('#bank_name').val('');
+                        $('#account_number').val('');
+                        $('#initial_balance').val('');
+                        $('#iban_number').val('');
+                        $('#percentage_name').val('');
+                        $('#percentage_value').val('');
+                        alert('صلاحياتك لا تمكنك من القيام بهذه العملية');
+                        return ;
+                    }
                     $.ajax ({
                         url: "{{ route('addBank') }}",
                         method: 'post',
@@ -202,6 +272,27 @@
 
                 $('#addBankTransfer').click(function (e){
                     e.preventDefault();
+                    @php
+                        $permissions = unserialize(Auth::user()->permissions);
+                        if($permissions == null){
+                            $permissions = [];
+                        }
+                        if(in_array('settingsGeneralAdd',$permissions)){
+                            $denied = 'false';
+                        }else{
+                            $denied = 'true';
+                        }
+                    @endphp
+                    if('{{ $denied }}' == 'true'){
+                        $('#transfer_amount').val('');
+                        $('#net_transfer_amount').val('');
+                        $('#transfer_percentage_value').val('0');
+                        $('#dismissAttachement').click();
+                        $('#select_from_bank').val(null).trigger('change');
+                        $('#select_to_bank').val(null).trigger('change');
+                        alert('صلاحياتك لا تمكنك من القيام بهذه العملية');
+                        return ;
+                    }
                     var formData = new FormData();
                     var attachement = $('#attachement');
                     formData.append('transfer_amount', $('#transfer_amount').val());
@@ -263,7 +354,7 @@
                     });
                 });
 
-                $('#currentPaidValue').on('keyup',function(){
+                function calcRemainingValue(){
                     var paymentValue = parseFloat($('#paymentValue').val());
                     if(!isNaN(paymentValue)){
                         var currentPaidValue = parseFloat($('#currentPaidValue').val());
@@ -277,6 +368,10 @@
                             }
                         }
                     }
+                }
+
+                $('#currentPaidValue').on('keyup',function(){
+                    calcRemainingValue();
                 });
 
                 $('#payment_number').on('change',function(){
@@ -286,6 +381,7 @@
                         $('#paymentValue').val(payment_value);
                         $('#currentRemainingValue').val(payment_value);
                     }
+                    calcRemainingValue();
                 });
 
                 $('#bank_payment').on('change', function(){

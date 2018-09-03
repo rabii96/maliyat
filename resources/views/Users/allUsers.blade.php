@@ -43,6 +43,12 @@
 													
 													<div class="filters__section-content">
 
+															<div class="filters__label filters__label--vertical">
+																<input id="selectAll" class="checkbox-style" name="selectAll" value="0" checked type="checkbox">
+																<label for="selectAll" class="checkbox-style-3-label">
+																إختر الكل
+																</label>
+															</div>
 
 														<div>
 															<input id="selectUsers" class="checkbox-style" name="filter[]" value="مستخدم" checked type="checkbox">
@@ -67,9 +73,21 @@
 
 
 														<script>
-															
+															$('#selectAll').on('change', function(){
+																if($('#selectAll').val() == '1'){
+																	$("input[name='filter[]']:not(:checked)").each(function(){
+																		$(this).trigger('click').trigger('change');
+																	});
+																	$('#selectAll').val('0');
+																}else{
+																	$("input[name='filter[]']:checked").each(function(){
+																		$(this).trigger('click').trigger('change');
+																	});
+																	$('#selectAll').val('1');
+																}
+															});
 															function applyFilters(){
-																var table = $('#sample_1').DataTable();
+																var table = $('#allUsers_table').DataTable();
 																table.draw();
 															}
 

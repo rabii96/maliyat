@@ -14,7 +14,9 @@ class Service extends Model
     public function getDates(){
         return [
             'start_date',
-            'end_date'
+            'end_date',
+            'created_at',
+            'updated_at'
         ];
     }
 }

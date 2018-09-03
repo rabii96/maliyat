@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use Auth;
 class TaskController extends Controller
 {
     public function __construct()
@@ -19,16 +20,24 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->ajax()) {
-            $taskName = $request->input('taskName');
-            if($taskName!=''){
-                $task = new Task;
-                $task->name = $taskName;
-                $task->save();
-                return($task);
-            }else{
-                return('Empty task name');
-            }     
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if(in_array('settingsGeneralAdd',$permissions)){
+            if($request->ajax()) {
+                $taskName = $request->input('taskName');
+                if($taskName!=''){
+                    $task = new Task;
+                    $task->name = $taskName;
+                    $task->save();
+                    return($task);
+                }else{
+                    return('Empty task name');
+                }     
+            }
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
         }
     }
 

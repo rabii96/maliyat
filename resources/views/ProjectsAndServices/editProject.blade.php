@@ -64,14 +64,30 @@
                                     @endforeach
                                 </select>
                             </div>
-                            </div>                           
+                            </div>          
+                                @php
+                                    $nbPayments = 0;
+                                    foreach ($project->expected_payments as $exp) {
+                                        $nbPayments ++;
+                                    }
+
+                                    if($project->real_payments->count()!=0){
+                                        $disabled = "disabled";
+                                    }else{
+                                        $disabled = "" ;
+                                    }
+                                @endphp                 
                                                                 
                             <div class="col-md-6 col-md-offset-3 col-sm-12">
                             <div class="form-group">
                                 <label>تكلفة المشروع <span>*</span></label>
+                                @if($disabled !='')
+                                    <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="لا يمكنك تغيير تكلفة المشروع لأنه سبق أن دفع البعض من مبالغ الدفعات أو كل مبالغها">؟</button>
+                                @endif
                                 <div class="input-icon">
                                     <i class="fa fa-money font-green "></i>
-                                    <input type="text" name="total_cost" dir="ltr" style="text-align: right" id="total_cost" onkeyup="updateLastPayment()" value="{{ $project->total_cost }}" class="form-control" placeholder=""> 
+                                    <input {{ $disabled }} type="text" name="total_cost" dir="ltr" style="text-align: right" id="total_cost" onkeyup="updateLastPayment()" value="{{ $project->total_cost }}" class="form-control" placeholder=""> 
+                                    
                                 </div>
                             </div>
                             </div>
@@ -88,20 +104,6 @@
                                                     
                             <div class="form-group">
                                 <div class="col-md-12"> 
-                                    @php
-                                        $nbPayments = 0;
-                                        foreach ($project->expected_payments as $exp) {
-                                            $nbPayments ++;
-                                        }
-
-                                        if($project->real_payments->count()!=0){
-                                            $disabled = "disabled";
-                                        }else{
-                                            $disabled = "" ;
-                                        }
-                                    @endphp
-                                    
-                                   
 
                                     <label for="payment-num">عدد الدفعات <span>*</span></label>
                                     @if($disabled !='')
@@ -149,7 +151,8 @@
                                     var last = $('#payment-num :selected').text();
                                     var total_cost = parseFloat ($('#total_cost').val());
                                     
-                                    if(last == ''+i){
+                                    if(last == ''+i){ htop
+
                                         var payments_sum = 0;
                                         $("input[name='paymentValue[]']").each(function(){
                                             var x = parseFloat($(this).val());
@@ -190,11 +193,15 @@
                                 
                                 
                                 <ol id="payment-list">
+                                    @php
+                                        $at_least_one_paid = "false";   
+                                    @endphp
                                     @foreach ($project->expected_payments as $exp)
 
                                         @php
                                             if($exp->real_payments->count()!=0){
                                                 $disabled = 'disabled' ;
+                                                $at_least_one_paid = "true";
                                             }else{
                                                 $disabled = '';
                                             }
@@ -205,7 +212,7 @@
                                                     <label class="sr-only">القيمة</label>
                                                     <div class="input-icon">
                                                         <i class="fa fa-money font-green"></i>
-                                                    <input {{ $disabled }} type="text" dir="ltr" style="text-align: right" name="paymentValue[]" value="{{$exp->value}}" id="paymentValue{{$exp->index}}"onkeyup="updateCost({{$exp->index}});" class="form-control w-100" placeholder="القيمة" >
+                                                    <input {{ $at_least_one_paid=="true" ? 'disabled' : $disabled }} type="text" dir="ltr" style="text-align: right" name="paymentValue[]" value="{{$exp->value}}" id="paymentValue{{$exp->index}}"onkeyup="updateCost({{$exp->index}});" class="form-control w-100" placeholder="القيمة" >
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -218,13 +225,18 @@
                                                 <input type="hidden" name="paymentIndex[]" id="paymentIndex{{ $exp->index }}" value="{{ $exp->index }}" {{ $disabled }}>
                                                 @if($disabled !='')
                                                     <p class="btn btn-info" data-toggle="tooltip" data-placement="top" title="لا يمكنك تغييرالدفعة لأنه سبق أن دفع البعض من مبلغها أو كل المبلغ">؟</p>
+                                                @else
+                                                    @if($at_least_one_paid == "true")
+                                                        <p class="btn btn-info" data-toggle="tooltip" data-placement="top" title="لا يمكنك تغيير مبلغ الدفعة لأنه سبق أن دفع البعض من مبلغ الدفعات الأخرى أو كل المبالغ">؟</p>
+                                                    @endif
                                                 @endif
                                             </div>
                                             <hr>
                                         </li>
                                     @endforeach
                                 </ol>
-                            
+                                <input type="hidden" name="at_least_one_paid" id="at_least_one_paid" value="{{ $at_least_one_paid }}">
+
                             
                             </div>
                             

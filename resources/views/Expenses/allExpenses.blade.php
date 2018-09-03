@@ -12,6 +12,7 @@
 			<!-- BEGIN DASHBOARD STATS 1-->
 			<div class="row clearfix">
 				<div class="col-md-12">
+					@include('includes.messages')
 					<!-- BEGIN EXAMPLE TABLE PORTLET-->
 					<div class="portlet light ">
 						<div class="portlet-title">
@@ -37,112 +38,74 @@
 						<div class="filters filters--vertical">
 						<div class="filters__section filters__section--category filters__section--vertical">
 						
-						<div class="filters__label filters__label--vertical">
-						<input id="checkbox-0" class="checkbox-style" name="checkbox-0" type="checkbox" checked>
-						<label for="checkbox-0" class="checkbox-style-3-label">
-						إختر الكل
-						</label>
-						</div>
 						
 						<div class="filters__section-content">
 
 						<div>
-							<input id="checkbox-1" class="checkbox-style" name="checkbox-1" type="checkbox" checked>
-							<label for="checkbox-1" class="checkbox-style-3-label">
+							<input id="selectAll" class="checkbox-style" name="type_filter" type="checkbox" checked>
+							<label for="selectAll" class="checkbox-style-3-label">
+								الكل
+							</label>
+						</div>
+
+						@foreach($expenseTypes as $e)
+							<div>
+								<input id="{{ $e->name }}" value="{{ $e->name }}" class="checkbox-style" name="type[]" checked type="checkbox">
+								<label for="{{ $e->name }}" class="checkbox-style-3-label">
+									{{ $e->name }}
+								</label>
+							</div>
+						@endforeach
+
+						
+
+						<div class="col-md-12">
+							<hr>
+						</div>
+
+						<div>
+							<input id="all" value="all" class="checkbox-style" name="time" checked type="radio">
+							<label for="all" class="checkbox-style-3-label">
 								الكل
 							</label>
 						</div>
 
 						<div>
-							<input id="checkbox-2" class="checkbox-style" name="checkbox-2" type="checkbox">
-							<label for="checkbox-2" class="checkbox-style-3-label">
-								مصاريف المشاريع
-							</label>
-						</div>
-
-						<div>
-							<input id="checkbox-3" class="checkbox-style" name="checkbox-3" type="checkbox">
-							<label for="checkbox-3" class="checkbox-style-3-label">
-								مصاريف المدفوعات
-							</label>
-						</div>
-
-						<div>
-							<input id="checkbox-4" class="checkbox-style" name="checkbox-4" type="checkbox">
-							<label for="checkbox-4" class="checkbox-style-3-label">
-								مصاريف الخدمات
-							</label>
-						</div>
-
-						<div>
-							<input id="checkbox-5" class="checkbox-style" name="checkbox-5" type="checkbox">
-							<label for="checkbox-5" class="checkbox-style-3-label">
-								المصاريف التشغيلية
-							</label>
-						</div>
-
-						<div>
-							<input id="checkbox-6" class="checkbox-style" name="checkbox-6" type="checkbox">
-							<label for="checkbox-6" class="checkbox-style-3-label">
-								مكافئات
-							</label>
-							</div>
-
-						<div>
-							<input id="checkbox-7" class="checkbox-style" name="checkbox-7" type="checkbox">
-							<label for="checkbox-7" class="checkbox-style-3-label">
-								عمولات
-							</label>
-						</div>
-
-						<div>
-							<input id="checkbox-8" class="checkbox-style" name="checkbox-8" type="checkbox">
-							<label for="checkbox-8" class="checkbox-style-3-label">
-								حوافز
-							</label>
-						</div>
-
-						<div class="col-md-12">
-							<hr>
-						</div>
-						
-						<div>
-							<input id="checkbox-20" class="checkbox-style" name="checkbox-20" type="checkbox">
-							<label for="checkbox-20" class="checkbox-style-3-label">
+							<input id="last_week" value="last_week" class="checkbox-style" name="time" type="radio">
+							<label for="last_week" class="checkbox-style-3-label">
 								اخر اسبوع
 							</label>
 						</div>
 
 						<div>
-							<input id="checkbox-30" class="checkbox-style" name="checkbox-30" type="checkbox">
-							<label for="checkbox-30" class="checkbox-style-3-label">
+							<input id="last_month" value="last_month" class="checkbox-style" name="time" type="radio">
+							<label for="last_month" class="checkbox-style-3-label">
 								اخر شهر
 							</label>
 						</div>
 
 						<div>
-							<input id="checkbox-40" class="checkbox-style" name="checkbox-40" type="checkbox">
-							<label for="checkbox-40" class="checkbox-style-3-label">
+							<input id="last_year" value="last_year" class="checkbox-style" name="time" type="radio">
+							<label for="last_year" class="checkbox-style-3-label">
 								اخر سنة
 							</label>
 						</div>
-						
 
 						<div class="col-md-12">
 							<hr>
 						</div>
 
 						<div>
-							<input id="checkbox-10" class="checkbox-style" name="checkbox-10" type="checkbox">
-							<label for="checkbox-10" class="checkbox-style-3-label">
+							<input id="limited_time" class="checkbox-style" name="time" id="limited_time" value="limited_time" type="radio">
+							<label for="limited_time" class="checkbox-style-3-label">
 								فترة محددة
 							</label>
 							<div class="col-md-12">
-								<input type="text" class="form-control date" name="from" placeholder="من تاريخ">
+								<input type="text" class="form-control date" id="from" name="from" disabled placeholder="من تاريخ">
 							</div>
 							<hr>
 							<div class="col-md-12">
-								<input type="text" class="form-control date" name="to" placeholder="إلى تاريخ">
+								<input type="text" class="form-control date" id="to" name="to" disabled placeholder="إلى تاريخ">
 							</div>
 						</div>
 
@@ -152,17 +115,16 @@
 						</div>
 						
 						<div>
-							<input id="checkbox-11" class="checkbox-style" name="checkbox-11" type="checkbox">
-							<label for="checkbox-11" class="checkbox-style-3-label">
-								جميع مصاريف مشروع
+							<input id="project_filter" class="checkbox-style" name="project_filter" value="false" type="checkbox">
+							<label for="project_filter" class="checkbox-style-3-label">
+								جميع مصروفات مشروع
 							</label>
 							<div class="col-md-12">
-								<select id="single" class="form-control select2 " multiple>
+								<select disabled id="p_filter" class="form-control select2 ">
 									<option></option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
+									@foreach ($projects as $p)
+										<option value="{{ $p->name }}">{{ $p->name }}</option>
+									@endforeach
 								</select>
 							</div>
 						</div>
@@ -173,17 +135,16 @@
 						</div>
 						
 						<div>
-							<input id="checkbox-12" class="checkbox-style" name="checkbox-12" type="checkbox">
-							<label for="checkbox-12" class="checkbox-style-3-label">
-								جميع مصاريف عميل
+							<input id="client_filter" class="checkbox-style" name="client_filter" value="false" type="checkbox">
+							<label for="client_filter" class="checkbox-style-3-label">
+								جميع مصروفات عميل
 							</label>
 							<div class="col-md-12">
-								<select id="single0" class="form-control select2 " multiple>
+								<select disabled id="c_filter" class="form-control select2 ">
 									<option></option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
+									@foreach ($clients as $client)
+										<option value="{{ $client->name }}">{{ $client->name }}</option>
+									@endforeach
 								</select>
 							</div>
 						</div>
@@ -192,11 +153,192 @@
 						<div class="clearfix"></div>
 							
 						<div class="text-center margin-top-30">
-							<button type="button" class="btn green">عـرض</button>
+							<button onclick="applyFilters()" type="button" class="btn green">عـرض</button>
 						</div>
 
 						</div>
 						</div>
+
+						<script>
+							var from = '';
+								$("#from").on("change",function(){
+									var selected = $(this).val();
+									from = selected;
+								});
+								var to = '';
+								$("#to").on("change",function(){
+									var selected = $(this).val();
+									to = selected;
+								});
+	
+								$('[name="time"]').on('click',function(){
+									if($('[name="time"]:checked').val() == 'limited_time'){
+										$('#from').removeAttr('disabled');
+										$('#to').removeAttr('disabled');
+									}else{
+										$('#from').val('');
+										$('#from').attr('disabled','disabled');
+										$('#to').val('');
+										$('#to').attr('disabled','disabled');
+									}
+								});
+								$('#project_filter').on('click', function(){
+									if($('#project_filter').val()=="true"){
+										$("#p_filter").attr('disabled', 'disabled').trigger('change');
+										$("#p_filter").val(null).trigger('change');
+										$('#project_filter').val('false');
+									}else{
+										$("#p_filter").removeAttr('disabled').trigger('change');
+										$('#project_filter').val('true');
+									}
+								});
+								$('#client_filter').on('click', function(){
+									if($('#client_filter').val()=="true"){
+										$("#c_filter").attr('disabled', 'disabled').trigger('change');
+										$("#c_filter").val(null).trigger('change');
+										$('#client_filter').val('false');
+									}else{
+										$("#c_filter").removeAttr('disabled').trigger('change');
+										$('#client_filter').val('true');
+									}
+								});
+
+								$('#selectAll').on('change', function(){
+									if($('#selectAll').val() == '1'){
+										$("input[name='type[]']:not(:checked)").each(function(){
+											$(this).trigger('click').trigger('change');
+										});
+										$('#selectAll').val('0');
+									}else{
+										$("input[name='type[]']:checked").each(function(){
+											$(this).trigger('click').trigger('change');
+										});
+										$('#selectAll').val('1');
+									}
+								});
+	
+								function applyFilters(){
+									var table = $('#allExpensesTable').DataTable();
+									table.draw();
+									window.scrollTo(0, 0);
+								}
+	
+								$.fn.dataTable.ext.search.push(
+									function( settings, data, dataIndex ) {
+										var time = $("[name='time']:checked").val();
+										var typeFilters = [];
+										$("[name='type[]']:checked").each(function(){
+											typeFilters.push($(this).val());
+										});
+										var date = data[7];
+										var timeMatches = true;
+										if(time == 'all'){
+											timeMatches = true;
+										}else if(time == 'last_week'){
+											@php
+												$last_week = (new Date('-7 days'))->format('m/d/Y');
+											@endphp
+											var last_week = '{{ $last_week }}';
+											if((moment(date).isAfter(last_week)) || (moment(date).isSame(last_week))){
+												timeMatches = true;
+											}else{
+												timeMatches = false;
+											}
+										}else if(time == 'last_month'){
+											@php
+												$last_month = (new Date('-30 days'))->format('m/d/Y');
+											@endphp
+											var last_month = '{{ $last_month }}';
+											if((moment(date).isAfter(last_month)) || (moment(date).isSame(last_month))){
+												timeMatches = true;
+											}else{
+												timeMatches = false;
+											}
+										}else if(time == 'last_year'){
+											@php
+												$last_year = (new Date('-365 days'))->format('m/d/Y');
+											@endphp
+											var last_year = '{{ $last_year }}';
+											if((moment(date).isAfter(last_year)) || (moment(date).isSame(last_year))){
+												timeMatches = true;
+											}else{
+												timeMatches = false;
+											}
+										}else if(time == 'limited_time'){
+											timeMatches = false;
+											if((from == '')&&(to == '')){
+												timeMatches = true;
+											}else if(from == ''){
+												if	(
+														(moment(date).isBefore(to)) || 
+														(moment(date).isSame(to))
+													)
+												{
+													timeMatches = true;
+												}
+											}else if(to == ''){
+												if	(
+														(moment(date).isAfter(from)) || 
+														(moment(date).isSame(from))
+													)
+												{
+													timeMatches = true;
+												}
+											}else{
+												if	( 
+														(
+															(moment(date).isBefore(to)) || 
+															(moment(date).isSame(to))
+														) && 
+														(
+															(moment(date).isAfter(from)) || 
+															(moment(date).isSame(from))
+														)
+													) 
+												{
+													timeMatches = true;
+												}
+											}
+										}
+										var client_filter = $('#client_filter').val();
+										var clientMatches = true;
+										var project_filter = $('#project_filter').val();
+										var projectMatches = true;
+										if(client_filter == 'false'){
+											clientMatches = true;
+										}else{
+											var c_filter = $("#c_filter").val();
+											var client = data[6];
+											if(c_filter == client){
+												clientMatches = true;
+											}else{
+												clientMatches = false;
+											}
+										}
+										if(project_filter == 'false'){
+											projectMatches = true;
+										}else{
+											var p_filter = $("#p_filter").val();
+											var project = data[2];
+											if(p_filter == project){
+												projectMatches = true;
+											}else{
+												projectMatches = false;
+											}
+										}
+										var type = data[3] ;
+										typeMatches = true;
+										if ( jQuery.inArray(type,typeFilters) !== -1)
+										{
+											typeMatches = true;
+										}else{
+											typeMatches = false;
+										}
+										
+										return timeMatches && clientMatches && projectMatches && typeMatches;
+								});
+							
+							</script>
 
 						</div></form></div></div>
 						</div>
@@ -209,7 +351,7 @@
 							
 						<div class="col-md-9 clearfix">
 
-						<table class="table table-striped table-bordered table-hover dt-responsive grd_view" width="100%" id="sample_1">
+						<table class="table table-striped table-bordered table-hover dt-responsive grd_view" width="100%" id="allExpensesTable">
 							<thead>
 								<tr>
 									<th class="desktop">م</th>
@@ -250,12 +392,7 @@
 												@endif
 											</td>
 											<td>
-												@if($ex->project)
-													مشروع
-												@else
-													خدمة
-												@endif
-											
+												{{ $ex->expense_type->name }}
 											</td>
 											<td>
 												{{ $ex->id }}
@@ -266,7 +403,7 @@
 													{{ $ex->project->client->name }}
 												@endif
 											</td>
-											<td class="text-center">
+											<td data-search="{{ $ex->date->format('m/d/Y') }}" class="text-center">
 												<div class="btn-group">
 													<a class="btn green-haze btn-outline btn-sm" href="javascript:;" data-toggle="dropdown"  data-close-others="true"> إخـتر الأمـر
 														<i class="fa fa-angle-down"></i>
@@ -276,8 +413,11 @@
 															<a class="font-purple" data-toggle="modal" data-target="#showExpense{{ $ex->id }}">
 															<i class="icon-eye font-purple"></i> عـرض</a>
 														</li>														
-														<li><a href="#" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-														<li><a href="#basic" class="font-red" data-toggle="modal"><i class="icon-trash font-red"></i> حـذف</a></li>
+														<li><a href="{{ route('editExpense' , ['id' => $ex->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
+														<li>
+															<a href="#deleteExpense{{ $ex->id }}" class="font-red" data-toggle="modal">
+															<i class="icon-trash font-red"></i> حـذف</a>
+														</li>														
 														<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
 													</ul>
 												</div>
@@ -380,7 +520,7 @@
 															?>
 
 															<div class="form-group">
-																	<h4 class="font-purple">تاريخ المصروف</h41>
+																	<h4 class="font-purple">تاريخ المصروف</h4>
 																	<h4>{{ $ex->date->format('d') }} {{$ar_month}} {{ $ex->date->format('Y') }}</h4>
 															</div>
 
@@ -404,6 +544,29 @@
 														</div>
 													</div>
 												</div>
+										</div>
+										<div class="modal fade" id="deleteExpense{{ $ex->id }}" tabindex="-1" role="basic" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content del-modal font-white">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+															<h4 class="modal-title"></h4>
+														</div>
+														<div class="modal-body text-center">
+															<h3>
+																<i class="fa fa-3x fa-trash"></i>
+															</h3>
+															متأكد أنك تريد حـذف المصروف {{ $ex->name }} ؟
+											
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn dark btn-default" data-dismiss="modal">إغلاق</button>
+															<a href="{{ route('deleteExpense', ['id' => $ex->id]) }}" class="btn btn-danger">حـذف</a>
+														</div>
+													</div>
+													<!-- /.modal-content -->
+												</div>
+												<!-- /.modal-dialog -->
 										</div>
 									@endforeach
 								@endif

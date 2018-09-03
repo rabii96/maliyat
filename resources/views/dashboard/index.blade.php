@@ -6,6 +6,7 @@
         <!-- BEGIN CONTENT BODY -->
         <div class="page-content">
             @include('includes.pageHeader')
+            @include('includes.messages')
             <!-- BEGIN DASHBOARD STATS 1-->
             <div class="row">
                 <div class="col-md-3">
