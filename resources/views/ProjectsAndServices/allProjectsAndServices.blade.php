@@ -5,9 +5,19 @@
 	<div class="page-content-wrapper">
 		<!-- BEGIN CONTENT BODY -->
 		<div class="page-content">
+			@php
+				$permissions = unserialize(Auth::user()->permissions);
+				if($permissions == null){
+					$permissions = [];
+				}
+			@endphp 
 			
-			<a href="{{ route('addService') }}"><button type="button" class="btn blue-hoki pull-right">إضافة خدمة</button></a>
-			<a href="{{ route('addProject') }}"><button type="button" class="btn blue-madison pull-right margin-right-10">إضافة مشروع</button></a>
+			@if(in_array('serviceAdd',$permissions))
+				<a href="{{ route('addService') }}"><button type="button" class="btn blue-hoki pull-right">إضافة خدمة</button></a>
+			@endif
+			@if(in_array('projectAdd',$permissions))
+				<a href="{{ route('addProject') }}"><button type="button" class="btn blue-madison pull-right margin-right-10">إضافة مشروع</button></a>
+			@endif
 			
 			@include('includes.pageHeader')
 			<!-- BEGIN DASHBOARD STATS 1-->
@@ -300,6 +310,8 @@
 						</div>
 
 							</div>
+
+
 							
 							
 						<div class="line visible-xs-block"></div>
@@ -363,16 +375,24 @@
 														<i class="fa fa-angle-down"></i>
 													</a>
 													<ul class="dropdown-menu pull-right bg-grey-cararra">
-														<li><a href="{{ route('projectDetails', ['id' => $project->id]) }}" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-														<li><a href="{{ route('editProject', ['id' => $project->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-														<li>
-															<a href="#deleteProject{{ $project->id }}" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-														</li>
-														<li>
-															<a href="{{ route('downloadProject', ['id' => $project->id]) }}" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-														</li>	
+														@if(in_array('projectShow',$permissions))
+															<li><a href="{{ route('projectDetails', ['id' => $project->id]) }}" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
+														@endif
+														@if(in_array('projectEdit',$permissions))
+															<li><a href="{{ route('editProject', ['id' => $project->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
+														@endif
+														@if(in_array('projectDelete',$permissions))
+															<li>
+																<a href="#deleteProject{{ $project->id }}" class="font-red" data-toggle="modal">
+																<i class="icon-trash font-red"></i> حـذف</a>
+															</li>
+														@endif
+														@if(in_array('projectDownload',$permissions))
+															<li>
+																<a href="{{ route('downloadProject', ['id' => $project->id]) }}" class="font-green">
+																<i class="icon-cloud-download font-green"></i> تحميل</a>
+															</li>	
+														@endif
 													</ul>
 												</div>
 											</td>
@@ -424,16 +444,24 @@
 														<i class="fa fa-angle-down"></i>
 													</a>
 													<ul class="dropdown-menu pull-right bg-grey-cararra">
-														<li><a href="{{ route('serviceDetails', ['id' => $service->id]) }}" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
-														<li><a href="{{ route('editService', ['id' => $service->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-														<li>
-															<a href="#deleteService{{ $service->id }}" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-														</li>
-														<li>
-															<a href="{{ route('downloadService', ['id' => $service->id]) }}" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-														</li>													
+														@if(in_array('serviceShow',$permissions))
+															<li><a href="{{ route('serviceDetails', ['id' => $service->id]) }}" class="font-purple"><i class="icon-eye font-purple"></i> عـرض</a></li>
+														@endif
+														@if(in_array('serviceEdit',$permissions))
+															<li><a href="{{ route('editService', ['id' => $service->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
+														@endif
+														@if(in_array('serviceDelete',$permissions))
+															<li>
+																<a href="#deleteService{{ $service->id }}" class="font-red" data-toggle="modal">
+																<i class="icon-trash font-red"></i> حـذف</a>
+															</li>
+														@endif
+														@if(in_array('serviceDownload',$permissions))
+															<li>
+																<a href="{{ route('downloadService', ['id' => $service->id]) }}" class="font-green">
+																<i class="icon-cloud-download font-green"></i> تحميل</a>
+															</li>	
+														@endif												
 													</ul>
 												</div>
 											</td>

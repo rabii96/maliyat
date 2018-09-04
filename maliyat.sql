@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  mer. 29 août 2018 à 18:47
+-- Généré le :  mar. 04 sep. 2018 à 14:46
 -- Version du serveur :  10.1.35-MariaDB
 -- Version de PHP :  7.2.9
 
@@ -47,9 +47,9 @@ CREATE TABLE `banks` (
 
 INSERT INTO `banks` (`id`, `name`, `account_number`, `initial_balance`, `current_balance`, `iban_number`, `percentage_name`, `percentage_value`, `created_at`, `updated_at`) VALUES
 (1, 'بنك مصر', '111-222-333', 1500.00, 2600.00, '123456789', NULL, NULL, '2018-08-28 11:42:36', '2018-08-29 10:14:20'),
-(2, 'بنك البركة', '555 222 480', 3000.00, 1535.00, '987654321', NULL, NULL, '2018-08-28 11:43:08', '2018-08-29 15:42:32'),
+(2, 'بنك البركة', '555 222 480', 3000.00, 1989.50, '987654321', NULL, NULL, '2018-08-28 11:43:08', '2018-09-03 07:54:27'),
 (3, 'بنك الزيتونة', '12121212', 2500.00, 2079.80, '1005002', 'نسبة زيتونية', 5.00, '2018-08-28 11:43:59', '2018-08-29 12:11:05'),
-(4, 'بنك الأمان', '123456', 3500.00, 3000.00, '09003200', NULL, NULL, '2018-08-29 15:39:46', '2018-08-29 15:42:32');
+(4, 'بنك الأمان', '123456', 3500.00, 3000.00, '09003200', NULL, NULL, '2018-08-29 15:39:46', '2018-09-03 08:08:21');
 
 -- --------------------------------------------------------
 
@@ -190,8 +190,8 @@ INSERT INTO `expected_payments` (`id`, `project_id`, `index`, `value`, `paid_val
 (5, 2, 2, 600.00, 0.00, 600.00, '2018-08-30 12:58:59', 'Unpaid', '2018-08-28 11:58:59', '2018-08-28 11:58:59'),
 (6, 2, 3, 400.00, 0.00, 400.00, '2018-09-05 12:58:59', 'Unpaid', '2018-08-28 11:58:59', '2018-08-28 11:58:59'),
 (7, 2, 4, 500.00, 0.00, 500.00, '2018-09-06 12:58:59', 'Unpaid', '2018-08-28 11:58:59', '2018-08-28 11:58:59'),
-(8, 3, 1, 700.00, 0.00, 700.00, '2018-08-21 14:52:01', 'Unpaid', '2018-08-29 13:52:01', '2018-08-29 13:52:01'),
-(9, 3, 2, 800.00, 0.00, 800.00, '2018-08-30 14:52:01', 'Unpaid', '2018-08-29 13:52:01', '2018-08-29 13:52:01');
+(14, 3, 1, 700.00, 0.00, 700.00, '2018-08-21 16:48:50', 'Unpaid', '2018-09-03 15:48:50', '2018-09-03 15:48:50'),
+(15, 3, 2, 800.00, 0.00, 800.00, '2018-08-30 16:48:50', 'Unpaid', '2018-09-03 15:48:50', '2018-09-03 15:48:50');
 
 -- --------------------------------------------------------
 
@@ -224,9 +224,10 @@ CREATE TABLE `expenses` (
 --
 
 INSERT INTO `expenses` (`id`, `name`, `expense_type_id`, `details`, `project_id`, `service_id`, `employee_id`, `bank_id`, `transfer_method_id`, `value`, `value_plus_percentage`, `percentage_id`, `date`, `attachement`, `remarks`, `created_at`, `updated_at`) VALUES
-(2, 'مصروف خدمة', 2, 'يا سلام', NULL, 2, 2, 2, 1, 500.00, 505.00, 1, '2018-08-29 00:00:00', NULL, NULL, '2018-08-29 09:25:15', '2018-08-29 09:25:15'),
+(2, 'مصروف خدمة', 2, 'hhhhhhh', NULL, 2, 2, 2, 1, 500.00, 505.00, 1, '2018-08-22 08:54:27', NULL, NULL, '2018-08-29 09:25:15', '2018-09-03 07:54:27'),
 (3, 'مصروف جديد', 3, 'إنه مصروف جديد', 1, NULL, 2, 3, 3, 1500.00, 1800.00, 2, '2018-09-05 10:53:22', 'resolution_1535540002.sh', NULL, '2018-08-29 09:53:22', '2018-08-29 09:53:22'),
-(4, 'شراء لوازم التنظيف', 2, NULL, NULL, 1, 2, 3, 1, 20.00, 20.20, 1, '2018-08-29 13:11:05', NULL, NULL, '2018-08-29 12:11:05', '2018-08-29 12:11:05');
+(4, 'شراء لوازم التنظيف', 2, NULL, NULL, 1, 2, 3, 1, 20.00, 20.20, 1, '2018-08-29 13:11:05', NULL, NULL, '2018-08-29 12:11:05', '2018-08-29 12:11:05'),
+(5, 'Cadeau', 3, NULL, NULL, 1, 2, 2, 0, 50.00, 50.50, 1, '2018-08-31 09:20:20', NULL, NULL, '2018-08-31 08:20:20', '2018-08-31 08:20:20');
 
 -- --------------------------------------------------------
 
@@ -347,9 +348,9 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `name`, `start_date`, `end_date`, `details`, `client_id`, `total_cost`, `attachement`, `remarks`, `finished`, `created_at`, `updated_at`) VALUES
-(1, 'تصميم موقع خيرتك', '2018-08-03 12:57:11', '2018-09-01 12:57:11', 'تصميم موقع خيرتك باستخدام laravel', 1, 500.00, 'micro0.1554433_1535461031.jpg', NULL, 0, '2018-08-28 11:57:11', '2018-08-28 11:57:11'),
+(1, 'تصميم موقع خيرتك', '2018-08-03 14:38:56', '2018-09-01 14:38:56', 'تصميم موقع خيرتك باستخدام laravel', 1, 500.00, 'micro0.1554433_1535461031.jpg', NULL, 0, '2018-08-28 11:57:11', '2018-09-04 08:36:35'),
 (2, 'برمجة لغوية', '2018-07-04 12:58:59', '2018-09-06 12:58:59', 'لا توجد', 2, 2500.00, NULL, NULL, 1, '2018-08-28 11:58:59', '2018-08-28 11:59:30'),
-(3, 'مشروع', '2018-08-01 14:52:01', '2018-08-10 14:52:01', NULL, 1, 1500.00, NULL, NULL, 0, '2018-08-29 13:52:01', '2018-08-29 13:52:01');
+(3, 'مشروع', '2018-08-01 16:48:50', '2018-08-10 16:48:50', NULL, 1, 1500.00, NULL, NULL, 0, '2018-08-29 13:52:01', '2018-09-03 15:48:50');
 
 -- --------------------------------------------------------
 
@@ -380,7 +381,7 @@ CREATE TABLE `real_payments` (
 --
 
 INSERT INTO `real_payments` (`id`, `expected_payment_id`, `project_id`, `paid_value`, `transfer_method_id`, `to_bank_id`, `date`, `from_bank_id`, `from_bank_number`, `check_number`, `paypal_email`, `transferer_name`, `attachement`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 200.00, NULL, 1, '2018-08-28 13:00:01', NULL, NULL, NULL, NULL, 'ربيع', NULL, '2018-08-28 12:00:01', '2018-08-28 12:00:01'),
+(1, 1, 1, 200.00, NULL, 1, '2018-08-21 13:00:01', NULL, NULL, NULL, NULL, 'ربيع', NULL, '2018-08-28 12:00:01', '2018-08-28 12:00:01'),
 (2, 2, 1, 50.00, 1, 2, '2018-08-28 13:00:21', NULL, NULL, NULL, 'paypal@mail.com', NULL, NULL, '2018-08-28 12:00:21', '2018-08-28 12:00:21'),
 (3, 4, 2, 600.00, 2, 3, '2018-08-28 13:00:46', 2, '123123123', NULL, NULL, NULL, NULL, '2018-08-28 12:00:46', '2018-08-28 12:00:46'),
 (4, 4, 2, 400.00, 1, 1, '2018-08-29 11:14:20', NULL, NULL, NULL, 'paypal@mail.com', NULL, NULL, '2018-08-29 10:14:20', '2018-08-29 10:14:20');
@@ -502,9 +503,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `remember_token`, `phone`, `description`, `photo`, `permissions`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@admin.com', '$2y$12$UatY12z8rSEIK4bZhiVDBewZCOOm7ytXc6OQwv4SM48hCgLdjLShq', NULL, '0', NULL, 'noimage.jpg', NULL, NULL, NULL),
+(1, 'admin', 'admin@admin.com', '$2y$10$UYmUTocyXFfXlU7uaM6UEOTJ/xu6ZDR.EAHIk7Dw0wl8fMtnc2mo.', '4hCMUR5aeoBaH8O9WF8JRLCvcaxU4sPgQo9TeuJWAhGvn066LUK8WghIIexZ', '0', NULL, 'noimage.jpg', 'a:37:{i:0;s:10:\"projectAdd\";i:1;s:11:\"projectEdit\";i:2;s:13:\"projectDelete\";i:3;s:11:\"projectShow\";i:4;s:15:\"projectDownload\";i:5;s:10:\"serviceAdd\";i:6;s:11:\"serviceEdit\";i:7;s:13:\"serviceDelete\";i:8;s:11:\"serviceShow\";i:9;s:15:\"serviceDownload\";i:10;s:10:\"paymentAdd\";i:11;s:11:\"paymentEdit\";i:12;s:13:\"paymentDelete\";i:13;s:11:\"paymentShow\";i:14;s:19:\"paymentDownloadPaid\";i:15;s:23:\"paymentDownloadReceived\";i:16;s:10:\"expenseAdd\";i:17;s:11:\"expenseEdit\";i:18;s:13:\"expenseDelete\";i:19;s:11:\"expenseShow\";i:20;s:19:\"expenseDownloadPain\";i:21;s:23:\"expenseDownloadReceived\";i:22;s:18:\"settingsGeneralAdd\";i:23;s:19:\"settingsGeneralEdit\";i:24;s:15:\"settingsBankAdd\";i:25;s:16:\"settingsBankEdit\";i:26;s:16:\"settingsTransfer\";i:27;s:21:\"settingsPercentageAdd\";i:28;s:12:\"usersUserAdd\";i:29;s:14:\"usersClientAdd\";i:30;s:16:\"usersEmployeeAdd\";i:31;s:13:\"usersUserEdit\";i:32;s:15:\"usersClientEdit\";i:33;s:17:\"usersEmployeeEdit\";i:34;s:15:\"usersUserDelete\";i:35;s:17:\"usersClientDelete\";i:36;s:19:\"usersEmployeeDelete\";}', NULL, '2018-09-03 15:33:54'),
 (2, 'ربيع', 'rabibenyoussef@hotmail.fr', '$2y$10$GHx2kUh6ugAwXsheqN2NxOdFM4j.8vkkwMFGVApJG9YQM9aJFfZe.', NULL, '96536335', NULL, 'noimage.jpg', 'a:37:{i:0;s:10:\"projectAdd\";i:1;s:11:\"projectEdit\";i:2;s:13:\"projectDelete\";i:3;s:11:\"projectShow\";i:4;s:15:\"projectDownload\";i:5;s:10:\"serviceAdd\";i:6;s:11:\"serviceEdit\";i:7;s:13:\"serviceDelete\";i:8;s:11:\"serviceShow\";i:9;s:15:\"serviceDownload\";i:10;s:10:\"paymentAdd\";i:11;s:11:\"paymentEdit\";i:12;s:13:\"paymentDelete\";i:13;s:11:\"paymentShow\";i:14;s:19:\"paymentDownloadPaid\";i:15;s:23:\"paymentDownloadReceived\";i:16;s:10:\"expenseAdd\";i:17;s:11:\"expenseEdit\";i:18;s:13:\"expenseDelete\";i:19;s:11:\"expenseShow\";i:20;s:19:\"expenseDownloadPain\";i:21;s:23:\"expenseDownloadReceived\";i:22;s:18:\"settingsGeneralAdd\";i:23;s:19:\"settingsGeneralEdit\";i:24;s:15:\"settingsBankAdd\";i:25;s:16:\"settingsBankEdit\";i:26;s:16:\"settingsTransfer\";i:27;s:21:\"settingsPercentageAdd\";i:28;s:12:\"usersUserAdd\";i:29;s:14:\"usersClientAdd\";i:30;s:16:\"usersEmployeeAdd\";i:31;s:13:\"usersUserEdit\";i:32;s:15:\"usersClientEdit\";i:33;s:17:\"usersEmployeeEdit\";i:34;s:15:\"usersUserDelete\";i:35;s:17:\"usersClientDelete\";i:36;s:19:\"usersEmployeeDelete\";}', '2018-08-28 11:48:29', '2018-08-28 11:48:29'),
-(3, 'Issam', 'issam@gmail.com', '$2y$10$qohBNOQ01M9/blAU8eLVheXOGlep71G83VpNSHL7Ibnx7lh3L4awu', NULL, '20202020', NULL, 'noimage.jpg', 'a:10:{i:0;s:10:\"projectAdd\";i:1;s:11:\"projectEdit\";i:2;s:11:\"projectShow\";i:3;s:10:\"serviceAdd\";i:4;s:11:\"serviceEdit\";i:5;s:11:\"serviceShow\";i:6;s:10:\"expenseAdd\";i:7;s:11:\"expenseEdit\";i:8;s:11:\"expenseShow\";i:9;s:23:\"expenseDownloadReceived\";}', '2018-08-28 11:49:31', '2018-08-28 11:49:31');
+(3, 'Issam', 'issam@gmail.com', '$2y$10$qohBNOQ01M9/blAU8eLVheXOGlep71G83VpNSHL7Ibnx7lh3L4awu', 'dQA1oLbG58F91tURet3hAVjEVXhBpuTgaIx0VOrDURGSsqzMW6UG7uviidSi', '20202020', NULL, 'noimage.jpg', 'a:10:{i:0;s:10:\"projectAdd\";i:1;s:11:\"projectEdit\";i:2;s:11:\"projectShow\";i:3;s:10:\"serviceAdd\";i:4;s:11:\"serviceEdit\";i:5;s:11:\"serviceShow\";i:6;s:10:\"expenseAdd\";i:7;s:11:\"expenseEdit\";i:8;s:11:\"expenseShow\";i:9;s:23:\"expenseDownloadReceived\";}', '2018-08-28 11:49:31', '2018-08-28 11:49:31'),
+(4, 'no permission', 'no_permission@gmail.com', '$2y$10$Vk1E5aSKcrVoxMlidjS8GOlGWUlkutV7Y4bybDWQ2f77Prq7fNGlq', 'EJak1Sv3ZcLHqIxgWeWasDPllkYSj8uvyQ87q3ZPZcPL3cIECPI0loDyJ9Pr', '123456789', '123456', 'noimage.jpg', 'N;', '2018-09-03 15:16:49', '2018-09-03 15:16:49');
 
 --
 -- Index pour les tables déchargées
@@ -657,13 +659,13 @@ ALTER TABLE `employee_accounts`
 -- AUTO_INCREMENT pour la table `expected_payments`
 --
 ALTER TABLE `expected_payments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `expense_types`
@@ -723,7 +725,7 @@ ALTER TABLE `transfer_methods`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

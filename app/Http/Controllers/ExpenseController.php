@@ -13,6 +13,7 @@ use App\Project;
 use App\Service;
 use App\Client;
 use Auth;
+use PDF;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -345,6 +346,35 @@ class ExpenseController extends Controller
                 $data = array_merge($projects->toArray(), $services->toArray());
             }
             return $data;
+        }
+    }
+
+
+    public function download($id){
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if((in_array('expenseDownloadPain',$permissions)) || (in_array('expenseDownloadReceived',$permissions))){
+            $expense = Expense::find($id);
+            $html = view('Expenses.expensePDF',['ex'=>$expense])->render(); // file render
+    
+            $pdfarr = [
+                'title'=> $expense->name,
+                'data'=>$html, // render file blade with content html
+                'header'=>['show'=>false], // header content
+                'footer'=>['show'=>false], // Footer content
+                'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
+                'font-size'=>12, // font-size 
+                'text'=>'', //Write
+                'rtl'=>true, //true or false 
+                'filename'=> 'Expense '.$expense->id.'.pdf', // filename example - invoice.pdf
+                'display'=>'download', // stream , download , print
+            ];
+    
+               PDF::HTML($pdfarr);
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
         }
     }
 }

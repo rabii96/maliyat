@@ -17,11 +17,9 @@
                             <i class="widget-thumb-icon bg-blue-ebonyclay icon-wallet"></i>
                             <div class="widget-thumb-body">
                                 <span class="widget-thumb-subtitle">ريال</span>
-                                <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $service_expenses }}">0</span>
+                                <span class="widget-thumb-body-stat"  ="counterup" data-value="{{ $service_expenses }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -36,9 +34,7 @@
                                 <span class="widget-thumb-subtitle">ريال</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $project_expenses }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -53,9 +49,7 @@
                                 <span class="widget-thumb-subtitle">ريال</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $total_amounts }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -70,9 +64,7 @@
                                 <span class="widget-thumb-subtitle">ريال</span>
                             <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $total_incomes }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -87,9 +79,7 @@
                                 <span class="widget-thumb-subtitle">ريال</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $total_remaining }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -104,9 +94,7 @@
                                 <span class="widget-thumb-subtitle">ريال</span>
                                 <span dir="ltr" style="text-align: right" class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $net_profit }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -121,9 +109,7 @@
                                 <span class="widget-thumb-subtitle">مشاريع</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbProjects }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -138,9 +124,7 @@
                                 <span class="widget-thumb-subtitle">خدمات</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbServices }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -155,9 +139,7 @@
                                 <span class="widget-thumb-subtitle">دفعات</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbExpectedPayments }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -172,9 +154,7 @@
                                 <span class="widget-thumb-subtitle">دفعات</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbPaidPayments }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -189,9 +169,7 @@
                                 <span class="widget-thumb-subtitle">دفعات</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbRemainingPayments }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -206,9 +184,7 @@
                                 <span class="widget-thumb-subtitle">مشاريع</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbWinningProjects }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -223,9 +199,7 @@
                                 <span class="widget-thumb-subtitle">مشاريع</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbLosingProjects }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -240,9 +214,7 @@
                                 <span class="widget-thumb-subtitle">مشاريع</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbEqualProjects }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -257,9 +229,7 @@
                                 <span class="widget-thumb-subtitle">حسابات</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $nbBanks }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->
@@ -274,9 +244,7 @@
                                 <span class="widget-thumb-subtitle">ريال</span>
                                 <span class="widget-thumb-body-stat" data-counter="counterup" data-value="{{ $total_balance }}">0</span>
                             </div>
-                        <a class="more" href="javascript:;"> التفاصيل
-                            <i class="m-icon-swapleft m-icon-white"></i>
-                        </a>
+                        <br>
                         </div>
                     </div>
                     <!-- END WIDGET THUMB -->

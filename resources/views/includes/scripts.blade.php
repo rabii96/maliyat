@@ -56,6 +56,8 @@
     <script src="{{ asset('js/validate-clients.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/validate-expense.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/validate-payment.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/validate-project.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/validate-service.js') }}" type="text/javascript"></script>
 
 
     
@@ -217,6 +219,24 @@
 
                 $('#addPercentage').click(function (e){
                     e.preventDefault();
+                    @php
+                        $permissions = unserialize(Auth::user()->permissions);
+                        if($permissions == null){
+                            $permissions = [];
+                        }
+                        if(in_array('settingsPercentageAdd',$permissions)){
+                            $denied = 'false';
+                        }else{
+                            $denied = 'true';
+                        }
+                    @endphp
+                    if('{{ $denied }}' == 'true'){
+                        $('#percentageName').val('');
+                        $('#percentageValue').val('');
+                        $('#remarks').val('');
+                        alert('صلاحياتك لا تمكنك من القيام بهذه العملية');
+                        return ;
+                    }
                     $.ajax ({
                         url: "{{ route('addPercentage') }}",
                         method: 'post',
@@ -613,7 +633,7 @@
                     $("#payment-list li").remove();
                     for (i = 1; i <= num; i++) {
                         $("#payment-list").append(
-                            '<li><div class="form-inline"><div class="form-group"><label class="sr-only">القيمة</label><div class="input-icon"><i class="fa fa-money font-green"></i><input type="text" dir="ltr" style="text-align: right" name="paymentValue[]" id="paymentValue'+i+'"  onkeyup="updateCost('+i+');" class="form-control w-100" placeholder="القيمة" > </div></div><div class="form-group"><label class="sr-only">تاريخ الدفعة</label><div class="input-icon"><i class="fa fa-calendar-check-o font-green "></i><input type="text" name="paymentDate[]" id="paymentDate'+i+'" class="form-control date" placeholder="تاريخ الدفعة"> </div></div></div><hr></li>'
+                            '<li><div class="form-inline"><div class="form-group"><label class="sr-only">القيمة</label><div class="input-icon"><i class="fa fa-money font-green"></i><input type="text" dir="ltr" style="text-align: right" name="paymentValue['+i+']" id="paymentValue'+i+'"autocomplete="off"  onkeyup="updateCost('+i+');" class="form-control w-100" placeholder="القيمة" > </div></div><div class="form-group"><label class="sr-only">تاريخ الدفعة</label><div class="input-icon"><i class="fa fa-calendar-check-o font-green "></i><input type="text" name="paymentDate['+i+']" id="paymentDate'+i+'" class="form-control date" placeholder="تاريخ الدفعة"> </div></div></div><hr></li>'
                         );
                     }
                     var total_cost = parseFloat ($('#total_cost').val());
@@ -656,6 +676,12 @@
 
                 //Date Pickers
                 $('.date').datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    language: "ar"
+                });
+
+                $('#start_date').datepicker({
                     autoclose: true,
                     todayHighlight: true,
                     language: "ar"

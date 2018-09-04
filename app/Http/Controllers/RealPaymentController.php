@@ -438,7 +438,7 @@ class RealPaymentController extends Controller
         if($permissions == null){
             $permissions = [];
         }
-        if((in_array('paymentDownloadPaid',$permissions))&& (in_array('paymentDownloadReceived',$permissions))){
+        if((in_array('paymentDownloadPaid',$permissions)) || (in_array('paymentDownloadReceived',$permissions))){
             $payment = RealPayment::find($id);
             $html = view('payments.paymentPDF',['realPayment'=>$payment])->render(); // file render
     

@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     @include('includes.messages')
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                    <form method="POST" action="{{ route('editProject', ['id' => $project->id ]) }}" enctype="multipart/form-data">
+                    <form id="editProjectForm" method="POST" action="{{ route('editProject', ['id' => $project->id ]) }}" enctype="multipart/form-data">
                         @csrf
                     <div class="portlet light ">
                         <div class="portlet-title">

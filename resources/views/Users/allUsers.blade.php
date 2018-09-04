@@ -21,6 +21,13 @@
 
 						<div class="tools"> </div>
 					</div>
+					@php
+						$permissions = unserialize(Auth::user()->permissions);
+						if($permissions == null){
+							$permissions = [];
+						}
+					@endphp 
+
 
 
 					<div class="portlet-body">
@@ -130,7 +137,7 @@
 
 						</div>
 
-
+						
 						<div class="line visible-xs-block"></div>
 
 
@@ -161,22 +168,30 @@
 															<i class="fa fa-angle-down"></i>
 														</a>
 														<ul class="dropdown-menu pull-right">
-															<li>
-																<a class="font-purple" data-toggle="modal" data-target="#showUser{{ $user->id }}">
-																	<i class="icon-eye font-purple"></i> عـرض</a>
-															</li>
-															<li>
-																<a href="{{ route('editUser', ['id' => $user->id]) }}" class="font-blue">
-																	<i class="icon-note font-blue"></i> تعديل</a>
-															</li>
-															<li>
-																<a href="#deleteUser{{ $user->id }}" class="font-red" data-toggle="modal">
-																	<i class="icon-trash font-red"></i> حـذف</a>
-															</li>
-															<li>
-																<a href="{{ route('downloadUser', ['id' => $user->id]) }}" class="font-green">
-																	<i class="icon-cloud-download font-green"></i> تحميل</a>
-															</li>
+															@if((in_array('usersUserEdit',$permissions)) || (in_array('usersUserAdd',$permissions)))
+																<li>
+																	<a class="font-purple" data-toggle="modal" data-target="#showUser{{ $user->id }}">
+																		<i class="icon-eye font-purple"></i> عـرض</a>
+																</li>
+															@endif
+															@if(in_array('usersUserEdit',$permissions))
+																<li>
+																	<a href="{{ route('editUser', ['id' => $user->id]) }}" class="font-blue">
+																		<i class="icon-note font-blue"></i> تعديل</a>
+																</li>
+															@endif
+															@if(in_array('usersUserDelete',$permissions))
+																<li>
+																	<a href="#deleteUser{{ $user->id }}" class="font-red" data-toggle="modal">
+																		<i class="icon-trash font-red"></i> حـذف</a>
+																</li>
+															@endif
+															@if((in_array('usersUserEdit',$permissions)) || (in_array('usersUserAdd',$permissions)))
+																<li>
+																	<a href="{{ route('downloadUser', ['id' => $user->id]) }}" class="font-green">
+																		<i class="icon-cloud-download font-green"></i> تحميل</a>
+																</li>
+															@endif
 														</ul>
 													</div>
 												</td>
@@ -215,12 +230,12 @@
 																	</div>
 																@endif
 																<?php
-																	$permissions = unserialize($user->permissions);
+																	$p = unserialize($user->permissions);
 																?>
 																	<div class="form-group">
 																		<label class="font-purple">الصلاحيات</label>
-																		@if($permissions)
-																			@foreach($permissions as $permission)
+																		@if($p)
+																			@foreach($p as $permission)
 																				<ul>
 																					<li>
 																						<h4>{{ __('permissions.'.$permission) }}</h4>
@@ -279,22 +294,30 @@
 															<i class="fa fa-angle-down"></i>
 														</a>
 														<ul class="dropdown-menu pull-right">
-															<li>
-																<a class="font-purple" data-toggle="modal" data-target="#showClient{{ $client->id }}">
-																	<i class="icon-eye font-purple"></i> عـرض</a>
-															</li>
-															<li>
-																<a href="{{ route('editClient', ['id' => $client->id]) }}" class="font-blue">
-																	<i class="icon-note font-blue"></i> تعديل</a>
-															</li>
-															<li>
-																<a href="#deleteClient{{ $client->id }}" class="font-red" data-toggle="modal">
-																		<i class="icon-trash font-red"></i> حـذف</a>
-															</li>
-															<li>
+															@if((in_array('usersClientEdit',$permissions)) || (in_array('usersClientAdd',$permissions)))
+																<li>
+																	<a class="font-purple" data-toggle="modal" data-target="#showClient{{ $client->id }}">
+																		<i class="icon-eye font-purple"></i> عـرض</a>
+																</li>
+															@endif
+															@if((in_array('usersClientEdit',$permissions)))
+																<li>
+																	<a href="{{ route('editClient', ['id' => $client->id]) }}" class="font-blue">
+																		<i class="icon-note font-blue"></i> تعديل</a>
+																</li>
+															@endif
+															@if((in_array('usersClientDelete',$permissions)))
+																<li>
+																	<a href="#deleteClient{{ $client->id }}" class="font-red" data-toggle="modal">
+																			<i class="icon-trash font-red"></i> حـذف</a>
+																</li>
+															@endif
+															@if((in_array('usersClientEdit',$permissions)) || (in_array('usersClientAdd',$permissions)))
+																<li>
 																	<a href="{{ route('downloadClient', ['id' => $client->id]) }}" class="font-green">
 																		<i class="icon-cloud-download font-green"></i> تحميل</a>
-															</li>
+																</li>
+															@endif
 														</ul>
 													</div>
 												</td>
@@ -372,22 +395,30 @@
 															<i class="fa fa-angle-down"></i>
 														</a>
 														<ul class="dropdown-menu pull-right">
-															<li>
-																<a class="font-purple" data-toggle="modal" data-target="#showEmployee{{ $employee->id }}">
-																	<i class="icon-eye font-purple"></i> عـرض</a>
-															</li>
-															<li>
-																<a href="{{ route('editEmployee', ['id' => $employee->id]) }}" class="font-blue">
-																	<i class="icon-note font-blue"></i> تعديل</a>
-															</li>
-															<li>
-																<a href="#deleteEmployee{{ $employee->id }}" class="font-red" data-toggle="modal">
-																		<i class="icon-trash font-red"></i> حـذف</a>
-															</li>
-															<li>
+															@if((in_array('usersEmployeeEdit',$permissions)) || (in_array('usersEmployeeAdd',$permissions)))
+																<li>
+																	<a class="font-purple" data-toggle="modal" data-target="#showEmployee{{ $employee->id }}">
+																		<i class="icon-eye font-purple"></i> عـرض</a>
+																</li>
+															@endif
+															@if((in_array('usersEmployeeEdit',$permissions)))
+																<li>
+																	<a href="{{ route('editEmployee', ['id' => $employee->id]) }}" class="font-blue">
+																		<i class="icon-note font-blue"></i> تعديل</a>
+																</li>
+															@endif
+															@if((in_array('usersEmployeeDelete',$permissions)))
+																<li>
+																	<a href="#deleteEmployee{{ $employee->id }}" class="font-red" data-toggle="modal">
+																			<i class="icon-trash font-red"></i> حـذف</a>
+																</li>
+															@endif
+															@if((in_array('usersEmployeeEdit',$permissions)) || (in_array('usersEmployeeAdd',$permissions)))
+																<li>
 																	<a href="{{ route('downloadEmployee', ['id' => $employee->id]) }}" class="font-green">
 																		<i class="icon-cloud-download font-green"></i> تحميل</a>
-															</li>
+																</li>
+															@endif
 														</ul>
 													</div>
 												</td>

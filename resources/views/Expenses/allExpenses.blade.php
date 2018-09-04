@@ -5,8 +5,15 @@
 	<div class="page-content-wrapper">
 		<!-- BEGIN CONTENT BODY -->
 		<div class="page-content">
-			
-			<a href="{{ route('addExpense') }}"><button type="button" class="btn blue-hoki pull-right">إضافة مصروف</button></a>
+			@php
+				$permissions = unserialize(Auth::user()->permissions);
+				if($permissions == null){
+					$permissions = [];
+				}
+			@endphp 
+			@if((in_array('expenseAdd',$permissions)))
+				<a href="{{ route('addExpense') }}"><button type="button" class="btn blue-hoki pull-right">إضافة مصروف</button></a>
+			@endif
 			
 			@include('includes.pageHeader')
 			<!-- BEGIN DASHBOARD STATS 1-->
@@ -409,16 +416,24 @@
 														<i class="fa fa-angle-down"></i>
 													</a>
 													<ul class="dropdown-menu pull-right">
-														<li>
-															<a class="font-purple" data-toggle="modal" data-target="#showExpense{{ $ex->id }}">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-														</li>														
-														<li><a href="{{ route('editExpense' , ['id' => $ex->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
-														<li>
-															<a href="#deleteExpense{{ $ex->id }}" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-														</li>														
-														<li><a href="#" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
+														@if((in_array('expenseShow',$permissions)))
+															<li>
+																<a class="font-purple" data-toggle="modal" data-target="#showExpense{{ $ex->id }}">
+																<i class="icon-eye font-purple"></i> عـرض</a>
+															</li>	
+														@endif	
+														@if((in_array('expenseEdit',$permissions)))												
+															<li><a href="{{ route('editExpense' , ['id' => $ex->id]) }}" class="font-blue"><i class="icon-note font-blue"></i> تعديل</a></li>
+														@endif
+														@if((in_array('expenseDelete',$permissions)))
+															<li>
+																<a href="#deleteExpense{{ $ex->id }}" class="font-red" data-toggle="modal">
+																<i class="icon-trash font-red"></i> حـذف</a>
+															</li>	
+														@endif		
+														@if((in_array('expenseDownloadPain',$permissions)) ||(in_array('expenseDownloadReceived',$permissions)))											
+															<li><a href="{{ route('downloadExpense', ['id' => $ex->id]) }}" class="font-green"><i class="icon-cloud-download font-green"></i> تحميل</a></li>
+														@endif
 													</ul>
 												</div>
 											</td>

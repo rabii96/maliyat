@@ -7,6 +7,7 @@ use App\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use Auth;
 
 class ClientController extends Controller
 {
@@ -23,8 +24,16 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $settings = Settings::find(1);
-        return view('Users.addClient')->with('settings', $settings);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if(in_array('usersClientAdd',$permissions)){
+            $settings = Settings::find(1);
+            return view('Users.addClient')->with('settings', $settings);
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من عرض هذه الصفحة');   
+        }
     }
 
     /**
@@ -35,50 +44,65 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name' => 'required',
-            'attachement' => 'nullable|max:1999'
-        ]);
-        $client = new Client;
-        $client->name = $request->input('name');
-        $client->description = $request->input('description');
-
-        if($request->hasFile('attachement')){
-            // Get filename withe the extension
-            $filenameWithExt = $request->file('attachement')->getClientOriginalName();
-            // Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Get just extension
-            $extenstion = $request->file('attachement')->getClientOriginalExtension();
-            // Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
-            // Upload image
-            $path = $request->file('attachement')->storeAs('public/attachements' , $fileNameToStore);
-        }else{
-            $fileNameToStore = null;
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
         }
+            if(in_array('usersClientAdd',$permissions)){
+            $this->validate($request,[
+                'name' => 'required',
+                'attachement' => 'nullable|max:1999'
+            ]);
+            $client = new Client;
+            $client->name = $request->input('name');
+            $client->description = $request->input('description');
 
-        $client->attachement = $fileNameToStore;
-        $client->save();
-        
-        return redirect()->route('allUsers')->with('success', 'تمت إضافة العميل بنجاح');   
+            if($request->hasFile('attachement')){
+                // Get filename withe the extension
+                $filenameWithExt = $request->file('attachement')->getClientOriginalName();
+                // Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Get just extension
+                $extenstion = $request->file('attachement')->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
+                // Upload image
+                $path = $request->file('attachement')->storeAs('public/attachements' , $fileNameToStore);
+            }else{
+                $fileNameToStore = null;
+            }
+
+            $client->attachement = $fileNameToStore;
+            $client->save();
+            
+            return redirect()->route('allUsers')->with('success', 'تمت إضافة العميل بنجاح');   
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
+        }    
     }
 
 
 
     public function edit($id)
     {
-        // Todo add permission validation
-        $client = Client::find($id);
-        $settings = Settings::find(1);
-        if($client){
-            return view('Users.editClient')->with([
-                'client' => $client,
-                'settings' => $settings
-            ]);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if(in_array('usersClientEdit',$permissions)){
+            $client = Client::find($id);
+            $settings = Settings::find(1);
+            if($client){
+                return view('Users.editClient')->with([
+                    'client' => $client,
+                    'settings' => $settings
+                ]);
+            }else{
+                if(! intval($id)== 0)
+                    return redirect()->route('allUsers')->with('error', 'هذا العميل فير موجود');        
+            }
         }else{
-            if(! intval($id)== 0)
-                return redirect()->route('allUsers')->with('error', 'هذا العميل فير موجود');        
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من عرض هذه الصفحة');   
         }
     }
 
@@ -91,35 +115,43 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'name' => 'required',
-            'attachement' => 'nullable|max:1999'
-        ]);
-        $client = Client::find($id);
-        $client->name = $request->input('name');
-        $client->description = $request->input('description');
-
-        if($request->hasFile('attachement')){
-            // Get filename withe the extension
-            $filenameWithExt = $request->file('attachement')->getClientOriginalName();
-            // Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Get just extension
-            $extenstion = $request->file('attachement')->getClientOriginalExtension();
-            // Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
-            // Upload image
-            $path = $request->file('attachement')->storeAs('public/attachements' , $fileNameToStore);
-            if($client->attachement!== null){
-                Storage::delete('public/attachements/'.$client->attachement);
-            }
-            $client->attachement = $fileNameToStore;
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
         }
+        if(in_array('usersClientEdit',$permissions)){
+            $this->validate($request,[
+                'name' => 'required',
+                'attachement' => 'nullable|max:1999'
+            ]);
+            $client = Client::find($id);
+            $client->name = $request->input('name');
+            $client->description = $request->input('description');
 
-       
-        $client->save();
+            if($request->hasFile('attachement')){
+                // Get filename withe the extension
+                $filenameWithExt = $request->file('attachement')->getClientOriginalName();
+                // Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Get just extension
+                $extenstion = $request->file('attachement')->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
+                // Upload image
+                $path = $request->file('attachement')->storeAs('public/attachements' , $fileNameToStore);
+                if($client->attachement!== null){
+                    Storage::delete('public/attachements/'.$client->attachement);
+                }
+                $client->attachement = $fileNameToStore;
+            }
+
         
-        return redirect()->route('allUsers')->with('success', 'تم تعديل العميل بنجاح');   
+            $client->save();
+            
+            return redirect()->route('allUsers')->with('success', 'تم تعديل العميل بنجاح');   
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
+        }
     }
   /**
      * Remove the specified resource from storage.
@@ -129,35 +161,50 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        // Todo add permission validation
-        $client = Client::find($id);
-        if($client->attachement!== null){
-            Storage::delete('public/attachements/'.$client->attachement);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
         }
-        $client->delete();
+        if(in_array('usersClientDelete',$permissions)){
+            $client = Client::find($id);
+            if($client->attachement!== null){
+                Storage::delete('public/attachements/'.$client->attachement);
+            }
+            $client->delete();
 
-        return redirect()->route('allUsers')->with('success', 'تم حذف العميل بنجاح');        
+            return redirect()->route('allUsers')->with('success', 'تم حذف العميل بنجاح');       
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
+        }     
     }
 
     public function download($id){
-        $client = Client::find($id);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if((in_array('usersClientEdit',$permissions)) || (in_array('usersClientAdd',$permissions))){
+            $client = Client::find($id);
 
 
-        $html = view('Users.clientPDF',['client'=>$client])->render(); // file render
+            $html = view('Users.clientPDF',['client'=>$client])->render(); // file render
 
-        $pdfarr = [
-            'title'=> $client->name,
-            'data'=>$html, // render file blade with content html
-            'header'=>['show'=>false], // header content
-            'footer'=>['show'=>false], // Footer content
-            'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
-            'font-size'=>12, // font-size 
-            'text'=>'', //Write
-            'rtl'=>true, //true or false 
-            'filename'=>$client->name.'.pdf', // filename example - invoice.pdf
-            'display'=>'download', // stream , download , print
-        ];
+            $pdfarr = [
+                'title'=> $client->name,
+                'data'=>$html, // render file blade with content html
+                'header'=>['show'=>false], // header content
+                'footer'=>['show'=>false], // Footer content
+                'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
+                'font-size'=>12, // font-size 
+                'text'=>'', //Write
+                'rtl'=>true, //true or false 
+                'filename'=>$client->name.'.pdf', // filename example - invoice.pdf
+                'display'=>'download', // stream , download , print
+            ];
 
-   	    PDF::HTML($pdfarr);
+            PDF::HTML($pdfarr);
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
+        }
     }
 }

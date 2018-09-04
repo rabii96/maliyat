@@ -5,8 +5,15 @@
 	<div class="page-content-wrapper">
 		<!-- BEGIN CONTENT BODY -->
 		<div class="page-content">
-			
-			<a href="{{ route('addPayment') }}"><button type="button" class="btn blue-hoki pull-right">إضافة دفعة</button></a>
+			@php
+				$permissions = unserialize(Auth::user()->permissions);
+				if($permissions == null){
+					$permissions = [];
+				}
+			@endphp 
+			@if(in_array('paymentAdd',$permissions))
+				<a href="{{ route('addPayment') }}"><button type="button" class="btn blue-hoki pull-right">إضافة دفعة</button></a>
+			@endif
 			
 			@include('includes.pageHeader')
 			<!-- BEGIN DASHBOARD STATS 1-->
@@ -336,22 +343,30 @@
 														<i class="fa fa-angle-down"></i>
 													</a>
 													<ul class="dropdown-menu pull-right">
-														<li>
-															<a class="font-purple" data-toggle="modal" data-target="#showPayment{{ $realPayment->id }}">
-															<i class="icon-eye font-purple"></i> عـرض</a>
-														</li>
-														<li>
-															<a href="{{ route('editPayment', ['id' => $realPayment->id]) }}" class="font-blue">
-															<i class="icon-note font-blue"></i> تعديل</a>
-														</li>														
-														<li>
-															<a href="#deletePayment{{ $realPayment->id }}" class="font-red" data-toggle="modal">
-															<i class="icon-trash font-red"></i> حـذف</a>
-														</li>														
-														<li>
-															<a href="{{ route('downloadPayment', ['id' => $realPayment->id]) }}" class="font-green">
-															<i class="icon-cloud-download font-green"></i> تحميل</a>
-														</li>													
+														@if((in_array('paymentShow',$permissions)))
+															<li>
+																<a class="font-purple" data-toggle="modal" data-target="#showPayment{{ $realPayment->id }}">
+																<i class="icon-eye font-purple"></i> عـرض</a>
+															</li>
+														@endif
+														@if((in_array('paymentEdit',$permissions)))
+															<li>
+																<a href="{{ route('editPayment', ['id' => $realPayment->id]) }}" class="font-blue">
+																<i class="icon-note font-blue"></i> تعديل</a>
+															</li>	
+														@endif		
+														@if((in_array('paymentDelete',$permissions)))											
+															<li>
+																<a href="#deletePayment{{ $realPayment->id }}" class="font-red" data-toggle="modal">
+																<i class="icon-trash font-red"></i> حـذف</a>
+															</li>	
+														@endif		
+														@if((in_array('paymentDownloadPaid',$permissions)) ||(in_array('paymentDownloadReceived',$permissions)))										
+															<li>
+																<a href="{{ route('downloadPayment', ['id' => $realPayment->id]) }}" class="font-green">
+																<i class="icon-cloud-download font-green"></i> تحميل</a>
+															</li>	
+														@endif												
 													</ul>
 												</div>
 											</td>

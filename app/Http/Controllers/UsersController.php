@@ -9,7 +9,7 @@ use App\Settings;
 use App\Client;
 use App\Employee;
 use PDF;
-
+use Auth;
 class UsersController extends Controller
 {
 
@@ -25,19 +25,29 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $clients = Client::all();
-        $settings = Settings::find(1);
-        $employees = Employee::with([
-            'task',
-            'employee_accounts'
-            ])->get();
-        return view('Users.allUsers')->with([
-            'users' => $users ,
-            'clients' => $clients,
-            'employees' => $employees, 
-            'settings' => $settings,
-        ]);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if( (in_array('usersUserEdit',$permissions))     || (in_array('usersClientEdit',$permissions)) ||
+            (in_array('usersEmployeeEdit',$permissions)) || (in_array('usersUserDelete',$permissions)) ||
+            (in_array('usersClientDelete',$permissions)) || (in_array('usersEmployeeDelete',$permissions))){
+            $users = User::all();
+            $clients = Client::all();
+            $settings = Settings::find(1);
+            $employees = Employee::with([
+                'task',
+                'employee_accounts'
+                ])->get();
+            return view('Users.allUsers')->with([
+                'users' => $users ,
+                'clients' => $clients,
+                'employees' => $employees, 
+                'settings' => $settings,
+            ]);
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من عرض هذه الصفحة');   
+        }
     }
 
     /**
@@ -47,8 +57,16 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $settings = Settings::find(1);
-        return view('Users.addUser')->with('settings',$settings);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if(in_array('usersUserAdd',$permissions)){
+            $settings = Settings::find(1);
+            return view('Users.addUser')->with('settings',$settings);
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من عرض هذه الصفحة');   
+        }
     }
 
     /**
@@ -59,39 +77,47 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'username' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'password' => 'required',
-            'photo' => 'image|nullable|max:1999'
-        ]);
-        $permissions = serialize($request->input('permissions'));
-        $user = new User;
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
-        $user->phone = $request->input('phone');
-        $user->password = bcrypt($request->input('password'));
-        $user->permissions = $permissions;
-        $user->description = $request->input('description');
-        if($request->hasFile('photo')){
-            // Get filename withe the extension
-            $filenameWithExt = $request->file('photo')->getClientOriginalName();
-            // Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Get just extension
-            $extenstion = $request->file('photo')->getClientOriginalExtension();
-            // Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
-            // Upload image
-            $path = $request->file('photo')->storeAs('public/photos' , $fileNameToStore);
-        }else{
-            $fileNameToStore = 'noimage.jpg';
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
         }
-        $user->photo = $fileNameToStore;
-        $user->save();
-        
-        return redirect()->route('allUsers')->with('success', 'تمت إضافة المستخدم بنجاح');        
+        if(in_array('usersUserAdd',$permissions)){
+            $this->validate($request,[
+                'username' => 'required',
+                'email' => 'required',
+                'phone' => 'required',
+                'password' => 'required',
+                'photo' => 'image|nullable|max:1999'
+            ]);
+            $permissions = serialize($request->input('permissions'));
+            $user = new User;
+            $user->username = $request->input('username');
+            $user->email = $request->input('email');
+            $user->phone = $request->input('phone');
+            $user->password = bcrypt($request->input('password'));
+            $user->permissions = $permissions;
+            $user->description = $request->input('description');
+            if($request->hasFile('photo')){
+                // Get filename withe the extension
+                $filenameWithExt = $request->file('photo')->getClientOriginalName();
+                // Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Get just extension
+                $extenstion = $request->file('photo')->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
+                // Upload image
+                $path = $request->file('photo')->storeAs('public/photos' , $fileNameToStore);
+            }else{
+                $fileNameToStore = 'noimage.jpg';
+            }
+            $user->photo = $fileNameToStore;
+            $user->save();
+            
+            return redirect()->route('allUsers')->with('success', 'تمت إضافة المستخدم بنجاح');
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
+        }    
     }
 
 
@@ -103,17 +129,24 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        // Todo add permission validation
-        $user = User::find($id);
-        $settings = Settings::find(1);
-        if($user){
-            return view('Users.editUser')->with([
-                'user' => $user,
-                'settings' => $settings,
-            ]);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if(in_array('usersUserEdit',$permissions)){
+            $user = User::find($id);
+            $settings = Settings::find(1);
+            if($user){
+                return view('Users.editUser')->with([
+                    'user' => $user,
+                    'settings' => $settings,
+                ]);
+            }else{
+                if(! intval($id)== 0)
+                    return redirect()->route('allUsers')->with('error', 'هذا المستعمل فير موجود');
+            }
         }else{
-            if(! intval($id)== 0)
-                return redirect()->route('allUsers')->with('error', 'هذا المستعمل فير موجود');
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من عرض هذه الصفحة');   
         }
     }
 
@@ -126,40 +159,48 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'username' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'password' => 'required',
-            'photo' => 'image|nullable|max:1999'
-        ]);
-        $permissions = serialize($request->input('permissions'));
-        $user = User::find($id);
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
-        $user->phone = $request->input('phone');
-        $user->password = bcrypt($request->input('password'));
-        $user->permissions = $permissions;
-        $user->description = $request->input('description');
-        if($request->hasFile('photo')){
-            // Get filename withe the extension
-            $filenameWithExt = $request->file('photo')->getClientOriginalName();
-            // Get just filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Get just extension
-            $extenstion = $request->file('photo')->getClientOriginalExtension();
-            // Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
-            // Upload image
-            $path = $request->file('photo')->storeAs('public/photos' , $fileNameToStore);
-            if($user->photo!== 'noimage.jpg'){
-                Storage::delete('public/photos/'.$user->photo);
-            }
-            $user->photo = $fileNameToStore;
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
         }
-        $user->save();
-        
-        return redirect()->route('allUsers')->with('success', 'تم تعديل المستخدم بنجاح');        
+        if(in_array('usersUserEdit',$permissions)){
+            $this->validate($request,[
+                'username' => 'required',
+                'email' => 'required',
+                'phone' => 'required',
+                'password' => 'required',
+                'photo' => 'image|nullable|max:1999'
+            ]);
+            $permissions = serialize($request->input('permissions'));
+            $user = User::find($id);
+            $user->username = $request->input('username');
+            $user->email = $request->input('email');
+            $user->phone = $request->input('phone');
+            $user->password = bcrypt($request->input('password'));
+            $user->permissions = $permissions;
+            $user->description = $request->input('description');
+            if($request->hasFile('photo')){
+                // Get filename withe the extension
+                $filenameWithExt = $request->file('photo')->getClientOriginalName();
+                // Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Get just extension
+                $extenstion = $request->file('photo')->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extenstion;
+                // Upload image
+                $path = $request->file('photo')->storeAs('public/photos' , $fileNameToStore);
+                if($user->photo!== 'noimage.jpg'){
+                    Storage::delete('public/photos/'.$user->photo);
+                }
+                $user->photo = $fileNameToStore;
+            }
+            $user->save();
+            
+            return redirect()->route('allUsers')->with('success', 'تم تعديل المستخدم بنجاح');        
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
+        }
     }
 
     /**
@@ -170,36 +211,48 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        // Todo add permission validation
-        $user = User::find($id);
-        if($user->photo!== 'noimage.jpg'){
-            Storage::delete('public/photos/'.$user->photo);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
         }
-        $user->delete();
+        if(in_array('usersUserDelete',$permissions)){
+            $user = User::find($id);
+            if($user->photo!== 'noimage.jpg'){
+                Storage::delete('public/photos/'.$user->photo);
+            }
+            $user->delete();
 
-        return redirect()->route('allUsers')->with('success', 'تم حذف المستخدم بنجاح');        
+            return redirect()->route('allUsers')->with('success', 'تم حذف المستخدم بنجاح');    
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
+        }    
     }
 
     public function download($id){
-        $user = User::find($id);
+        $permissions = unserialize(Auth::user()->permissions);
+        if($permissions == null){
+            $permissions = [];
+        }
+        if((in_array('usersUserEdit',$permissions)) || (in_array('usersUserAdd',$permissions))){
+            $user = User::find($id);
+            $html = view('Users.userPDF',['user'=>$user])->render(); // file render
 
-      //  return view('users.userPDF')->with('user', $user);
+            $pdfarr = [
+                'title'=> $user->username,
+                'data'=>$html, // render file blade with content html
+                'header'=>['show'=>false], // header content
+                'footer'=>['show'=>false], // Footer content
+                'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
+                'font-size'=>12, // font-size 
+                'text'=>'', //Write
+                'rtl'=>true, //true or false 
+                'filename'=>$user->username.'.pdf', // filename example - invoice.pdf
+                'display'=>'download', // stream , download , print
+            ];
 
-        $html = view('Users.userPDF',['user'=>$user])->render(); // file render
-
-        $pdfarr = [
-            'title'=> $user->username,
-            'data'=>$html, // render file blade with content html
-            'header'=>['show'=>false], // header content
-            'footer'=>['show'=>false], // Footer content
-            'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
-            'font-size'=>12, // font-size 
-            'text'=>'', //Write
-            'rtl'=>true, //true or false 
-            'filename'=>$user->username.'.pdf', // filename example - invoice.pdf
-            'display'=>'download', // stream , download , print
-        ];
-
-   	    PDF::HTML($pdfarr);
+            PDF::HTML($pdfarr);
+        }else{
+            return redirect()->back()->with('error', 'صلاحياتك لا تمكنك من القيام بهذه العملية');   
+        }
     }
 }
