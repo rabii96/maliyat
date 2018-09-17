@@ -681,12 +681,8 @@
                     language: "ar"
                 });
 
-                $('#start_date').datepicker({
-                    autoclose: true,
-                    todayHighlight: true,
-                    language: "ar"
-                });
-                
+
+               
                 $("#payment-container").delegate("input[type=text].date", "focusin", function(){
                     $(this).datepicker({
                         autoclose: true,
@@ -708,6 +704,7 @@
                 
                           
             });	
+            
         		 
 
     </script>
